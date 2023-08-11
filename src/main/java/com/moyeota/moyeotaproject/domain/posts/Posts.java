@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.domain.posts;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
+import com.moyeota.moyeotaproject.domain.users.Users;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,10 +52,10 @@ public class Posts extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId") //FK
-    private User user;
+    private Users user;
 
     //연관관계 메서드
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
         user.getPosts().add(this);
     }
