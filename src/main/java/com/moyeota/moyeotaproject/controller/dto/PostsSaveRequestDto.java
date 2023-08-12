@@ -35,7 +35,7 @@ public class PostsSaveRequestDto {
         this.content = content;
         this.sameGenderStatus = sameGenderStatus;
         this.numberOfRecruitment = numberOfRecruitment;
-        this.numberOfParticipants = numberOfParticipants;
+        this.numberOfParticipants = 1;
     }
 
     public Posts toEntity(Users user) {
@@ -47,7 +47,7 @@ public class PostsSaveRequestDto {
                 .content(content)
                 .sameGenderStatus(sameGenderStatus)
                 .numberOfRecruitment(numberOfRecruitment)
-                .numberOfParticipants(numberOfParticipants)
+                .numberOfParticipants(1)
                 .user(user)
                 .build();
     }

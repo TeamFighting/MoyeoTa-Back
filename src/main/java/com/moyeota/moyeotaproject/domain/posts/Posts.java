@@ -73,4 +73,10 @@ public class Posts extends BaseTimeEntity {
         this.title = title;
         this.content = content;
     }
+
+    public void postsComplete() {
+        if(this.status == PostsStatus.COMPLETE)
+            throw new IllegalStateException("이미 모집이 마감된 글입니다.");
+        this.status = PostsStatus.COMPLETE;
+    }
 }
