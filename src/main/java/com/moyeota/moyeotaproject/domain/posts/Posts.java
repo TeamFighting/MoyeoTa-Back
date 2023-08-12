@@ -5,6 +5,7 @@ import com.moyeota.moyeotaproject.domain.users.Users;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,12 +21,6 @@ public class Posts extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String title;
-
-    @Column(nullable = false)
-    private String recruiterName;
-
-    @Column(nullable = false)
-    private String recruiterGender;
 
     @Column(nullable = false)
     private String departure;
@@ -58,5 +53,24 @@ public class Posts extends BaseTimeEntity {
     public void setUser(Users user) {
         this.user = user;
         user.getPosts().add(this);
+    }
+
+    @Builder
+    public Posts(String title, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, int numberOfRecruitment, int numberOfParticipants, Users user) {
+        this.title = title;
+        this.departure = departure;
+        this.destination = destination;
+        this.departureTime = departureTime;
+        this.content = content;
+        this.sameGenderStatus = sameGenderStatus;
+        this.numberOfRecruitment = numberOfRecruitment;
+        this.numberOfParticipants = numberOfParticipants;
+        this.status = PostsStatus.RECRUITING;
+        this.setUser(user);
+    }
+
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
     }
 }
