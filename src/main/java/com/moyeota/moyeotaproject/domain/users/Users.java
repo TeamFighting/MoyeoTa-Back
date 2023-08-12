@@ -70,5 +70,4 @@ public class Users {
         this.school = school;
         this.isAuthenticated = isAuthenticated;
     }
-
 }
