@@ -3,12 +3,14 @@ package com.moyeota.moyeotaproject.domain.users;
 
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Entity
 @RequiredArgsConstructor
 public class Users {
@@ -70,4 +72,21 @@ public class Users {
         this.school = school;
         this.isAuthenticated = isAuthenticated;
     }
+
+    //테스트용으로 잠깐 만들어 두었습니다. 나중에 제거하겠습니다.
+
+    public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated) {
+        this.name = name;
+        this.profileImage = profileImage;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.loginId = loginId;
+        this.password = password;
+        this.status = status;
+        this.gender = gender;
+        this.averageStarRate = averageStarRate;
+        this.school = school;
+        this.isAuthenticated = isAuthenticated;
+    }
+
 }
