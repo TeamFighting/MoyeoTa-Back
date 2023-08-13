@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.domain.posts;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
+import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -48,6 +51,9 @@ public class Posts extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId") //FK
     private Users user;
+
+    @OneToMany(mappedBy = "post")
+    public List<ParticipationDetails> participationDetails = new ArrayList<>();
 
     //연관관계 메서드
     public void setUser(Users user) {

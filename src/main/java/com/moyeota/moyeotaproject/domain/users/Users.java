@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.domain.users;
 
 
+import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,6 +53,9 @@ public class Users {
 
     @OneToMany(mappedBy = "user")
     private List<Posts> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
     public List<Posts> getPosts() {
         return this.posts;
