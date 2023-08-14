@@ -36,9 +36,9 @@ public class ParticipationDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public ParticipationDetails findById(Long id) {
-        ParticipationDetails participationDetails = participationDetailsRepository.findById(id).orElseThrow(()
-        -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+    public ParticipationDetails findById(Long participationDetailsId) {
+        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId).orElseThrow(()
+        -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + participationDetailsId));
         return participationDetails;
     }
 

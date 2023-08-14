@@ -19,6 +19,7 @@ public class PostsResponseDto {
     private SameGender sameGenderStatus;
     private int numberOfRecruitment;
     private int numberOfParticipants;
+    private LocalDateTime createAt;
     private PostsStatus status;
     private String userName;
     private String profileImage;
@@ -35,6 +36,7 @@ public class PostsResponseDto {
         this.sameGenderStatus = posts.getSameGenderStatus();
         this.numberOfRecruitment = posts.getNumberOfRecruitment();
         this.numberOfParticipants = posts.getNumberOfParticipants();
+        this.createAt = posts.getCreatedDate();
         this.status = posts.getStatus();
         this.userName = userName;
         this.profileImage = profileImage;
