@@ -1,6 +1,5 @@
 package com.moyeota.moyeotaproject.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.domain.users.Users;

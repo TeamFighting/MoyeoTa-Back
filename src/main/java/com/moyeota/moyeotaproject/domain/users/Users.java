@@ -1,12 +1,14 @@
 package com.moyeota.moyeotaproject.domain.users;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.review.Review;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Users {
 
     @Id
@@ -61,6 +63,9 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+
     public List<Posts> getPosts() {
         return this.posts;
     }
@@ -82,7 +87,6 @@ public class Users {
     }
 
     //테스트용으로 잠깐 만들어 두었습니다. 나중에 제거하겠습니다.
-
     public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated) {
         this.name = name;
         this.profileImage = profileImage;
