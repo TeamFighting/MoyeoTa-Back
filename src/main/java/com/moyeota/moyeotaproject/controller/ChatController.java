@@ -8,24 +8,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chattings")
 public class ChatController {
 
     private final ChatService chatService;
 
-    @PostMapping("/room/{senderId}/{receiverId}")
+    //채팅방 생성 API
+    @PostMapping("/rooms/{senderId}/{receiverId}")
     public ResponseDto createRoom(@RequestParam String name, @PathVariable("senderId") Long user1Id, @PathVariable("receiverId")Long user2Id) {
         return ResponseUtil.SUCCESS("채팅방 생성 성공", chatService.createRoom(name, user1Id, user2Id));
     }
 
-//    @PostMapping("/save/{userId}/{chatRoomId}")
-//    public ResponseDto saveMessage(@PathVariable("userId")Long userId, @PathVariable("chatRoomId")Long chatRoomId) {
-//        return ResponseUtil.SUCCESS("메시지 저장 성공", chatService.saveMessage(userId, chatRoomId))
-//    }
-
-    @GetMapping("/message/{userId}/{chatRoomId}")
-    public ResponseDto findAllMessage(@PathVariable("userId")Long userId, @PathVariable("chatRoomId")Long chatRoomId) {
-        return ResponseUtil.SUCCESS("메시지 조회 성공", chatService.findAllMessages(userId, chatRoomId));
+    //채팅방 메시지 조회 API
+    @GetMapping("/messages/{userId}/{chatRoomId}")
+    public ResponseDto findAllMessageDesc(@PathVariable("userId")Long userId, @PathVariable("chatRoomId")Long chatRoomId) {
+        return ResponseUtil.SUCCESS("메시지 조회 성공", chatService.findAllMessagesDesc(userId, chatRoomId));
     }
 
+    //채팅방 목록 조회 API 아직 미완성
+    @GetMapping("/rooms/{userId}")
+    public ResponseDto findAllRoomsDesc(@PathVariable("userId") Long userId) {
+        return ResponseUtil.SUCCESS("채팅방 조회 성공", chatService.findAllRoomsDesc(userId));
+    }
+
+    //채팅방 삭제 API
+    @DeleteMapping("/rooms/{chatRoomId}")
+    public ResponseDto deleteRoom(@PathVariable("chatRoomId") Long chatRoomId) {
+        chatService.deleteRoom(chatRoomId);
+        return ResponseUtil.SUCCESS("채팅방 삭제에 성공하였습니다.", chatRoomId);
+    }
+
+    //메시지 삭제 API
+    @DeleteMapping("/messages/{chatMessageId}")
+    public ResponseDto deleteMessage(@PathVariable("chatMessageId") Long chatMessageId) {
+        chatService.deleteMessage(chatMessageId);
+        return ResponseUtil.SUCCESS("메시지 삭제에 성공하였습니다.", chatMessageId);
+    }
 }
