@@ -62,6 +62,11 @@ public class PostsService {
                 "password", "join", true, 3.5F, "seoultech", true
         );
         usersRepository.save(users); //제거예정
+        Users users2 = new Users( //제거예정
+                "kyko22", "profile", "010-1111-1111", "kyko@naver.com", "loginId",
+                "password", "join", true, 3.5F, "seoultech", true
+        );
+        usersRepository.save(users2);
         Users user = usersRepository.findById(userId).orElseThrow(()
         -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 
