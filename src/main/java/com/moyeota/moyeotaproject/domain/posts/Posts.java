@@ -75,6 +75,15 @@ public class Posts extends BaseTimeEntity {
         this.setUser(user);
     }
 
+    public void addUser() {
+        this.numberOfParticipants++;
+    }
+
+    public void minusUser() {
+        this.numberOfParticipants--;
+        this.status = PostsStatus.RECRUITING;
+    }
+
     public void update(String title, String content){
         this.title = title;
         this.content = content;

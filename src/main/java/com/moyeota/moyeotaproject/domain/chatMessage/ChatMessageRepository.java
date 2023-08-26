@@ -15,7 +15,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
 
     List<MessageRoomIdMapping> findRoomIdByUser(Users user);
 
-    @Query("select c from ChatMessage c where c.roomId = :roomId order by c.createdDate")
-    ChatMessage findFirstChatMessage(@Param("roomId") String roomId);
+    @Query("select c from ChatMessage c where c.roomId = :roomId order by c.createdDate desc")
+    List<ChatMessage> findChatMessage(@Param("roomId") String roomId);
 
 }

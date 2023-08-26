@@ -2,8 +2,11 @@ package com.moyeota.moyeotaproject.controller;
 
 import com.moyeota.moyeotaproject.config.ResponseDto;
 import com.moyeota.moyeotaproject.config.ResponseUtil;
+import com.moyeota.moyeotaproject.controller.dto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.PostsUpdateRequestDto;
+import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
+import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.service.PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +21,29 @@ public class PostsController {
     //모집글 작성 API
     @PostMapping("/{userId}")
     public ResponseDto save(@PathVariable("userId") Long userId, @RequestBody PostsSaveRequestDto requestDto){
+        if(requestDto.getTitle() == null || requestDto.getTitle().equals(""))
+            return ResponseUtil.FAILURE("모집글 제목을 입력해주세요.", null);
+        if(requestDto.getDeparture() == null || requestDto.getDeparture().equals(""))
+            return ResponseUtil.FAILURE("출발지를 입력해주세요.", null);
+        if(requestDto.getDestination() == null || requestDto.getDestination().equals(""))
+            return ResponseUtil.FAILURE("목적지를 입력해주세요.", null);
+        if(requestDto.getSameGenderStatus() == null)
+            requestDto.setSameGenderStatus(SameGender.NO);
+
         Long postId = postsService.save(userId, requestDto);
         return ResponseUtil.SUCCESS("모집글 저장에 성공하였습니다.", postId);
     }
 
     //모집글 수정 API (단, 제목과 내용만 수정가능)
-    @PutMapping("/{postId}")
+    @PatchMapping("/{postId}")
     public ResponseDto update(@PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
+        if(requestDto.getTitle() == null)
+            requestDto.setTitle(postsService.findById(postId).getTitle());
+        if(requestDto.getTitle().equals(""))
+            return ResponseUtil.FAILURE("모집글 제목을 입력해주세요.", null);
+        if(requestDto.getContent() == null)
+            requestDto.setContent(postsService.findById(postId).getContent());
+
         return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.", postsService.update(postId, requestDto));
     }
 
@@ -36,8 +55,10 @@ public class PostsController {
     }
 
     //모집 마감 API
-    @PostMapping("/{postId}/complete")
+    @PostMapping("/{postId}/completion")
     public ResponseDto completePost(@PathVariable("postId") Long postId) {
+        if(postsService.findById(postId).getStatus() == PostsStatus.COMPLETE)
+            return ResponseUtil.FAILURE("이미 마감된 공고입니다.", null);
         postsService.completePost(postId);
         return ResponseUtil.SUCCESS("모집글 공고가 마감되었습니다.", postId);
     }

@@ -75,7 +75,8 @@ public class ChatService {
         while(iterator.hasNext()){
             String roomId = (String) iterator.next();
             ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-            ChatMessage chatMessage = chatMessageRepository.findFirstChatMessage(roomId);
+            List<ChatMessage> chatMessageList = chatMessageRepository.findChatMessage(roomId);
+            ChatMessage chatMessage = chatMessageList.get(0);
             ChatRoomResponseDto responseDto = ChatRoomResponseDto.builder()
                     .name(chatRoom.getName())
                     .createdDate(chatMessage.getCreatedDate())
@@ -90,7 +91,6 @@ public class ChatService {
         try{
             TextMessage textMessage = new TextMessage(mapper.writeValueAsString(message));
             session.sendMessage(textMessage);
-            String payload = textMessage.getPayload();
             ChatMessageDto chatMessage = (ChatMessageDto) message;
             saveMessage(chatMessage.getUserId(), chatMessage.getChatRoomId(), chatMessage);
         } catch (IOException e) {
