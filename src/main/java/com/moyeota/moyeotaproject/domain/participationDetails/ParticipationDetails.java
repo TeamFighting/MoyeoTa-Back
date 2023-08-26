@@ -19,6 +19,7 @@ public class ParticipationDetails extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ParticipationDetailsStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)

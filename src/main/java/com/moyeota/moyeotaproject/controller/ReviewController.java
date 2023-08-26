@@ -14,7 +14,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    //리뷰 생성 API
+    //리뷰 작성 API
     @PostMapping("/{userId}")
     public ResponseDto save(@PathVariable("userId") Long userId, @RequestBody ReviewSaveRequestDto requestDto) {
         Long reviewId = reviewService.save(userId, requestDto);

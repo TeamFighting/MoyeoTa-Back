@@ -27,6 +27,10 @@ public class ParticipationDetailsService {
         Posts post = postsRepository.findById(postId).orElseThrow(()
         -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
 
+        post.addUser();
+        if(post.getNumberOfParticipants() == post.getNumberOfRecruitment())
+            post.postsComplete();
+
         ParticipationDetails participationDetails = ParticipationDetails.builder()
                 .user(user)
                 .post(post)
@@ -39,7 +43,11 @@ public class ParticipationDetailsService {
     public ParticipationDetails findById(Long participationDetailsId) {
         ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId).orElseThrow(()
         -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + participationDetailsId));
+
         return participationDetails;
     }
 
+    public ParticipationDetails checkParticipation(Long userId, Long postId) {
+        return participationDetailsRepository.findByUserAndPost(usersRepository.findById(userId).get(), postsRepository.findById(postId).get());
+    }
 }
