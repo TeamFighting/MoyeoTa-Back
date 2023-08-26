@@ -55,7 +55,7 @@ public class PostsController {
     }
 
     //모집 마감 API
-    @PostMapping("/{postId}/completion")
+    @PostMapping("/{postId}/complete")
     public ResponseDto completePost(@PathVariable("postId") Long postId) {
         if(postsService.findById(postId).getStatus() == PostsStatus.COMPLETE)
             return ResponseUtil.FAILURE("이미 마감된 공고입니다.", null);
