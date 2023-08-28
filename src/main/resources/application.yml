@@ -1,9 +1,17 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/moyeota
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    driver-class-name:
+      com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/moyeota
+    username: root
+    password: rlaxogjs8312
+
+#spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/moyeota
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
@@ -18,3 +26,6 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+jwt:
+  secret: RlaXoVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+  validTime: 1000000000
