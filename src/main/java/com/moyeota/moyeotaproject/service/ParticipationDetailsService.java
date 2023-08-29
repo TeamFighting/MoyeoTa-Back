@@ -5,8 +5,8 @@ import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetai
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
-import com.moyeota.moyeotaproject.domain.users.Users;
-import com.moyeota.moyeotaproject.domain.users.UsersRepository;
+import com.moyeota.moyeotaproject.domain.users.Entity.Users;
+import com.moyeota.moyeotaproject.domain.users.Entity.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
