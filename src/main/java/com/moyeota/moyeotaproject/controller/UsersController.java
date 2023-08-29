@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.moyeota.moyeotaproject.config.ResponseDto;
 import com.moyeota.moyeotaproject.config.ResponseUtil;
 import com.moyeota.moyeotaproject.controller.dto.SignUpRequestDto;
+import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.KakaoLoginParams;
+import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.NaverLoginParams;
+import com.moyeota.moyeotaproject.service.OAuthLoginService;
 import com.moyeota.moyeotaproject.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UsersController {
 
     private final UsersService usersService;
+    private final OAuthLoginService oAuthLoginService;
 
     @PostMapping("/signup")
     public ResponseDto signup(@RequestBody SignUpRequestDto signUpRequestDto) {
@@ -22,15 +26,18 @@ public class UsersController {
         return ResponseUtil.SUCCESS("회원가입에 성공하였습니다.", signUpRequestDto.getEmail());
     }
 
-    @PostMapping("/oauth2/signup")
-    public ResponseDto oauth2Signup(@RequestParam String oauth2AccessToken, @RequestParam String socialLogin) throws ParseException, JsonProcessingException {
-        usersService.oauth2Signup(oauth2AccessToken, socialLogin);
-        return ResponseUtil.SUCCESS(socialLogin + "에 회원가입 성공하였습니다. ", socialLogin);
+    @PostMapping("/google")
+    public ResponseDto oauth2Signup(@RequestParam String authorizationCode) throws ParseException, JsonProcessingException {
+        return ResponseUtil.SUCCESS("구글에 회원가입 성공하였습니다. ", usersService.oauth2Signup(authorizationCode));
     }
 
-    @PostMapping("/oauth2/login")
-    public ResponseDto oauth2Login(@RequestParam String oauth2AccessToken, @RequestParam String socialLogin) {
-        // usersService.oauth2Login(oauth2AccessToken, socialLogin);
-        return ResponseUtil.SUCCESS(socialLogin + "에 로그인 성공하였습니다. ", socialLogin);
+    @PostMapping("/kakao")
+    public ResponseDto loginKakao(@RequestBody KakaoLoginParams params) {
+        return ResponseUtil.SUCCESS( "카카오 로그인 성공하였습니다. ", oAuthLoginService.login(params));
+    }
+
+    @PostMapping("/naver")
+    public ResponseDto loginNaver(@RequestBody NaverLoginParams params) {
+        return ResponseUtil.SUCCESS("네이버 로그인 성공하였습니다. ", oAuthLoginService.login(params));
     }
 }

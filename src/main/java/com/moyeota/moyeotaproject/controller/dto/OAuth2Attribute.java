@@ -20,10 +20,6 @@ public class OAuth2Attribute {
         switch (provider) {
             case "google":
                 return OAuth2Attribute.ofGoogle(provider, usernameAttributeName, attributes);
-            case "kakao":
-                return OAuth2Attribute.ofKakao(provider, usernameAttributeName, attributes);
-            case "naver":
-                return OAuth2Attribute.ofNaver(provider, usernameAttributeName, attributes);
             default:
                 throw new RuntimeException("소셜 로그인 접근 실패");
         }
@@ -37,26 +33,6 @@ public class OAuth2Attribute {
                 .username(String.valueOf(attributes.get("name")))
                 .email(String.valueOf(attributes.get("email")))
                 .userId(String.valueOf(attributes.get(usernameAttributeName)).concat("google"))
-                .build();
-    }
-
-    private static OAuth2Attribute ofKakao(String provider, String usernameAttributeName, Map<String, Object> attributes) {
-
-        return OAuth2Attribute.builder()
-                .provider(provider)
-                .username(String.valueOf(attributes.get("name")))
-                .email(String.valueOf(attributes.get("email")))
-                .userId(String.valueOf(attributes.get(usernameAttributeName)).concat("kakao"))
-                .build();
-    }
-
-    private static OAuth2Attribute ofNaver(String provider, String usernameAttributeName, Map<String, Object> attributes) {
-
-        return OAuth2Attribute.builder()
-                .provider(provider)
-                .username(String.valueOf(attributes.get("name")))
-                .email(String.valueOf(attributes.get("email")))
-                .userId(String.valueOf(attributes.get(usernameAttributeName)).concat("naver"))
                 .build();
     }
 }

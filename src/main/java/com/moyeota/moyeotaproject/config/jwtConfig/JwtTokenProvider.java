@@ -2,10 +2,12 @@ package com.moyeota.moyeotaproject.config.jwtConfig;
 
 
 import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
-import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.domain.users.Entity.Users;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,25 +32,33 @@ public class JwtTokenProvider {
     private Integer TOKEN_VALID_TIME;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String salt) {
-        this.key = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
+        byte[] keyBytes = Decoders.BASE64.decode(salt);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenInfoDto generateToken(Users user) {
-        Date now = new Date();
-        Claims claims = Jwts.claims().setSubject(String.valueOf(user.getId()));
-        claims.put("userId", user.getId());
-
-        String accessToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME))
+    public String generateToken(String subject, Date expiredAt) {
+        return Jwts.builder()
+                .setSubject(subject)
+                .setExpiration(expiredAt)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
 
-        return TokenInfoDto.builder()
-                .grantType("Bearer")
-                .accessToken(accessToken)
-                .build();
+    public String extractSubject(String accessToken) {
+        Claims claims = parseClaims(accessToken);
+        return claims.getSubject();
+    }
+
+    private Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
     }
 
     // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
@@ -78,14 +88,14 @@ public class JwtTokenProvider {
         }
     }
 
-    private Claims parseClaims(String accessToken) {
-        try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-        } catch (RuntimeException e) {
-            System.out.println("ParseClaim 오류 = " + e.getMessage());
-            throw new RuntimeException(e.getMessage());
-        }
-    }
+//    private Claims parseClaims(String accessToken) {
+//        try {
+//            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+//        } catch (RuntimeException e) {
+//            System.out.println("ParseClaim 오류 = " + e.getMessage());
+//            throw new RuntimeException(e.getMessage());
+//        }
+//    }
 
     // Bearer 제외부분
     public String getToken(String token) {
