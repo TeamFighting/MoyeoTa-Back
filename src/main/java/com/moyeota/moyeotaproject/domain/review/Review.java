@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.domain.review;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
-import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.domain.users.Entity.Users;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

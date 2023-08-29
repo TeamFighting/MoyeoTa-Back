@@ -1,3 +1,11 @@
+#spring:
+#  datasource:
+#    driver-class-name:
+#      com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/moyeota
+#    username: root
+#    password: rlaxogjs8312
+
 spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/moyeota
@@ -14,7 +22,30 @@ spring:
         format_sql: true
     open-in-view: false
 
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+jwt:
+  secret: RlaXoVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+# OAuth 테스트를 위해서 임의로 앱을 만들었습니다. -> 이후에 모여타 앱 등록 후 client-id 변경
+oauth:
+  kakao:
+    client-id: 3b7fe612c8054aa522c8728a78c2eb28
+    url:
+      auth: https://kauth.kakao.com
+      api: https://kapi.kakao.com
+  naver:
+    secret: dlqyJNKOJA
+    client-id: gEFBcvIBnBSrlX5PrCmk
+    url:
+      auth: https://nid.naver.com
+      api: https://openapi.naver.com
+  google:
+    url:
+      api: https://oauth2.googleapis.com/tokeninfo

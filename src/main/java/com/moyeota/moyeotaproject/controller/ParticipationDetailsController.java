@@ -43,4 +43,10 @@ public class ParticipationDetailsController {
         return ResponseUtil.SUCCESS("참가 취소가 완료되었습니다.", participationDetailsId);
     }
 
+    //특정 유저 참가내역 전체 조회 API
+    @GetMapping("/users/{userId}")
+    public ResponseDto findAllDesc(@PathVariable("userId") Long userId) {
+        return ResponseUtil.SUCCESS("참가내역 조회에 성공하였습니다.", participationDetailsService.findAllDesc(userId));
+    }
+
 }
