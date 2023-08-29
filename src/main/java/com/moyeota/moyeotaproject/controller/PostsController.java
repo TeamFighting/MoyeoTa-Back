@@ -1,16 +1,16 @@
 package com.moyeota.moyeotaproject.controller;
 
-import com.moyeota.moyeotaproject.config.ResponseDto;
-import com.moyeota.moyeotaproject.config.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.PostsResponseDto;
+import com.moyeota.moyeotaproject.config.*;
 import com.moyeota.moyeotaproject.controller.dto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.PostsUpdateRequestDto;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.service.PostsService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@Api(tags = "Posts", description = "Post Controller")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/posts")
@@ -19,8 +19,15 @@ public class PostsController {
     private final PostsService postsService;
 
     //모집글 작성 API
-    @PostMapping("/{userId}")
-    public ResponseDto save(@PathVariable("userId") Long userId, @RequestBody PostsSaveRequestDto requestDto){
+    @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "API 정상 작동"),
+            @ApiResponse(code = 400, message = "BAD REQUEST"),
+            @ApiResponse(code = 404, message = "NOT FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @PostMapping("/users/{userId}")
+    public ResponseDto save(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @RequestBody PostsSaveRequestDto requestDto){
         if(requestDto.getTitle() == null || requestDto.getTitle().equals(""))
             return ResponseUtil.FAILURE("모집글 제목을 입력해주세요.", null);
         if(requestDto.getDeparture() == null || requestDto.getDeparture().equals(""))

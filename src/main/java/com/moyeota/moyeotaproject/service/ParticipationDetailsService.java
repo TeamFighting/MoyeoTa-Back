@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.service;
 
 
+import com.moyeota.moyeotaproject.controller.dto.ParticipationDetailsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
@@ -10,6 +11,9 @@ import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -49,5 +53,21 @@ public class ParticipationDetailsService {
 
     public ParticipationDetails checkParticipation(Long userId, Long postId) {
         return participationDetailsRepository.findByUserAndPost(usersRepository.findById(userId).get(), postsRepository.findById(postId).get());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ParticipationDetailsResponseDto> findAllDesc(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(()
+        -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(user);
+        List<ParticipationDetailsResponseDto> responseDtoList = new ArrayList<>();
+        for (int i=0; i<participationDetailsList.size(); i++) {
+            ParticipationDetailsResponseDto responseDto = ParticipationDetailsResponseDto.builder()
+                    .posts(participationDetailsList.get(i).getPost())
+                    .status(participationDetailsList.get(i).getStatus())
+                    .build();
+            responseDtoList.add(responseDto);
+        }
+        return responseDtoList;
     }
 }
