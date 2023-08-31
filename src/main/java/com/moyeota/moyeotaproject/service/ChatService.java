@@ -33,8 +33,10 @@ public class ChatService {
     private final ChatMessageRepository chatMessageRepository;
 
     public Long createRoom(String name, Long user1Id, Long user2Id) {
-        Users user1 = usersRepository.findById(user1Id).orElseThrow();
-        Users user2 = usersRepository.findById(user2Id).orElseThrow();
+        Users user1 = usersRepository.findById(user1Id).orElseThrow(()
+        -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId=" + user1Id));
+        Users user2 = usersRepository.findById(user2Id).orElseThrow(()
+        -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId=" + user2Id));
         String randomId = UUID.randomUUID().toString();
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomId(randomId)
@@ -49,7 +51,8 @@ public class ChatService {
     }
 
     public List<ChatMessageResponseDto> findAllMessagesDesc(Long userId, Long chatRoomId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(()
+        -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId" + userId));
         List<ChatMessage> messageList = chatMessageRepository.findByChatRoomOrderByIdDesc(chatRoom);
         List<ChatMessageResponseDto> messageResponseDtoList = new ArrayList<>();
         for (int i=0; i<messageList.size(); i++){
