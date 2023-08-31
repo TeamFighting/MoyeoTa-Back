@@ -53,7 +53,7 @@ public class PostsController {
     //모집글 수정 API (단, 제목과 내용만 수정가능)
     @ApiOperation(value = "모집글 수정", notes = "특정 회원이 모집글을 수정하는 API")
     @PatchMapping("/{postId}")
-    public ResponseDto update(@PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
+    public ResponseDto update(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
         if(requestDto.getTitle() == null)
             requestDto.setTitle(postsService.findById(postId).getTitle());
         if(requestDto.getTitle().equals(""))
@@ -67,7 +67,7 @@ public class PostsController {
     //모집글 삭제 API
     @ApiOperation(value = "모집글 삭제", notes = "특정 회원이 모집글을 삭제하는 API")
     @DeleteMapping("/{postId}")
-    public ResponseDto delete(@PathVariable("postId") Long postId) {
+    public ResponseDto delete(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         postsService.delete(postId);
         return ResponseUtil.SUCCESS("모집글 삭제에 성공하였습니다.", postId);
     }
@@ -75,7 +75,7 @@ public class PostsController {
     //모집 마감 API
     @ApiOperation(value = "모집글 마감", notes = "특정 회원이 모집글을 마감하는 API")
     @PostMapping("/{postId}/complete")
-    public ResponseDto completePost(@PathVariable("postId") Long postId) {
+    public ResponseDto completePost(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         if(postsService.findById(postId).getStatus() == PostsStatus.COMPLETE)
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
         postsService.completePost(postId);
@@ -85,7 +85,7 @@ public class PostsController {
     //특정 모집글 조회 API
     @ApiOperation(value = "특정 모집글 조회", notes = "특정 모집글을 조회하는 API")
     @GetMapping("/{postId}")
-    public ResponseDto findById(@PathVariable("postId") Long postId) {
+    public ResponseDto findById(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findById(postId));
     }
 
@@ -99,7 +99,7 @@ public class PostsController {
     //내 모집글 목록 조회 API (최신순으로)
     @ApiOperation(value = "특정 회원 모집글 전체 조회", notes = "특정 회원의 모집글을 전체 조회하는 API")
     @GetMapping("users/{userId}")
-    public ResponseDto findMyPostsByIdDesc(@PathVariable("userId") Long userId) {
+    public ResponseDto findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId));
     }
 
