@@ -2,12 +2,7 @@ package com.moyeota.moyeotaproject.domain.posts;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
-<<<<<<< HEAD
-import com.moyeota.moyeotaproject.domain.users.Users;
-import io.swagger.annotations.ApiModelProperty;
-=======
 import com.moyeota.moyeotaproject.domain.users.Entity.Users;
->>>>>>> 5d0335a840c41159a217f61583e75dd1bc07acdf
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
