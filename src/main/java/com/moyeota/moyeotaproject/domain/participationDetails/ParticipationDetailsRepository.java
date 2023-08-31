@@ -1,9 +1,8 @@
 package com.moyeota.moyeotaproject.domain.participationDetails;
 
 import com.moyeota.moyeotaproject.domain.posts.Posts;
-import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.domain.users.Entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

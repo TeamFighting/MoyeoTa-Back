@@ -2,13 +2,9 @@ package com.moyeota.moyeotaproject.controller.dto;
 
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
-<<<<<<< HEAD
-import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.domain.users.Entity.Users;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-=======
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
->>>>>>> 5d0335a840c41159a217f61583e75dd1bc07acdf
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -10,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -28,8 +29,6 @@ public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
     String salt;
-    @Value("${jwt.validTime}")
-    private Integer TOKEN_VALID_TIME;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String salt) {
         byte[] keyBytes = Decoders.BASE64.decode(salt);

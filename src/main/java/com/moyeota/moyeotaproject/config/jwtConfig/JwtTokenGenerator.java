@@ -2,11 +2,13 @@ package com.moyeota.moyeotaproject.config.jwtConfig;
 
 import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
+//@Component
+@Configuration
 @RequiredArgsConstructor
 public class JwtTokenGenerator {
 

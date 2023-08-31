@@ -8,6 +8,7 @@ import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.users.Entity.Users;
 import com.moyeota.moyeotaproject.domain.users.Entity.UsersRepository;
+import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,16 +58,35 @@ public class PostsService {
     }
 
     public Long save(Long userId, PostsSaveRequestDto requestDto){
-//        Users users = new Users( //제거예정
-//                "kyko", "profile", "010-1111-1111", "kyko@naver.com", "loginId",
-//                "password", "join", true, 3.5F, "seoultech", true
-//        );
-//        usersRepository.save(users); //제거예정
-//        Users users2 = new Users( //제거예정
-//                "kyko22", "profile", "010-1111-1111", "kyko@naver.com", "loginId",
-//                "password", "join", true, 3.5F, "seoultech", true
-//        );
-//        usersRepository.save(users2);
+        /**Users users1 = Users.builder()
+                .name("kyko").profileImage("profile")
+                .phoneNumber("010-1111-1111")
+                .email("kyko@naver.com")
+                .loginId("loginId")
+                .password("password")
+                .status("join")
+                .gender(true)
+                .school("seoultech")
+                .averageStarRate(3.5F)
+                .isAuthenticated(true)
+                .provider(OAuthProvider.KAKAO)
+                .build();
+        usersRepository.save(users1); //제거예정
+        Users users2 = Users.builder()
+                .name("kyko22").profileImage("profile")
+                .phoneNumber("010-1111-1111")
+                .email("kyko@naver.com")
+                .loginId("loginId")
+                .password("password")
+                .status("join")
+                .gender(true)
+                .school("seoultech")
+                .averageStarRate(3.5F)
+                .isAuthenticated(true)
+                .provider(OAuthProvider.KAKAO)
+                .build();
+        usersRepository.save(users2);
+         */
         Users user = usersRepository.findById(userId).orElseThrow(()
         -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 
