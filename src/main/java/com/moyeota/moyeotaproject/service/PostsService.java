@@ -58,35 +58,35 @@ public class PostsService {
     }
 
     public Long save(Long userId, PostsSaveRequestDto requestDto){
-        /**Users users1 = Users.builder()
-                .name("kyko").profileImage("profile")
-                .phoneNumber("010-1111-1111")
-                .email("kyko@naver.com")
-                .loginId("loginId")
-                .password("password")
-                .status("join")
-                .gender(true)
-                .school("seoultech")
-                .averageStarRate(3.5F)
-                .isAuthenticated(true)
-                .provider(OAuthProvider.KAKAO)
-                .build();
-        usersRepository.save(users1); //제거예정
-        Users users2 = Users.builder()
-                .name("kyko22").profileImage("profile")
-                .phoneNumber("010-1111-1111")
-                .email("kyko@naver.com")
-                .loginId("loginId")
-                .password("password")
-                .status("join")
-                .gender(true)
-                .school("seoultech")
-                .averageStarRate(3.5F)
-                .isAuthenticated(true)
-                .provider(OAuthProvider.KAKAO)
-                .build();
-        usersRepository.save(users2);
-         */
+//        Users users1 = Users.builder()
+//                .name("kyko").profileImage("profile")
+//                .phoneNumber("010-1111-1111")
+//                .email("kyko@naver.com")
+//                .loginId("loginId")
+//                .password("password")
+//                .status("join")
+//                .gender(true)
+//                .school("seoultech")
+//                .averageStarRate(3.5F)
+//                .isAuthenticated(true)
+//                .provider(OAuthProvider.KAKAO)
+//                .build();
+//        usersRepository.save(users1); //제거예정
+//        Users users2 = Users.builder()
+//                .name("kyko22").profileImage("profile")
+//                .phoneNumber("010-1111-1111")
+//                .email("kyko@naver.com")
+//                .loginId("loginId")
+//                .password("password")
+//                .status("join")
+//                .gender(true)
+//                .school("seoultech")
+//                .averageStarRate(3.5F)
+//                .isAuthenticated(true)
+//                .provider(OAuthProvider.KAKAO)
+//                .build();
+//        usersRepository.save(users2);
+
         Users user = usersRepository.findById(userId).orElseThrow(()
         -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 
