@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.moyeota.moyeotaproject.config.ResponseDto;
 import com.moyeota.moyeotaproject.config.ResponseUtil;
 import com.moyeota.moyeotaproject.controller.dto.SignUpRequestDto;
+import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.GoogleLoginParams;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.KakaoLoginParams;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.NaverLoginParams;
 import com.moyeota.moyeotaproject.service.OAuthLoginService;
@@ -27,8 +28,9 @@ public class UsersController {
     }
 
     @PostMapping("/google")
-    public ResponseDto oauth2Signup(@RequestParam String authorizationCode) throws ParseException, JsonProcessingException {
-        return ResponseUtil.SUCCESS("구글에 회원가입 성공하였습니다. ", usersService.oauth2Signup(authorizationCode));
+    public ResponseDto oauth2Signup(@RequestBody GoogleLoginParams params) throws ParseException, JsonProcessingException {
+        // return ResponseUtil.SUCCESS("구글에 회원가입 성공하였습니다. ", usersService.oauth2Signup(authorizationCode));
+        return ResponseUtil.SUCCESS("구글에 로그인 성공하였습니다. ", oAuthLoginService.login(params));
     }
 
     @PostMapping("/kakao")

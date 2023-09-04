@@ -56,7 +56,6 @@ public class NaverApiClient implements OAuthApiClient {
 
         NaverTokens response = restTemplate.postForObject(url, request, NaverTokens.class);
 
-        assert response != null;
         return response.getAccessToken();
     }
 

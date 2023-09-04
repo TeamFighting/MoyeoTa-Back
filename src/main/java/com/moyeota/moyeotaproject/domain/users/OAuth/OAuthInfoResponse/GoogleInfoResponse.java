@@ -1,24 +1,35 @@
 package com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
 import lombok.Getter;
 
 @Getter
 public class GoogleInfoResponse implements OAuthInfoResponse{
 
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("picture")
+    private String picture;
+
+
     @Override
     public String getEmail() {
-        return null;
+        return email;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return name;
     }
 
     @Override
     public String getProfileImage() {
-        return null;
+        return picture;
     }
 
     @Override
@@ -28,6 +39,6 @@ public class GoogleInfoResponse implements OAuthInfoResponse{
 
     @Override
     public OAuthProvider getOAuthProvider() {
-        return null;
+        return OAuthProvider.GOOGLE;
     }
 }
