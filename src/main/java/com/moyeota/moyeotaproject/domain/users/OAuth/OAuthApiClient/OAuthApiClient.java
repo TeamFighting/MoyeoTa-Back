@@ -4,7 +4,7 @@ import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.OAuthInfo
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
 
-// 외부 API 요청 후 응답값을 리턴해주는 (인터페이스)
+// 외부 API 요청 후 응답값을 리턴해주는 인터페이스
 public interface OAuthApiClient {
     OAuthProvider oAuthProvider(); // client의 타입 반환
 

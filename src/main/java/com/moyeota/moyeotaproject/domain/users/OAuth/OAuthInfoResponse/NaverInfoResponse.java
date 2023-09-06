@@ -14,9 +14,10 @@ public class NaverInfoResponse implements OAuthInfoResponse {
     static class Response {
         private String email;
         private String name;
-        private String mobile; // 카카오에는 없어서.. 어떻게 처리할지 미정..
+        private String mobile;
         private String profile_image;
-        private String gender;
+        private String age;
+        private String gender; // F: 여자 M: 남자 U: 확인불가
     }
 
     @Override
@@ -35,8 +36,18 @@ public class NaverInfoResponse implements OAuthInfoResponse {
     }
 
     @Override
+    public String getAge(){
+        return response.getAge();
+    }
+
+    @Override
     public String getGender() {
         return response.getGender();
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return response.getMobile();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.moyeota.moyeotaproject.config;
 
-//import com.moyeota.moyeotaproject.config.auth.PrincipalOauth2UserService;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtAuthenticationFilter;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    //private final PrincipalOauth2UserService principalOauth2UserService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
@@ -33,11 +31,10 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll(); // 이후에 JWT 토큰 인증 필요한 URL 추가
 //                .and()
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-//                .oauth2Login()
-//                .userInfoEndpoint();
+
 
         return http.build();
     }
