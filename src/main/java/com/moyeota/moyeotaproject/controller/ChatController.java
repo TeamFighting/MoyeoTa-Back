@@ -24,8 +24,8 @@ public class ChatController {
     //채팅방 생성 API
     @ApiOperation(value = "채팅방 생성", notes = "채팅방 생성 API")
     @PostMapping("/rooms/{senderId}/{receiverId}")
-    public ResponseDto createRoom(@RequestParam String name, @ApiParam(value = "유저1 인덱스 번호") @PathVariable("senderId") Long user1Id, @ApiParam(value = "유저2 인덱스 번호") @PathVariable("receiverId")Long user2Id) {
-        return ResponseUtil.SUCCESS("채팅방 생성 성공", chatService.createRoom(name, user1Id, user2Id));
+    public ResponseDto createRoom(@ApiParam(value = "유저1 인덱스 번호") @PathVariable("senderId") Long user1Id, @ApiParam(value = "유저2 인덱스 번호") @PathVariable("receiverId")Long user2Id) {
+        return ResponseUtil.SUCCESS("채팅방 생성 성공", chatService.createRoom(user1Id, user2Id));
     }
 
     //채팅방 메시지 조회 API
