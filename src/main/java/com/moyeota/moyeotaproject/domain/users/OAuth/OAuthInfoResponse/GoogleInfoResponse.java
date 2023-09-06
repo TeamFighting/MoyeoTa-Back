@@ -33,7 +33,17 @@ public class GoogleInfoResponse implements OAuthInfoResponse{
     }
 
     @Override
+    public String getAge() {
+        return null;
+    }
+
+    @Override
     public String getGender() {
+        return null;
+    }
+
+    @Override
+    public String getPhoneNumber() {
         return null;
     }
 

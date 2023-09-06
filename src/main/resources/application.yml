@@ -25,6 +25,10 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
 
+univcert:
+  api:
+    key: 7559e79a-1806-496c-adad-77394927b6b1
+
 logging:
   level:
     org.hibernate.SQL: debug
@@ -46,5 +50,7 @@ oauth:
       auth: https://nid.naver.com
       api: https://openapi.naver.com
   google:
+    client-id: 1080355904017-bc0ejbid1j01td1ur921cpvur768s8s5.apps.googleusercontent.com
+    client-secret: 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
     url:
-      api: https://oauth2.googleapis.com/tokeninfo
+      api: https://oauth2.googleapis.com

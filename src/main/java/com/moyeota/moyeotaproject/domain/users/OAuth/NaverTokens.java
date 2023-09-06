@@ -3,9 +3,11 @@ package com.moyeota.moyeotaproject.domain.users.OAuth;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class NaverTokens {
 
     @JsonProperty("access_token")

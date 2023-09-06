@@ -31,8 +31,7 @@ public class JwtTokenProvider {
     String salt;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String salt) {
-        byte[] keyBytes = Decoders.BASE64.decode(salt);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.key = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(String subject, Date expiredAt) {
@@ -41,11 +40,6 @@ public class JwtTokenProvider {
                 .setExpiration(expiredAt)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public String extractSubject(String accessToken) {
-        Claims claims = parseClaims(accessToken);
-        return claims.getSubject();
     }
 
     private Claims parseClaims(String accessToken) {
@@ -71,9 +65,19 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", Collections.emptyList());
     }
 
-    public Long getUserId(String accessToken) {
-        String token = getToken(accessToken);
-        return Long.parseLong(Jwts.parserBuilder().setSigningKey(salt.getBytes()).build().parseClaimsJws(token).getBody().getSubject());
+    public Long extractSubjectFromJwt(String accessToken) {
+        try {
+            String token = getToken(accessToken);
+            Claims claims = Jwts.parser()
+                    .setSigningKey(salt)
+                    .parseClaimsJws(token)
+                    .getBody();
+            String subject = claims.getSubject();
+            System.out.println("subject = " + subject);
+            return Long.parseLong(subject);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // 토큰 정보를 검증하는 메서드
@@ -86,15 +90,6 @@ public class JwtTokenProvider {
             throw new RuntimeException(e);
         }
     }
-
-//    private Claims parseClaims(String accessToken) {
-//        try {
-//            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-//        } catch (RuntimeException e) {
-//            System.out.println("ParseClaim 오류 = " + e.getMessage());
-//            throw new RuntimeException(e.getMessage());
-//        }
-//    }
 
     // Bearer 제외부분
     public String getToken(String token) {

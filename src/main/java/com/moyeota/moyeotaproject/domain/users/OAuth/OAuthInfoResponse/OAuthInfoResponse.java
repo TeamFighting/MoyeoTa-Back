@@ -7,6 +7,8 @@ public interface OAuthInfoResponse {
     String getUsername();
     String getEmail();
     String getProfileImage();
+    String getAge();
     String getGender();
+    String getPhoneNumber();
     OAuthProvider getOAuthProvider();
 }

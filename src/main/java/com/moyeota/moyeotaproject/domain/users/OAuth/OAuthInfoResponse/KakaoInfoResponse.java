@@ -16,6 +16,7 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
         private KakaoProfile profile;
         private String name;
         private String email;
+        private String age_range;
         private String gender;
     }
 
@@ -25,6 +26,19 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
         private String nickname;
     }
 
+    public String getAge(){
+        return kakaoAccount.getAge_range();
+    }
+
+    public String getGender(){
+        return kakaoAccount.getGender();
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return null;
+    }
+
     @Override
     public String getEmail() {
         return kakaoAccount.getEmail();
@@ -32,17 +46,12 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
 
     @Override
     public String getUsername() {
-        return kakaoAccount.profile.getNickname();
+        return kakaoAccount.getName();
     }
 
     @Override
     public String getProfileImage() {
         return kakaoAccount.profile.getProfile_image_url();
-    }
-
-    @Override
-    public String getGender() {
-        return kakaoAccount.getGender();
     }
 
     @Override

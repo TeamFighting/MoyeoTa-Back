@@ -11,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 public class NaverLoginParams implements OAuthLoginParams {
 
     private String authorizationCode;
-    private String state;
+    private static final String state = "hLiDdL2uhPtsftcU";
 
     @Override
     public OAuthProvider oAuthProvider() {
