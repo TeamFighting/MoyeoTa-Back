@@ -29,7 +29,7 @@ public class PostsSaveRequestDto {
     private String destination;
 
     @ApiModelProperty(value = "출발 시각", example = "2023-09-04 19:57:13.000000", required = true)
-    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime departureTime;
 
     @ApiModelProperty(value = "내용", example = "제주도에 같이 갈 사람은 참가 신청 ㄱㄱ", required = true)
