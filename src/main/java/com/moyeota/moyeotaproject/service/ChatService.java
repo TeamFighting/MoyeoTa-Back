@@ -32,7 +32,7 @@ public class ChatService {
     private final UsersRepository usersRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-    public Long createRoom(String name, Long user1Id, Long user2Id) {
+    public Long createRoom(Long user1Id, Long user2Id) {
         Users user1 = usersRepository.findById(user1Id).orElseThrow(()
         -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId=" + user1Id));
         Users user2 = usersRepository.findById(user2Id).orElseThrow(()
@@ -58,7 +58,7 @@ public class ChatService {
         for (int i=0; i<messageList.size(); i++){
             ChatMessageResponseDto chatMessageResponseDto = ChatMessageResponseDto.builder()
                     .message(messageList.get(i).getMessage())
-                    .sender(messageList.get(i).getSender())
+                    .sender(messageList.get(i).getUser().getName()) // 수정
                     .build();
 
             messageResponseDtoList.add(chatMessageResponseDto);
