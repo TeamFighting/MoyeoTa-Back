@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.controller;
 
-import com.moyeota.moyeotaproject.config.ResponseDto;
-import com.moyeota.moyeotaproject.config.ResponseUtil;
+import com.moyeota.moyeotaproject.config.response.ResponseDto;
+import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.controller.dto.PostsResponseDto;

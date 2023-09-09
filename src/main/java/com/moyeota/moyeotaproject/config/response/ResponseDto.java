@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.config;
+package com.moyeota.moyeotaproject.config.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

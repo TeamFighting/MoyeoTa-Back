@@ -3,6 +3,7 @@ package com.moyeota.moyeotaproject.service;
 import com.moyeota.moyeotaproject.controller.dto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.PostsUpdateRequestDto;
+import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
@@ -34,7 +35,6 @@ public class PostsService {
                         .posts(postsList.get(i))
                         .userName(postsList.get(i).getUser().getName())
                         .profileImage(postsList.get(i).getUser().getProfileImage())
-                        .userAverageStarRate(postsList.get(i).getUser().getAverageStarRate())
                         .userGender(postsList.get(i).getUser().getGender()).build();
                 list.add(responseDto);
             }
@@ -51,7 +51,6 @@ public class PostsService {
                 .posts(posts)
                 .userName(posts.getUser().getName())
                 .profileImage(posts.getUser().getProfileImage())
-                .userAverageStarRate(posts.getUser().getAverageStarRate())
                 .userGender(posts.getUser().getGender()).build();
 
         return responseDto;
@@ -123,7 +122,6 @@ public class PostsService {
                     .posts(postsList.get(i))
                     .userName(postsList.get(i).getUser().getName())
                     .profileImage(postsList.get(i).getUser().getProfileImage())
-                    .userAverageStarRate(postsList.get(i).getUser().getAverageStarRate())
                     .userGender(postsList.get(i).getUser().getGender()).build();
             list.add(responseDto);
         }
@@ -136,4 +134,21 @@ public class PostsService {
         post.minusUser();
     }
 
+    public List<PostsResponseDto> findAllByCategoryDesc(Category category) {
+        List<Posts> postsList = postsRepository.findByCategoryOrderByIdDesc(category);
+        List<PostsResponseDto> list = new ArrayList<>();
+        if(postsList.size() == 0)
+            return list;
+        for (int i=0; i<postsList.size(); i++){
+            if(postsList.get(i).getStatus() == PostsStatus.RECRUITING) {
+                PostsResponseDto responseDto = PostsResponseDto.builder()
+                        .posts(postsList.get(i))
+                        .userName(postsList.get(i).getUser().getName())
+                        .profileImage(postsList.get(i).getUser().getProfileImage())
+                        .userGender(postsList.get(i).getUser().getGender()).build();
+                list.add(responseDto);
+            }
+        }
+        return list;
+    }
 }
