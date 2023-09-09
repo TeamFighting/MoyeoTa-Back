@@ -73,4 +73,8 @@ public class UsersService {
     public String schoolEmailCheck(SchoolRequestDto schoolRequestDto) throws IOException {
         return UnivCert.certifyCode(apiKey, schoolRequestDto.getEmail(), schoolRequestDto.getUnivName(), schoolRequestDto.getCode()).toString();
     }
+
+    public String findNameByUserId(Long userId){
+        return usersRepository.findNameByUserId(userId);
+    }
 }

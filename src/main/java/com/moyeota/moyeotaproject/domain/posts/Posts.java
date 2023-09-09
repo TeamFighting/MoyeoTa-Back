@@ -24,6 +24,9 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false)
     private String title;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     @Column(nullable = false)
     private String departure;
 
@@ -37,6 +40,9 @@ public class Posts extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private SameGender sameGenderStatus;
+
+    @Enumerated(EnumType.STRING)
+    private Vehicle vehicle;
 
     @Column(nullable = false)
     private int numberOfRecruitment;
@@ -52,7 +58,7 @@ public class Posts extends BaseTimeEntity {
     private Users user;
 
     @OneToMany(mappedBy = "post")
-    public List<ParticipationDetails> participationDetails = new ArrayList<>();
+    private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
     //연관관계 메서드
     public void setUser(Users user) {
@@ -61,13 +67,15 @@ public class Posts extends BaseTimeEntity {
     }
 
     @Builder
-    public Posts(String title, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, int numberOfRecruitment, int numberOfParticipants, Users user) {
+    public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int numberOfParticipants, Users user) {
         this.title = title;
+        this.category = category;
         this.departure = departure;
         this.destination = destination;
         this.departureTime = departureTime;
         this.content = content;
         this.sameGenderStatus = sameGenderStatus;
+        this.vehicle = vehicle;
         this.numberOfRecruitment = numberOfRecruitment;
         this.numberOfParticipants = numberOfParticipants;
         this.status = PostsStatus.RECRUITING;

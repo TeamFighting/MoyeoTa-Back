@@ -1,8 +1,7 @@
 package com.moyeota.moyeotaproject.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.moyeota.moyeotaproject.config.ResponseDto;
-import com.moyeota.moyeotaproject.config.ResponseUtil;
+import com.moyeota.moyeotaproject.config.response.ResponseDto;
+import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.controller.dto.SchoolRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.SignUpRequestDto;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.GoogleLoginParams;
@@ -11,7 +10,6 @@ import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.NaverLogin
 import com.moyeota.moyeotaproject.service.OAuthLoginService;
 import com.moyeota.moyeotaproject.service.UsersService;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
