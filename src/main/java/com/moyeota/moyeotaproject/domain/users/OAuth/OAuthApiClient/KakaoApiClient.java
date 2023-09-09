@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.domain.users.OAuth.OAuthApiClient;
 
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.KakaoInfoResponse;
-import com.moyeota.moyeotaproject.domain.users.OAuth.KakaoTokens;
+import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthTokens.KakaoTokens;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.OAuthInfoResponse;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
