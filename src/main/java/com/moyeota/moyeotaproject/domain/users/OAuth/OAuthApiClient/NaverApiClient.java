@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.domain.users.OAuth.OAuthApiClient;
 
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.NaverInfoResponse;
-import com.moyeota.moyeotaproject.domain.users.OAuth.NaverTokens;
+import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthTokens.NaverTokens;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.OAuthInfoResponse;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;

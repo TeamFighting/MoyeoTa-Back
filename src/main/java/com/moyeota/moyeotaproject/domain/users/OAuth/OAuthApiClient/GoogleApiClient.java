@@ -1,10 +1,8 @@
 package com.moyeota.moyeotaproject.domain.users.OAuth.OAuthApiClient;
 
 
-import com.moyeota.moyeotaproject.domain.users.OAuth.GoogleTokens;
-import com.moyeota.moyeotaproject.domain.users.OAuth.NaverTokens;
+import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthTokens.GoogleTokens;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.GoogleInfoResponse;
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.NaverInfoResponse;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.OAuthInfoResponse;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
@@ -14,7 +12,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
