@@ -2,12 +2,14 @@ package com.moyeota.moyeotaproject.controller;
 
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
-import com.moyeota.moyeotaproject.config.ResponseDto;
-import com.moyeota.moyeotaproject.config.ResponseUtil;
+import com.moyeota.moyeotaproject.config.response.ResponseDto;
+import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.controller.dto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.PostsUpdateRequestDto;
+import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
+import com.moyeota.moyeotaproject.domain.posts.Vehicle;
 import com.moyeota.moyeotaproject.service.PostsService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,12 @@ public class PostsController {
 
         if(requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
+
+        if(requestDto.getCategory() == null)
+            requestDto.setCategory(Category.ALL);
+
+        if(requestDto.getVehicle() == null)
+            requestDto.setVehicle(Vehicle.일반);
 
         if(requestDto.getSameGenderStatus() == null)
             requestDto.setSameGenderStatus(SameGender.NO);
@@ -101,6 +109,13 @@ public class PostsController {
     @GetMapping("users/{userId}")
     public ResponseDto findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId));
+    }
+
+    //카테고리별 모집글 조회 API (최신순으로)
+    @ApiOperation(value = "카테고리별 모집글 전체 조회", notes = "특정 카테고리의 모집글 전체 최신순으로 조회하는 API")
+    @GetMapping("/search")
+    public ResponseDto findAllByCategoryDesc(@RequestParam("category") Category category) {
+        return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllByCategoryDesc(category));
     }
 
 }

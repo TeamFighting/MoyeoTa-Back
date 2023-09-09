@@ -9,6 +9,7 @@ import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomDto;
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.users.Entity.UsersRepository;
 import com.moyeota.moyeotaproject.service.ChatService;
+import com.moyeota.moyeotaproject.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,9 +27,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
     private final ChatService chatService;
-
-    private final UsersRepository usersRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final UsersService usersService;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -38,11 +37,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
         Map<String, Object> map = objectMapper.readValue(payload, new TypeReference<HashMap<String, Object>>() {
         });
 
+        String sender = usersService.findNameByUserId(Long.parseLong(String.valueOf(map.get("userId"))));
+
         ChatMessageDto chatMessageDto = ChatMessageDto.builder()
                 .type(MessageType.valueOf(String.valueOf(map.get("type"))))
                 .message(String.valueOf(map.get("message")))
                 .roomId(String.valueOf(map.get("roomId")))
-                .sender(String.valueOf(map.get("sender")))
+                .sender(sender)
                 .userId(Long.parseLong(String.valueOf(map.get("userId"))))
                 .chatRoomId(Long.parseLong(String.valueOf(map.get("chatRoomId"))))
                 .build();
@@ -50,6 +51,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         log.info("session {}", chatMessageDto.toString());
 
         ChatRoom chatRoom = chatService.findByRoomId(chatMessageDto.getRoomId());
+
         ChatRoomDto roomDto = ChatRoomDto.builder().roomId(chatRoom.getRoomId()).name(chatRoom.getName()).build();
         log.info("room {}", roomDto.toString());
 

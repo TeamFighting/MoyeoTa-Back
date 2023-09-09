@@ -47,7 +47,9 @@ public class ChatService {
     }
 
     public ChatRoom findByRoomId(String roomId) {
-        return chatRoomRepository.findByRoomId(roomId);
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId).orElseThrow(()
+        -> new IllegalArgumentException("해당 채팅방이 존재하지 않습니다."));
+        return chatRoom;
     }
 
     public List<ChatMessageResponseDto> findAllMessagesDesc(Long userId, Long chatRoomId) {
@@ -77,7 +79,8 @@ public class ChatService {
         List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
         while(iterator.hasNext()){
             String roomId = (String) iterator.next();
-            ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+            ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId).orElseThrow(()
+            -> new IllegalArgumentException("해당 채팅방이 존재하지 않습니다."));
             List<ChatMessage> chatMessageList = chatMessageRepository.findChatMessage(roomId);
             ChatMessage chatMessage = chatMessageList.get(0);
             ChatRoomResponseDto responseDto = ChatRoomResponseDto.builder()
