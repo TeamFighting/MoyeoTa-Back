@@ -114,7 +114,7 @@ public class PostsService {
     public List<PostsResponseDto> findMyPostsByIdDesc(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(()
         -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<Posts> postsList = postsRepository.findByUserOrderByIdDesc(user);
+        List<Posts> postsList = postsRepository.findByUserOrderByCreatedDateDesc(user);
         List<PostsResponseDto> list = new ArrayList<>();
         for (int i=0; i<postsList.size(); i++){
             PostsResponseDto responseDto = PostsResponseDto.builder()
