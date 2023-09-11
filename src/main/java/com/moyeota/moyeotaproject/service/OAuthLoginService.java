@@ -56,6 +56,7 @@ public class OAuthLoginService {
                 .email(oAuthInfoResponse.getEmail())
                 .user(user)
                 .build();
+        user.updateOAuth(oAuth);
         usersRepository.save(user);
         oAuthRepository.save(oAuth);
         return user.getId();

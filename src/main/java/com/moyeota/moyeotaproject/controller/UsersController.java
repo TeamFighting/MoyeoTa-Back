@@ -3,7 +3,7 @@ package com.moyeota.moyeotaproject.controller;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
-import com.moyeota.moyeotaproject.controller.dto.SignUpDto;
+import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.GoogleLoginParams;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.KakaoLoginParams;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.NaverLoginParams;
@@ -53,16 +53,10 @@ public class UsersController {
         return ResponseUtil.SUCCESS("네이버 로그인 성공하였습니다. ", oAuthLoginService.login(params));
     }
 
-    @ApiOperation(value = "사용자 추가 정보", notes = "사용자 추가 정보 입력 API")
-    @PostMapping("/user-additional-info")
-    public ResponseDto addInfo(HttpServletRequest request, @RequestBody SignUpDto.Request signUpRequestDto) {
-        return ResponseUtil.SUCCESS("추가 정보 입력을 완료하였습니다", usersService.addInfo(request.getHeader("Authorization"), signUpRequestDto));
-    }
-
     @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보 수정 API")
     @PostMapping("/user-info-update")
-    public ResponseDto updateInfo(HttpServletRequest request, @RequestBody SignUpDto.Request signUpRequestDto) {
-        return ResponseUtil.SUCCESS("프로필 업데이트를 완료하였습니다", usersService.addInfo(request.getHeader("Authorization"), signUpRequestDto));
+    public ResponseDto updateInfo(HttpServletRequest request, @RequestBody UsersDto.updateDto usersDto) {
+        return ResponseUtil.SUCCESS("프로필 업데이트를 완료하였습니다", usersService.addInfo(request.getHeader("Authorization"), usersDto));
     }
 
     @ApiOperation(value = "학교 인증", notes = "학교 인증을 위한 이메일 코드 전송 API")

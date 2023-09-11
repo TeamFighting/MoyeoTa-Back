@@ -64,10 +64,12 @@ public class JwtTokenProvider {
     public Long extractSubjectFromJwt(String accessToken) {
         try {
             String token = getToken(accessToken);
+            System.out.println("token = " + token);
             Claims claims = Jwts.parser()
-                    .setSigningKey(salt)
+                    .setSigningKey(key)
                     .parseClaimsJws(token)
                     .getBody();
+            System.out.println("claims = " + claims);
             String subject = claims.getSubject();
             System.out.println("subject = " + subject);
             return Long.parseLong(subject);

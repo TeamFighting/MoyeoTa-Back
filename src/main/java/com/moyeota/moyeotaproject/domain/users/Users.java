@@ -1,8 +1,10 @@
 package com.moyeota.moyeotaproject.domain.users;
 
 
+import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
+import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -43,6 +46,9 @@ public class Users extends BaseTimeEntity {
     private Boolean isAuthenticated;
 
     @OneToMany(mappedBy = "user")
+    private List<OAuth> oAuths = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
     private List<Posts> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
@@ -63,13 +69,17 @@ public class Users extends BaseTimeEntity {
         post.setUser(this);
     }
 
-    public void updateLoginId(OAuthProvider oAuthProvider){
-
+    public void updateOAuth(OAuth oAuth){
+        oAuths.add(oAuth);
     }
 
-//    public void updateUsers() {
-//
-//    }
+    public void updateUsers(UsersDto.updateDto usersDto) {
+        this.name = Optional.ofNullable(usersDto.getName()).orElse(this.name);
+        this.profileImage = Optional.ofNullable(usersDto.getProfileImage()).orElse(this.profileImage);
+        this.phoneNumber = Optional.ofNullable(usersDto.getPhoneNumber()).orElse(this.phoneNumber);
+        this.email = Optional.ofNullable(usersDto.getEmail()).orElse(this.email);
+        this.gender = Optional.ofNullable(usersDto.getGender()).orElse(this.gender);
+    }
 
     @Builder
     public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated) {
@@ -85,5 +95,7 @@ public class Users extends BaseTimeEntity {
         this.school = school;
         this.isAuthenticated = isAuthenticated;
     }
+
+
 
 }
