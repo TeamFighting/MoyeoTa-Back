@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.controller.dto;
 
 import com.moyeota.moyeotaproject.domain.review.Review;
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
+import com.moyeota.moyeotaproject.domain.users.Users;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;

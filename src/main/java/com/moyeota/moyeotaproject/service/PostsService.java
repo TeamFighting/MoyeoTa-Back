@@ -7,9 +7,8 @@ import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
-import com.moyeota.moyeotaproject.domain.users.Entity.UsersRepository;
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
+import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,7 +114,7 @@ public class PostsService {
     public List<PostsResponseDto> findMyPostsByIdDesc(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(()
         -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<Posts> postsList = postsRepository.findByUserOrderByIdDesc(user);
+        List<Posts> postsList = postsRepository.findByUserOrderByCreatedDateDesc(user);
         List<PostsResponseDto> list = new ArrayList<>();
         for (int i=0; i<postsList.size(); i++){
             PostsResponseDto responseDto = PostsResponseDto.builder()

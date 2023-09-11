@@ -2,9 +2,9 @@ package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
-import com.moyeota.moyeotaproject.controller.dto.SignUpDto;
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
-import com.moyeota.moyeotaproject.domain.users.Entity.UsersRepository;
+import com.moyeota.moyeotaproject.controller.dto.UsersDto;
+import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +25,22 @@ public class UsersService {
     @Value("${univcert.api.key}")
     String apiKey;
 
-    public Users addInfo(String authorization, SignUpDto.Request signUpDto) {
+    public UsersDto.Response addInfo(String authorization, UsersDto.updateDto usersDto) {
         Users users = getUserByToken(authorization);
-        return users;
+        System.out.println("users = " + users);
+        users.updateUsers(usersDto);
+        UsersDto.Response updateDto = UsersDto.Response.builder()
+                .loginId(users.getLoginId())
+                .name(users.getName())
+                .profileImage(users.getProfileImage())
+                .email(users.getEmail())
+                .status(users.getStatus())
+                .averageStarRate(users.getAverageStarRate())
+                .school(users.getSchool())
+                .gender(users.getGender())
+                .build();
+
+        return updateDto;
     }
 
     public Users getUserByToken(String accessToken) {

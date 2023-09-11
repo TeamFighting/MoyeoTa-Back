@@ -4,14 +4,13 @@ import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.domain.posts.Vehicle;
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
+import com.moyeota.moyeotaproject.domain.users.Users;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 

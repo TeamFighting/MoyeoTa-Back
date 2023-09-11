@@ -29,7 +29,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 
     private String resolveToken(HttpServletRequest request) {

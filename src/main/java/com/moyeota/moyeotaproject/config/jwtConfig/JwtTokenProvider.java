@@ -1,16 +1,12 @@
 package com.moyeota.moyeotaproject.config.jwtConfig;
 
 
-import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -68,10 +64,12 @@ public class JwtTokenProvider {
     public Long extractSubjectFromJwt(String accessToken) {
         try {
             String token = getToken(accessToken);
+            System.out.println("token = " + token);
             Claims claims = Jwts.parser()
-                    .setSigningKey(salt)
+                    .setSigningKey(key)
                     .parseClaimsJws(token)
                     .getBody();
+            System.out.println("claims = " + claims);
             String subject = claims.getSubject();
             System.out.println("subject = " + subject);
             return Long.parseLong(subject);

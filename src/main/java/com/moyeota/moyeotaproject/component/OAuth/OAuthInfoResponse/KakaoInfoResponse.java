@@ -1,8 +1,7 @@
-package com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse;
+package com.moyeota.moyeotaproject.component.OAuth.OAuthInfoResponse;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
+import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import lombok.Getter;
 
 @Getter

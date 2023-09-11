@@ -45,8 +45,8 @@ public class PostsController {
         if(requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
 
-        if(requestDto.getCategory() == null)
-            requestDto.setCategory(Category.ALL);
+//        if(requestDto.getCategory() == null)
+//            requestDto.setCategory(Category.ALL);
 
         if(requestDto.getVehicle() == null)
             requestDto.setVehicle(Vehicle.일반);

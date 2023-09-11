@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.domain.chatMessage;
 
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
+import com.moyeota.moyeotaproject.domain.users.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
