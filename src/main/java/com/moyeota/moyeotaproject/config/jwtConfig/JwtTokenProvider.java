@@ -1,16 +1,12 @@
 package com.moyeota.moyeotaproject.config.jwtConfig;
 
 
-import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
-import com.moyeota.moyeotaproject.domain.users.Entity.Users;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;

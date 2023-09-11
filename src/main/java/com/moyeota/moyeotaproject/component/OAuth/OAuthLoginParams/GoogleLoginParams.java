@@ -1,6 +1,6 @@
-package com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams;
+package com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams;
 
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
+import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.LinkedMultiValueMap;

@@ -1,11 +1,12 @@
-package com.moyeota.moyeotaproject.domain.users.Entity;
+package com.moyeota.moyeotaproject.domain.users;
 
 
+import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
+import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.review.Review;
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Users {
+public class Users extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,6 @@ public class Users {
     private Float averageStarRate;
     private String school;
     private Boolean isAuthenticated;
-    private OAuthProvider provider;
 
     @OneToMany(mappedBy = "user")
     private List<Posts> posts = new ArrayList<>();
@@ -63,20 +63,16 @@ public class Users {
         post.setUser(this);
     }
 
-//    @Builder
-//    public Users(String name, String profileImage, String password, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated) {
-//        this.name = name;
-//        this.profileImage = profileImage;
-//        this.password = password;
-//        this.gender = gender;
-//        this.averageStarRate = averageStarRate;
-//        this.school = school;
-//        this.isAuthenticated = isAuthenticated;
+    public void updateLoginId(OAuthProvider oAuthProvider){
+
+    }
+
+//    public void updateUsers() {
+//
 //    }
 
-
     @Builder
-    public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated, OAuthProvider provider) {
+    public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated) {
         this.name = name;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
@@ -88,7 +84,6 @@ public class Users {
         this.averageStarRate = averageStarRate;
         this.school = school;
         this.isAuthenticated = isAuthenticated;
-        this.provider = provider;
     }
 
 }

@@ -6,8 +6,6 @@ import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessageDto;
 import com.moyeota.moyeotaproject.domain.chatMessage.MessageType;
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomDto;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
-import com.moyeota.moyeotaproject.domain.users.Entity.UsersRepository;
 import com.moyeota.moyeotaproject.service.ChatService;
 import com.moyeota.moyeotaproject.service.UsersService;
 import lombok.RequiredArgsConstructor;

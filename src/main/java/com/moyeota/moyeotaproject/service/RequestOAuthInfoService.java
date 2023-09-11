@@ -1,11 +1,9 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthApiClient.OAuthApiClient;
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthInfoResponse.OAuthInfoResponse;
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthLoginParams.OAuthLoginParams;
-import com.moyeota.moyeotaproject.domain.users.OAuth.OAuthProvider;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import com.moyeota.moyeotaproject.component.OAuth.OAuthApiClient.OAuthApiClient;
+import com.moyeota.moyeotaproject.component.OAuth.OAuthInfoResponse.OAuthInfoResponse;
+import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.OAuthLoginParams;
+import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

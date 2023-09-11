@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.domain.users.OAuth.OAuthTokens;
+package com.moyeota.moyeotaproject.component.OAuth.OAuthTokens;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
