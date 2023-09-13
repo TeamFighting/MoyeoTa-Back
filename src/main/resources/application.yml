@@ -1,17 +1,17 @@
-#spring:
-#  datasource:
-#    driver-class-name:
-#      com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/moyeota
-#    username: root
-#    password: rlaxogjs8312
-
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/moyeota
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    driver-class-name:
+      com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/moyeota
+    username: root
+    password: rlaxogjs8312
+
+#spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/moyeota
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: none
@@ -54,3 +54,7 @@ oauth:
     client-secret: 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
     url:
       api: https://oauth2.googleapis.com
+# 거리계산을 위한 REST API 키
+KAKAO:
+  REST:
+    API-KEY: 3b7fe612c8054aa522c8728a78c2eb28
