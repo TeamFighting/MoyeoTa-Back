@@ -53,7 +53,7 @@ public class UsersController {
         return ResponseUtil.SUCCESS("네이버 로그인 성공하였습니다. ", oAuthLoginService.login(params));
     }
 
-    @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보 수정 API")
+    @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보 수정 및 추가 API")
     @PostMapping("/user-info-update")
     public ResponseDto updateInfo(HttpServletRequest request, @RequestBody UsersDto.updateDto usersDto) {
         return ResponseUtil.SUCCESS("프로필 업데이트를 완료하였습니다", usersService.addInfo(request.getHeader("Authorization"), usersDto));
