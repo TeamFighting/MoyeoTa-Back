@@ -31,4 +31,10 @@ public class ApiExceptionController {
         return new ErrorResponse(e.getMessage(), 500, 500);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RuntimeException.class)
+    public ErrorResponse illegalRuntimeExHandler(RuntimeException e) {
+        return new ErrorResponse(e.getMessage(), 500, 500);
+    }
+
 }
