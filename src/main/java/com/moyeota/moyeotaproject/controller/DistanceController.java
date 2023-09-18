@@ -1,6 +1,5 @@
 package com.moyeota.moyeotaproject.controller;
 
-import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.GoogleLoginParams;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.service.AddressSearchService;
