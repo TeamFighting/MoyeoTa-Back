@@ -61,7 +61,7 @@ jobs:
         run: |
           echo "$SSH_PEM_KEY" >> $HOME/key.pem
           chmod 400 $HOME/key.pem
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ubuntu@$SSH_KNOWN_HOSTS
+          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ec2-user@$SSH_KNOWN_HOSTS
           pwd
           ls
           sudo docker ps -a
