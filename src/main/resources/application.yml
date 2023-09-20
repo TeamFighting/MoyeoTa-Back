@@ -6,12 +6,18 @@
 #    username: root
 #    password: rlaxogjs8312
 
+#spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/moyeota
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/moyeota
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mariadb://moyeota-db.cn9h5fkyju6p.ap-northeast-2.rds.amazonaws.com:3306/moyeota_database
+    username: admin
+    password: moyeota!
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
@@ -44,17 +50,17 @@ oauth:
       auth: https://kauth.kakao.com
       api: https://kapi.kakao.com
   naver:
-    secret: dlqyJNKOJA
-    client-id: gEFBcvIBnBSrlX5PrCmk
+    secret: 8uZ9AVKzSa
+    client-id: YAr_BNWN5Q_wraQE0iCy
     url:
       auth: https://nid.naver.com
       api: https://openapi.naver.com
   google:
-    client-id: 1080355904017-bc0ejbid1j01td1ur921cpvur768s8s5.apps.googleusercontent.com
-    client-secret: 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
+    client-id: 199229219883-f0gkqakb3gke9rmthdk3m13eimpobemu.apps.googleusercontent.com
+    client-secret: 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
     url:
       api: https://oauth2.googleapis.com
 # 거리계산을 위한 REST API 키
 KAKAO:
   REST:
-    API-KEY: 3b7fe612c8054aa522c8728a78c2eb28
+    API-KEY: 25b39eb533332c2b9c961afdbc365d8c

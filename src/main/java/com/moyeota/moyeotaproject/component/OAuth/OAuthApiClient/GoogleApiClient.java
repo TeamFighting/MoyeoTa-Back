@@ -21,7 +21,7 @@ public class GoogleApiClient implements OAuthApiClient {
 
     private static final String GRANT_TYPE = "authorization_code";
 
-    private static final String REDIRECT_URI = "http://localhost:8080"; // 이후에 앱 등록 후 변경
+    private static final String REDIRECT_URI = "https://moyeota-webview.netlify.app"; // 이후에 앱 등록 후 변경
 
     @Value("${oauth.google.url.api}")
     private String apiUrl;
