@@ -41,6 +41,7 @@ jobs:
 
     - name: Docker build & push to docker repo
       run: |
+          pwd
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
           docker build -t jakeheon/moyeota -f Dockerfile .
           docker push jakeheon/moyeota
