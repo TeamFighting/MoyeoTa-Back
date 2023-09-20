@@ -51,7 +51,7 @@ jobs:
       id: deploy
       with:
         host: ${{ secrets.HOST }}
-        username: ubuntu
+        username: ec2-user
         key: ${{ secrets.KEY }}
         envs: GITHUB_SHA
         script: |
@@ -62,10 +62,11 @@ jobs:
         run: |
           echo "$SSH_PEM_KEY" >> $HOME/key.pem
           chmod 400 $HOME/key.pem
-          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ec2-user@$SSH_KNOWN_HOSTS
+          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no host@$SSH_KNOWN_HOSTS
           pwd
           ls
           sudo docker ps -a
           sudo docker rm -f $(docker ps -qa)
           sudo docker pull jakeheon/moyeota
           sudo docker run -p 80:8080 jakeheon/moyeota
+          sudo docker image prune -f
