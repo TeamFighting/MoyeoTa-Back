@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 @RunWith(SpringRunner.class)
 class PostsRepositoryTest {
 
@@ -39,7 +41,7 @@ class PostsRepositoryTest {
                 .name("taeheon")
                 .profileImage("profileImage")
                 .phoneNumber("010-1111-2222")
-                .email("tae777772222@naver.com")
+                .email("tae@naver.com")
                 .loginId("loginId")
                 .password("password")
                 .status("status")
@@ -49,7 +51,7 @@ class PostsRepositoryTest {
                 .isAuthenticated(true)
                 .build();
         usersRepository.save(user);
-        Users users = usersRepository.findByEmail("tae777772222@naver.com").get();
+        Users users = usersRepository.findByEmail("tae@naver.com").get();
         assertThat(users.getName()).isEqualTo("taeheon");
 //        Posts post = Posts.builder()
 //                .title(title)
