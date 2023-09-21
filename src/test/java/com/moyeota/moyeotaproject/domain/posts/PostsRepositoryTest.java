@@ -39,7 +39,7 @@ class PostsRepositoryTest {
                 .name("taeheon")
                 .profileImage("profileImage")
                 .phoneNumber("010-1111-2222")
-                .email("tae77777@naver.com")
+                .email("tae777772222@naver.com")
                 .loginId("loginId")
                 .password("password")
                 .status("status")
@@ -49,7 +49,7 @@ class PostsRepositoryTest {
                 .isAuthenticated(true)
                 .build();
         usersRepository.save(user);
-        Users users = usersRepository.findByEmail("tae77777@naver.com").get();
+        Users users = usersRepository.findByEmail("tae777772222@naver.com").get();
         assertThat(users.getName()).isEqualTo("taeheon");
 //        Posts post = Posts.builder()
 //                .title(title)
