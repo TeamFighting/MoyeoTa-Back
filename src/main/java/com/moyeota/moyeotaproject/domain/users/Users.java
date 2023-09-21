@@ -5,7 +5,6 @@ import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
-import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.review.Review;
@@ -97,5 +96,8 @@ public class Users extends BaseTimeEntity {
     }
 
 
-
+    public void updateSchoolAuthenticate(String univName) {
+        this.school = univName;
+        this.isAuthenticated = Boolean.TRUE;
+    }
 }

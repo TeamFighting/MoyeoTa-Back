@@ -18,12 +18,10 @@ public class SchoolDto {
 
     @Data
     @Builder
-    public static class Response {
-        private String key;
-        private String email;
+    public static class ResponseSuccess {
         private String univName;
-        private boolean univ_check;
-        private int code;
+        private String certified_email;
+        private String certified_date;
     }
 
 }

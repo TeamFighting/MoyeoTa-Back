@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -52,15 +54,42 @@ public class UsersService {
         }
     }
 
-    public String schoolEmail(SchoolDto.Request schoolDto) throws IOException {
-        return UnivCert.certify(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.isUniv_check()).toString();
+    public String schoolEmail(String accessToken, SchoolDto.Request schoolDto) throws IOException {
+        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
+                -> new RuntimeException("해당하는 유저가 없습니다."));
+        Map<String, Object> objectMap = UnivCert.certify(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.isUniv_check());
+        String success = objectMap.get("success").toString();
+//        users.updateSchool();
+        if (success.equals("false")) {
+            String message = objectMap.get("message").toString();
+            throw new RuntimeException(message);
+        }
+        return schoolDto.getEmail();
     }
 
-    public String schoolEmailCheck(SchoolDto.Request schoolDto) throws IOException {
-        return UnivCert.certifyCode(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.getCode()).toString();
+    public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.Request schoolDto) throws IOException {
+        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
+                -> new RuntimeException("해당하는 유저가 없습니다."));
+        Map<String, Object> objectMap = UnivCert.certifyCode(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.getCode());
+        if(objectMap.get("success").toString().equals("false")){
+            String message = objectMap.get("message").toString();
+            throw new RuntimeException(message);
+        }
+        // 유저 학교 인증
+        users.updateSchoolAuthenticate(schoolDto.getUnivName());
+        return SchoolDto.ResponseSuccess.builder()
+                .univName(objectMap.get("univName").toString())
+                .certified_email(objectMap.get("certified_email").toString())
+                .certified_date(objectMap.get("certified_date").toString())
+                .build();
     }
 
-    public String findNameByUserId(Long userId){
+    public String schoolEmailReset(String accessToken, SchoolDto.Request schoolDto) throws IOException {
+        UnivCert.clear(apiKey);
+        return schoolEmail(accessToken, schoolDto);
+    }
+
+    public String findNameByUserId(Long userId) {
         return usersRepository.findNameByUserId(userId);
     }
 }
