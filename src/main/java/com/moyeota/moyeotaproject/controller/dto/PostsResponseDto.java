@@ -19,6 +19,8 @@ public class PostsResponseDto {
     private Vehicle vehicle;
     private int numberOfRecruitment;
     private int numberOfParticipants;
+    private int fare;
+    private int duration;
     private LocalDateTime createAt;
     private PostsStatus status;
     private String userName;
@@ -37,6 +39,8 @@ public class PostsResponseDto {
         this.vehicle = posts.getVehicle();
         this.numberOfRecruitment = posts.getNumberOfRecruitment();
         this.numberOfParticipants = posts.getNumberOfParticipants();
+        this.fare = posts.getFare();
+        this.duration = posts.getDuration();
         this.createAt = posts.getCreatedDate();
         this.status = posts.getStatus();
         this.userName = userName;

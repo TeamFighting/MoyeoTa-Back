@@ -13,6 +13,7 @@ import com.moyeota.moyeotaproject.domain.posts.Vehicle;
 import com.moyeota.moyeotaproject.service.PostsService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "Posts", description = "Post Controller")
@@ -45,9 +46,6 @@ public class PostsController {
         if(requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
 
-//        if(requestDto.getCategory() == null)
-//            requestDto.setCategory(Category.ALL);
-
         if(requestDto.getVehicle() == null)
             requestDto.setVehicle(Vehicle.일반);
 
@@ -66,8 +64,40 @@ public class PostsController {
             requestDto.setTitle(postsService.findById(postId).getTitle());
         if(requestDto.getTitle().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
+
         if(requestDto.getContent() == null)
             requestDto.setContent(postsService.findById(postId).getContent());
+
+        if(requestDto.getCategory() == null)
+            requestDto.setCategory(postsService.findById(postId).getCategory());
+
+        if(requestDto.getDeparture() == null)
+            requestDto.setDeparture(postsService.findById(postId).getDeparture());
+        if(requestDto.getDeparture().equals(""))
+            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
+
+        if(requestDto.getDestination() == null)
+            requestDto.setDestination(postsService.findById(postId).getDestination());
+        if(requestDto.getDestination().equals(""))
+            throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
+
+        if(requestDto.getDepartureTime() == null)
+            requestDto.setDepartureTime(postsService.findById(postId).getDepartureTime());
+
+        if(requestDto.getSameGenderStatus() == null)
+            requestDto.setSameGenderStatus(postsService.findById(postId).getSameGenderStatus());
+
+        if(requestDto.getFare() == 0)
+            requestDto.setFare(postsService.findById(postId).getFare());
+
+        if( requestDto.getDuration() == 0)
+            requestDto.setDuration(postsService.findById(postId).getDuration());
+
+        if(requestDto.getNumberOfRecruitment() == 0)
+            requestDto.setNumberOfRecruitment(postsService.findById(postId).getNumberOfRecruitment());
+
+        if(requestDto.getVehicle() == null)
+            requestDto.setVehicle(postsService.findById(postId).getVehicle());
 
         return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.", postsService.update(postId, requestDto));
     }
@@ -106,7 +136,7 @@ public class PostsController {
 
     //내 모집글 목록 조회 API (최신순으로)
     @ApiOperation(value = "특정 회원 모집글 전체 조회", notes = "특정 회원의 모집글을 전체 조회하는 API")
-    @GetMapping("users/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseDto findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId));
     }
@@ -116,6 +146,13 @@ public class PostsController {
     @GetMapping("/search")
     public ResponseDto findAllByCategoryDesc(@RequestParam("category") Category category) {
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllByCategoryDesc(category));
+    }
+
+    //출발지에서 목적지까지 예상 이동시간 및 금액
+    @ApiOperation(value = "예상 이동시간 및 금액 조회", notes = "출발지에서 목적지까지의 예상 이동시간 및 금액을 조회하는 API")
+    @GetMapping("/search/duration/fare")
+    public ResponseDto getDurationAndFare(@RequestParam String origin, @RequestParam String destination) throws ParseException {
+        return ResponseUtil.SUCCESS("이동 시간 및 금액 조회에 성공하였습니다.", postsService.getDurationAndFare(origin, destination));
     }
 
 }
