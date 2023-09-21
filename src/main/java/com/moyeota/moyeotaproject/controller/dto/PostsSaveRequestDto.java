@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.controller.dto;
 
+import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ApiModel(value = "모집글 작성 요청")
-public class PostsSaveRequestDto {
+public class PostsSaveRequestDto extends BaseTimeEntity {
 
     @ApiModelProperty(value = "모집글 제목", example = "서울에서 제주까지 가즈아~~", required = true)
     private String title;
@@ -47,9 +48,14 @@ public class PostsSaveRequestDto {
     @ApiModelProperty(value = "모집 인원", example = "4", required = true)
     private int numberOfRecruitment;
 
+    @ApiModelProperty(value = "택시 요금", example = "5200")
+    private int fare;
+
+    @ApiModelProperty(value = "이동 시간(초)", example = "313")
+    private int duration;
 
     @Builder
-    public PostsSaveRequestDto(String title, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, int numberOfRecruitment) {
+    public PostsSaveRequestDto(String title, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, int numberOfRecruitment, int fare, int duration) {
         this.title = title;
         this.departure = departure;
         this.destination = destination;
@@ -57,6 +63,8 @@ public class PostsSaveRequestDto {
         this.content = content;
         this.sameGenderStatus = sameGenderStatus;
         this.numberOfRecruitment = numberOfRecruitment;
+        this.fare = fare;
+        this.duration = duration;
     }
 
     public Posts toEntity(Users user) {
@@ -71,6 +79,8 @@ public class PostsSaveRequestDto {
                 .vehicle(vehicle)
                 .numberOfRecruitment(numberOfRecruitment)
                 .numberOfParticipants(1)
+                .fare(fare)
+                .duration(duration)
                 .user(user)
                 .build();
     }

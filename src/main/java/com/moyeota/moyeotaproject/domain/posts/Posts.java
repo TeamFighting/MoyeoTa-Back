@@ -53,6 +53,12 @@ public class Posts extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PostsStatus status;
 
+    @Column(nullable = false)
+    private int fare;
+
+    @Column(nullable = false)
+    private int duration;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId") //FK
     private Users user;
@@ -67,7 +73,7 @@ public class Posts extends BaseTimeEntity {
     }
 
     @Builder
-    public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int numberOfParticipants, Users user) {
+    public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int numberOfParticipants, int fare, int duration, Users user) {
         this.title = title;
         this.category = category;
         this.departure = departure;
@@ -79,6 +85,8 @@ public class Posts extends BaseTimeEntity {
         this.numberOfRecruitment = numberOfRecruitment;
         this.numberOfParticipants = numberOfParticipants;
         this.status = PostsStatus.RECRUITING;
+        this.fare = fare;
+        this.duration = duration;
         this.setUser(user);
     }
 
@@ -91,9 +99,18 @@ public class Posts extends BaseTimeEntity {
         this.status = PostsStatus.RECRUITING;
     }
 
-    public void update(String title, String content){
+    public void update(String title, String content, Category category, String departure, String destination, LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int fare, int duration){
         this.title = title;
         this.content = content;
+        this.category = category;
+        this.departure = departure;
+        this.destination = destination;
+        this.departureTime = departureTime;
+        this.sameGenderStatus = sameGenderStatus;
+        this.vehicle = vehicle;
+        this.numberOfRecruitment = numberOfRecruitment;
+        this.fare = fare;
+        this.duration = duration;
     }
 
     public void postsComplete() {
