@@ -13,11 +13,13 @@
 #    password:
 #    driver-class-name: org.h2.Driver
 spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/moyeota
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/moyeota
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+---
+spring:
   datasource:
     url: jdbc:mariadb://moyeota-db.cn9h5fkyju6p.ap-northeast-2.rds.amazonaws.com:3306/moyeota_database
     username: admin
@@ -48,7 +50,6 @@ logging:
 jwt:
   secret: RlaXoVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
-# OAuth 테스트를 위해서 임의로 앱을 만들었습니다. -> 이후에 모여타 앱 등록 후 client-id 변경
 oauth:
   kakao:
     client-id: 3b7fe612c8054aa522c8728a78c2eb28

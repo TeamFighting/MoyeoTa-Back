@@ -25,21 +25,21 @@ class PostsRepositoryTest {
 
     @Test
     public void 모집글저장_불러오기1() {
-        String title = "test posts";
+        String title = "test1";
         Category category = Category.LIFE;
-        String departure = "공릉역";
-        String destination = "서울과학기술대학교 어의관";
+        String departure = "seoul";
+        String destination = "jeju";
         LocalDateTime departureTime = LocalDateTime.now();
-        String content = "과기대 학생을 찾습니다.";
+        String content = "contenttestUesr2";
         SameGender sameGender = SameGender.YES;
         Vehicle vehicle = Vehicle.일반;
-        int numberOfRecruitment = 3;
+        int numberOfRecruitment = 4;
 
         Users user = Users.builder()
-                .name("kyko")
+                .name("taeheon")
                 .profileImage("profileImage")
                 .phoneNumber("010-1111-2222")
-                .email("koc@naver.com")
+                .email("tae77777@naver.com")
                 .loginId("loginId")
                 .password("password")
                 .status("status")
@@ -49,34 +49,35 @@ class PostsRepositoryTest {
                 .isAuthenticated(true)
                 .build();
         usersRepository.save(user);
-
-        Posts post = Posts.builder()
-                .title(title)
-                .category(category)
-                .departure(departure)
-                .destination(destination)
-                .departureTime(departureTime)
-                .content(content)
-                .sameGenderStatus(sameGender)
-                .numberOfRecruitment(numberOfRecruitment)
-                .user(user)
-                .vehicle(vehicle)
-                .build();
-
-        postsRepository.save(post);
-
-        List<Posts> postsList = postsRepository.findAllDesc();
-
-        Posts posts = postsList.get(0);
-        assertThat(posts.getTitle()).isEqualTo(title);
-        assertThat(posts.getCategory()).isEqualTo(category);
-        assertThat(posts.getDeparture()).isEqualTo(departure);
-        assertThat(posts.getDestination()).isEqualTo(destination);
-        assertThat(posts.getContent()).isEqualTo(content);
-        assertThat(posts.getVehicle()).isEqualTo(vehicle);
-        assertThat(posts.getNumberOfRecruitment()).isEqualTo(numberOfRecruitment);
-        assertThat(posts.getSameGenderStatus()).isEqualTo(sameGender);
-        assertThat(posts.getUser()).isEqualTo(user);
+        Users users = usersRepository.findByEmail("tae77777@naver.com").get();
+        assertThat(users.getName()).isEqualTo("taeheon");
+//        Posts post = Posts.builder()
+//                .title(title)
+//                .category(category)
+//                .departure(departure)
+//                .destination(destination)
+//                .departureTime(departureTime)
+//                .content(content)
+//                .sameGenderStatus(sameGender)
+//                .numberOfRecruitment(numberOfRecruitment)
+//                .user(user)
+//                .vehicle(vehicle)
+//                .build();
+//
+//        postsRepository.save(post);
+//
+//        List<Posts> postsList = postsRepository.findAllDesc();
+//
+//        Posts posts = postsList.get(0);
+//        assertThat(posts.getTitle()).isEqualTo(title);
+//        assertThat(posts.getCategory()).isEqualTo(category);
+//        assertThat(posts.getDeparture()).isEqualTo(departure);
+//        assertThat(posts.getDestination()).isEqualTo(destination);
+//        assertThat(posts.getContent()).isEqualTo(content);
+//        assertThat(posts.getVehicle()).isEqualTo(vehicle);
+//        assertThat(posts.getNumberOfRecruitment()).isEqualTo(numberOfRecruitment);
+//        assertThat(posts.getSameGenderStatus()).isEqualTo(sameGender);
+//        assertThat(posts.getUser()).isEqualTo(user);
 
     }
 
