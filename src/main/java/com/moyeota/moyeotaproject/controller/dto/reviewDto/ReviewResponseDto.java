@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.controller.dto;
+package com.moyeota.moyeotaproject.controller.dto.reviewDto;
 
 import com.moyeota.moyeotaproject.domain.review.Review;
 import lombok.Builder;

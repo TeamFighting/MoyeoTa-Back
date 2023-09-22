@@ -48,9 +48,10 @@ public class ParticipationDetails extends BaseTimeEntity {
         this.setPost(post);
     }
 
-    public void cancel() {
+    public boolean cancel() {
         if(this.status == ParticipationDetailsStatus.CANCEL)
-            throw new IllegalStateException("이미 취소되었습니다.");
+            return true;
         this.status = ParticipationDetailsStatus.CANCEL;
+        return false;
     }
 }

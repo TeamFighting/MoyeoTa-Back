@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.controller.dto;
+package com.moyeota.moyeotaproject.controller.dto.chatDto;
 
 import lombok.Builder;
 import lombok.Getter;

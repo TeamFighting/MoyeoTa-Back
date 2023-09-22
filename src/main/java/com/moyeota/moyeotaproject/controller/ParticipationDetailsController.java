@@ -4,7 +4,7 @@ import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
-import com.moyeota.moyeotaproject.controller.dto.PostsResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsStatus;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
@@ -49,17 +49,19 @@ public class ParticipationDetailsController {
     @ApiOperation(value = "참가 취소", notes = "참가 취소 API")
     @PostMapping("/{participationDetailsId}") //유저 인증 먼저 하기
     public ResponseDto cancel(@ApiParam(value = "참가내역 인덱스 번호") @PathVariable("participationDetailsId") Long participationDetailsId) {
+        if(participationDetailsService.cancelParticipation(participationDetailsId)){
+            throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_CANCEL);
+        }
         ParticipationDetails participationDetails = participationDetailsService.findById(participationDetailsId);
         postsService.cancelParticipation(participationDetails.getPost().getId());
-        participationDetails.cancel();
         return ResponseUtil.SUCCESS("참가 취소가 완료되었습니다.", participationDetailsId);
     }
 
-    //특정 유저 참가내역 전체 조회 API
-    @ApiOperation(value = "참가 내역 조회", notes = "특정 회원의 참가내역 조회 API")
+    //특정 유저 이용기록 전체 조회 API
+    @ApiOperation(value = "이용 기록 조회", notes = "특정 회원의 이용기록 조회 API")
     @GetMapping("/users/{userId}")
     public ResponseDto findAllDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
-        return ResponseUtil.SUCCESS("참가내역 조회에 성공하였습니다.", participationDetailsService.findAllDesc(userId));
+        return ResponseUtil.SUCCESS("이용기록 조회에 성공하였습니다.", participationDetailsService.findAllDesc(userId));
     }
 
 }

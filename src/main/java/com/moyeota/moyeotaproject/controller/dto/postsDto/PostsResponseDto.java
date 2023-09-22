@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.controller.dto;
+package com.moyeota.moyeotaproject.controller.dto.postsDto;
 
 import com.moyeota.moyeotaproject.domain.posts.*;
 import lombok.Builder;
