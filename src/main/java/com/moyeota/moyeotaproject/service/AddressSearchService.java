@@ -1,8 +1,14 @@
 package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DocumentDto;
+import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DurationAndFareResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.KakaoApiResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +23,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AddressSearchService {
@@ -24,6 +31,7 @@ public class AddressSearchService {
     @Value("${KAKAO.REST.API-KEY}")
     private String apiKey;
 
+    private static final String kakaoUrl = "https://apis-navi.kakaomobility.com/v1/directions";
     private static final String KAKAO_LOCAL_SEARCH_ADDRESS_URL = "https://dapi.kakao.com/v2/local/search/address.json";
     private final RestTemplate restTemplate;
 
@@ -70,5 +78,49 @@ public class AddressSearchService {
 
     public String roundDouble(double result) {
         return String.format("%.2f", result);
+    }
+
+    public DurationAndFareResponseDto getDurationAndFare(String origin, String destination) throws ParseException {
+        if(origin == null || origin.equals(""))
+            throw new IllegalArgumentException("출발지 정보가 없습니다.");
+        if(destination == null || destination.equals(""))
+            throw new IllegalArgumentException("목적지 정보가 없습니다.");
+
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(kakaoUrl);
+        uriComponentsBuilder.queryParam("origin", origin);
+        uriComponentsBuilder.queryParam("destination", destination);
+        URI uri = uriComponentsBuilder.build().encode().toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "KakaoAK " + apiKey);
+        headers.set("Content-Type", "application/json");
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+
+        String result =  restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class).getBody();
+
+        JSONParser parser = new JSONParser();
+
+        JSONObject object = (JSONObject) parser.parse(result);
+        JSONArray routes = (JSONArray) object.get("routes");
+        int taxi = 0;
+        int duration = 0;
+        for (int i=0; i<routes.size(); i++){
+            object = (JSONObject) routes.get(i);
+            JSONObject summary = (JSONObject) object.get("summary");
+            JSONObject fare = (JSONObject) summary.get("fare");
+            taxi = Integer.parseInt(fare.get("taxi").toString());
+            JSONArray sections = (JSONArray) object.get("sections");
+            for (int j=0; j<sections.size(); j++){
+                object = (JSONObject) sections.get(j);
+                duration = Integer.parseInt(object.get("duration").toString());
+            }
+        }
+
+        DurationAndFareResponseDto durationAndFareResponseDto = new DurationAndFareResponseDto(taxi, duration);
+        log.info("durationAndFareResponseDto: " + durationAndFareResponseDto);
+        if (Objects.isNull(durationAndFareResponseDto)) {
+            throw new IllegalArgumentException("해당 경로에 대한 정보가 없습니다. 출발지=" + origin + ", 목적지=" + destination);
+        }
+        return durationAndFareResponseDto;
     }
 }

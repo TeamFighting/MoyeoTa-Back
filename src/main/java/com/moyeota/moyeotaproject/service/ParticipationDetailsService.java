@@ -12,8 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional
@@ -68,6 +69,24 @@ public class ParticipationDetailsService {
                     .build();
             responseDtoList.add(responseDto);
         }
+
+        Collections.sort(responseDtoList, new DateComparator());
         return responseDtoList;
     }
+
+    public boolean cancelParticipation(Long participationDetailsId) {
+        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId).orElseThrow(()
+                -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
+        return participationDetails.cancel();
+    }
+
+    //모집글의 출발 날짜 비교 로직
+    static class DateComparator implements Comparator<ParticipationDetailsResponseDto> {
+        @Override
+        public int compare(ParticipationDetailsResponseDto p1, ParticipationDetailsResponseDto p2) {
+            int result = p2.getDepartureTime().compareTo(p1.getDepartureTime());
+            return result;
+        }
+    }
+
 }

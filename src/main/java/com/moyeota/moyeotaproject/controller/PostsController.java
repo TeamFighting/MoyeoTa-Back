@@ -4,12 +4,13 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.PostsSaveRequestDto;
-import com.moyeota.moyeotaproject.controller.dto.PostsUpdateRequestDto;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.domain.posts.Vehicle;
+import com.moyeota.moyeotaproject.service.ParticipationDetailsService;
 import com.moyeota.moyeotaproject.service.PostsService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostsController {
 
     private final PostsService postsService;
+    private final ParticipationDetailsService participationDetailsService;
 
     //모집글 작성 API
     @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API")
@@ -53,6 +55,7 @@ public class PostsController {
             requestDto.setSameGenderStatus(SameGender.NO);
 
         Long postId = postsService.save(userId, requestDto);
+        participationDetailsService.join(userId, postId);
         return ResponseUtil.SUCCESS("모집글 저장에 성공하였습니다.", postId);
     }
 
@@ -146,13 +149,6 @@ public class PostsController {
     @GetMapping("/search")
     public ResponseDto findAllByCategoryDesc(@RequestParam("category") Category category) {
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllByCategoryDesc(category));
-    }
-
-    //출발지에서 목적지까지 예상 이동시간 및 금액
-    @ApiOperation(value = "예상 이동시간 및 금액 조회", notes = "출발지에서 목적지까지의 예상 이동시간 및 금액을 조회하는 API")
-    @GetMapping("/search/duration/fare")
-    public ResponseDto getDurationAndFare(@RequestParam String origin, @RequestParam String destination) throws ParseException {
-        return ResponseUtil.SUCCESS("이동 시간 및 금액 조회에 성공하였습니다.", postsService.getDurationAndFare(origin, destination));
     }
 
 }

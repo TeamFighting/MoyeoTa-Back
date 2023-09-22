@@ -2,7 +2,7 @@ package com.moyeota.moyeotaproject.controller;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.ReviewSaveRequestDto;
+import com.moyeota.moyeotaproject.controller.dto.reviewDto.ReviewSaveRequestDto;
 import com.moyeota.moyeotaproject.service.ReviewService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

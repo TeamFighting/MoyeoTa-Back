@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.controller.dto;
+package com.moyeota.moyeotaproject.controller.dto.postsDto;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.posts.Category;
@@ -78,7 +78,7 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
                 .sameGenderStatus(sameGenderStatus)
                 .vehicle(vehicle)
                 .numberOfRecruitment(numberOfRecruitment)
-                .numberOfParticipants(1)
+                .numberOfParticipants(0)
                 .fare(fare)
                 .duration(duration)
                 .user(user)

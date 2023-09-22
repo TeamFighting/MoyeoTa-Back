@@ -1,8 +1,8 @@
 package com.moyeota.moyeotaproject.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moyeota.moyeotaproject.controller.dto.ChatMessageResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.ChatRoomResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.chatDto.ChatMessageResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.chatDto.ChatRoomResponseDto;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessageDto;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessageRepository;

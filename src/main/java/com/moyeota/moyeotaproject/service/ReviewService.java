@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.controller.dto.ReviewResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.ReviewSaveRequestDto;
+import com.moyeota.moyeotaproject.controller.dto.reviewDto.ReviewResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.reviewDto.ReviewSaveRequestDto;
 import com.moyeota.moyeotaproject.domain.review.Review;
 import com.moyeota.moyeotaproject.domain.review.ReviewRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;

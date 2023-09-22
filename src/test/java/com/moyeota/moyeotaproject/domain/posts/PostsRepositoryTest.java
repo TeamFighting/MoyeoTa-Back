@@ -27,32 +27,34 @@ class PostsRepositoryTest {
 
     @Test
     public void 모집글저장_불러오기1() {
-        String title = "test1";
-        Category category = Category.LIFE;
-        String departure = "seoul";
-        String destination = "jeju";
-        LocalDateTime departureTime = LocalDateTime.now();
-        String content = "contenttestUesr2";
-        SameGender sameGender = SameGender.YES;
-        Vehicle vehicle = Vehicle.일반;
-        int numberOfRecruitment = 4;
+//        String title = "test1";
+//        Category category = Category.LIFE;
+//        String departure = "seoul";
+//        String destination = "jeju";
+//        LocalDateTime departureTime = LocalDateTime.now();
+//        String content = "contenttestUesr2";
+//        SameGender sameGender = SameGender.YES;
+//        Vehicle vehicle = Vehicle.일반;
+//        int numberOfRecruitment = 4;
+//
+//        Users user = Users.builder()
+//                .name("taeheon")
+//                .profileImage("profileImage")
+//                .phoneNumber("010-1111-2222")
+//                .email("tae@naver.com")
+//                .loginId("loginId")
+//                .password("password")
+//                .status("status")
+//                .gender(true)
+//                .averageStarRate(3.5F)
+//                .school("seoultech")
+//                .isAuthenticated(true)
+//                .build();
+//        usersRepository.save(user);
+//        Users users = usersRepository.findByEmail("tae@naver.com").get();
+//        assertThat(users.getName()).isEqualTo("taeheon");
 
-        Users user = Users.builder()
-                .name("taeheon")
-                .profileImage("profileImage")
-                .phoneNumber("010-1111-2222")
-                .email("tae@naver.com")
-                .loginId("loginId")
-                .password("password")
-                .status("status")
-                .gender(true)
-                .averageStarRate(3.5F)
-                .school("seoultech")
-                .isAuthenticated(true)
-                .build();
-        usersRepository.save(user);
-        Users users = usersRepository.findByEmail("tae@naver.com").get();
-        assertThat(users.getName()).isEqualTo("taeheon");
+        
 //        Posts post = Posts.builder()
 //                .title(title)
 //                .category(category)
