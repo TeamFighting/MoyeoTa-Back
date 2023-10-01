@@ -27,7 +27,6 @@ import java.util.*;
 @Transactional
 public class ChatService {
 
-    private final ObjectMapper mapper;
     private final ChatRoomRepository chatRoomRepository;
     private final UsersRepository usersRepository;
     private final ChatMessageRepository chatMessageRepository;
@@ -93,24 +92,13 @@ public class ChatService {
         return chatRoomResponseDtoList;
     }
 
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try{
-            TextMessage textMessage = new TextMessage(mapper.writeValueAsString(message));
-            session.sendMessage(textMessage);
-            ChatMessageDto chatMessage = (ChatMessageDto) message;
-            saveMessage(chatMessage.getUserId(), chatMessage.getChatRoomId(), chatMessage);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
-
-    public Long saveMessage(Long userId, Long chatRoomId, ChatMessageDto message) {
+    public Long saveMessage(Long userId, ChatMessageDto message) {
         Users user = usersRepository.findById(userId).orElseThrow();
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(message.getRoomId()).orElseThrow();
         ChatMessage chatMessage = ChatMessage.builder()
                 .message(message.getMessage())
                 .type(message.getType())
-                .sender(message.getSender())
+                .sender(user.getName())
                 .roomId(message.getRoomId())
                 .user(user)
                 .chatRoom(chatRoom).build();

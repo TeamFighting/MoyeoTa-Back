@@ -2,10 +2,13 @@ package com.moyeota.moyeotaproject.service;
 
 
 import com.moyeota.moyeotaproject.controller.dto.ParticipationDetailsResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
+import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsStatus;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
+import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -63,15 +67,39 @@ public class ParticipationDetailsService {
         List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(user);
         List<ParticipationDetailsResponseDto> responseDtoList = new ArrayList<>();
         for (int i=0; i<participationDetailsList.size(); i++) {
-            ParticipationDetailsResponseDto responseDto = ParticipationDetailsResponseDto.builder()
-                    .posts(participationDetailsList.get(i).getPost())
-                    .status(participationDetailsList.get(i).getStatus())
-                    .build();
-            responseDtoList.add(responseDto);
+            if(participationDetailsList.get(i).getStatus().equals(ParticipationDetailsStatus.JOIN)) {
+                ParticipationDetailsResponseDto responseDto = ParticipationDetailsResponseDto.builder()
+                        .posts(participationDetailsList.get(i).getPost())
+                        .status(participationDetailsList.get(i).getStatus())
+                        .build();
+                responseDtoList.add(responseDto);
+            }
         }
 
         Collections.sort(responseDtoList, new DateComparator());
         return responseDtoList;
+    }
+
+    public List<PostsResponseDto> findMyParticipationDetailsDesc(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(()
+                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(user);
+        List<PostsResponseDto> list = new ArrayList<>();
+        for (int i=0; i<participationDetailsList.size(); i++) {
+            Posts post = participationDetailsList.get(i).getPost();
+            if(post.getDepartureTime().isAfter(LocalDateTime.now())) {
+                if (post.getUser().getId() != userId) {
+                    PostsResponseDto responseDto = PostsResponseDto.builder()
+                            .posts(post)
+                            .userName(post.getUser().getName())
+                            .profileImage(post.getUser().getName())
+                            .userGender(post.getUser().getGender()).build();
+                    list.add(responseDto);
+                }
+            }
+        }
+        return list;
+
     }
 
     public boolean cancelParticipation(Long participationDetailsId) {

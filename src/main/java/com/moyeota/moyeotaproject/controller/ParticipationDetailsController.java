@@ -59,9 +59,16 @@ public class ParticipationDetailsController {
 
     //특정 유저 이용기록 전체 조회 API
     @ApiOperation(value = "이용 기록 조회", notes = "특정 회원의 이용기록 조회 API")
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/{userId}/all")
     public ResponseDto findAllDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
         return ResponseUtil.SUCCESS("이용기록 조회에 성공하였습니다.", participationDetailsService.findAllDesc(userId));
+    }
+
+    //내가 참가 신청한 모집글 목록 조회 API (최신순으로)
+    @ApiOperation(value = "특정 회원의 참가 신청 모집글 전체 조회", notes = "특정 회원이 참가 신청한 모집글을 전체 조회하는 API")
+    @GetMapping("/users/{userId}")
+    public ResponseDto findMyParticipationDetailsDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
+        return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", participationDetailsService.findMyParticipationDetailsDesc(userId));
     }
 
 }

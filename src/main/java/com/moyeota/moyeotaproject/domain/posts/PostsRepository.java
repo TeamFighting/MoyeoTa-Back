@@ -1,6 +1,9 @@
 package com.moyeota.moyeotaproject.domain.posts;
 
 import com.moyeota.moyeotaproject.domain.users.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,12 +13,15 @@ import java.util.List;
 
 public interface PostsRepository extends JpaRepository<Posts, Long> {
 
-    @Query("select p from Posts p order by p.createdDate desc")
-    List<Posts> findAllDesc();
+    List<Posts> findByUserOrderByCreatedDateDesc(Users user, Pageable pageable);
 
-    List<Posts> findByUserOrderByCreatedDateDesc(Users user);
+//    @Query("select p from Posts p where p.category = :category order by p.createdDate desc")
+//    List<Posts> findByCategoryOrderByIdDesc(@Param("category") Category category, Pageable pageable);
 
-    @Query("select p from Posts p where p.category = :category order by p.createdDate desc")
-    List<Posts> findByCategoryOrderByIdDesc(@Param("category") Category category);
+    @Query("select p from Posts p where p.category = :category and p.status = :status")
+    Slice<Posts> findByCategory(@Param("category") Category category, @Param("status") PostsStatus status, Pageable pageable);
+
+
+
 
 }
