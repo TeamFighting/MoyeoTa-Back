@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ class PostsRepositoryTest {
 
     @Test
     public void 모집글저장_불러오기1() {
+
 //        String title = "test1";
 //        Category category = Category.LIFE;
 //        String departure = "seoul";
@@ -54,7 +57,7 @@ class PostsRepositoryTest {
 //        Users users = usersRepository.findByEmail("tae@naver.com").get();
 //        assertThat(users.getName()).isEqualTo("taeheon");
 
-        
+
 //        Posts post = Posts.builder()
 //                .title(title)
 //                .category(category)

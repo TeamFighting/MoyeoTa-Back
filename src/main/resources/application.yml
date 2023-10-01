@@ -6,12 +6,6 @@
 #    username: root
 #    password: rlaxogjs8312
 
-#spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/moyeota
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
 spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/moyeota

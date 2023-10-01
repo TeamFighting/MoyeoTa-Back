@@ -2,6 +2,8 @@ package com.moyeota.moyeotaproject.domain.chatMessage;
 
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.users.Users;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,25 +12,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ApiModel(value = "채팅 전송")
 public class ChatMessageDto {
 
+    @ApiModelProperty(value = "메시지 내용", example = "안녕! 잘 지냈어?", required = true)
     private String message;
-    private String roomId;
-    private String sender;
 
+    @ApiModelProperty(value = "채팅방 아이디", example = "93615d98-4b21-4bb3-9e41-530689440589", required = true)
+    private String roomId;
+
+    @ApiModelProperty(value = "메시지 타입", example = "TALK or ENTER", required = true)
     private MessageType type;
 
-    private Long userId;
-    private Long chatRoomId;
-
     @Builder
-    public ChatMessageDto(String message, String roomId, String sender, MessageType type, Long userId, Long chatRoomId) {
+    public ChatMessageDto(String message, String roomId, MessageType type) {
         this.message = message;
         this.type = type;
         this.roomId = roomId;
-        this.sender = sender;
-        this.userId = userId;
-        this.chatRoomId = chatRoomId;
     }
 
     public ChatMessage toEntity(Users user, ChatRoom chatRoom) {
