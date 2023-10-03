@@ -28,21 +28,10 @@ public class PostsService {
     private final PostsRepository postsRepository;
 
     @Transactional(readOnly = true)
-    public List<PostsResponseDto> findAllDesc(Pageable pageable) {
-        Page<Posts> postsPage = postsRepository.findAll(pageable);
-        List<Posts> postsList = postsPage.getContent();
-        List<PostsResponseDto> list = new ArrayList<>();
-        for (int i=0; i< postsList.size(); i++){
-            if(postsList.get(i).getStatus() == PostsStatus.RECRUITING) {
-                PostsResponseDto responseDto = PostsResponseDto.builder()
-                        .posts(postsList.get(i))
-                        .userName(postsList.get(i).getUser().getName())
-                        .profileImage(postsList.get(i).getUser().getProfileImage())
-                        .userGender(postsList.get(i).getUser().getGender()).build();
-                list.add(responseDto);
-            }
-        }
-        return list;
+    public Slice<PostsResponseDto> findAllDesc(Pageable pageable) {
+        Slice<Posts> postsSlice = postsRepository.findAllByStatus(pageable, PostsStatus.RECRUITING);
+        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(), p.getUser().getGender()));
+        return postsResponseDtos;
     }
 
     @Transactional(readOnly = true)
@@ -102,20 +91,12 @@ public class PostsService {
         post.postsComplete();
     }
 
-    public List<PostsResponseDto> findMyPostsByIdDesc(Long userId, Pageable pageable) {
+    public Slice<PostsResponseDto> findMyPostsByIdDesc(Long userId, Pageable pageable) {
         Users user = usersRepository.findById(userId).orElseThrow(()
         -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<Posts> postsList = postsRepository.findByUserOrderByCreatedDateDesc(user, pageable);
-        List<PostsResponseDto> list = new ArrayList<>();
-        for (int i=0; i<postsList.size(); i++){
-            PostsResponseDto responseDto = PostsResponseDto.builder()
-                    .posts(postsList.get(i))
-                    .userName(postsList.get(i).getUser().getName())
-                    .profileImage(postsList.get(i).getUser().getProfileImage())
-                    .userGender(postsList.get(i).getUser().getGender()).build();
-            list.add(responseDto);
-        }
-        return list;
+        Slice<Posts> postsSlice = postsRepository.findByUser(user, pageable);
+        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(), p.getUser().getGender()));
+        return postsResponseDtos;
     }
 
     public void cancelParticipation(Long postId) {
@@ -123,24 +104,6 @@ public class PostsService {
         -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
         post.minusUser();
     }
-
-//    public List<PostsResponseDto> findAllByCategoryDesc(Category category, Pageable pageable) {
-//        List<Posts> postsList = postsRepository.findByCategoryOrderByIdDesc(category, pageable);
-//        List<PostsResponseDto> list = new ArrayList<>();
-//        if(postsList.size() == 0)
-//            return list;
-//        for (int i=0; i<postsList.size(); i++){
-//            if(postsList.get(i).getStatus() == PostsStatus.RECRUITING) {
-//                PostsResponseDto responseDto = PostsResponseDto.builder()
-//                        .posts(postsList.get(i))
-//                        .userName(postsList.get(i).getUser().getName())
-//                        .profileImage(postsList.get(i).getUser().getProfileImage())
-//                        .userGender(postsList.get(i).getUser().getGender()).build();
-//                list.add(responseDto);
-//            }
-//        }
-//        return list;
-//    }
 
     public Slice<PostsResponseDto> findAllByCategory(Category category, Pageable pageable) {
         Slice<Posts> postsSlice = postsRepository.findByCategory(category, PostsStatus.RECRUITING ,pageable);

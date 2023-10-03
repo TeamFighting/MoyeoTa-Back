@@ -145,7 +145,7 @@ public class PostsController {
     @ApiOperation(value = "특정 회원 모집글 전체 조회", notes = "특정 회원의 모집글을 전체 조회하는 API")
     @GetMapping("/users/{userId}")
     public ResponseDto findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId, pageable));
     }
 
