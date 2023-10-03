@@ -21,4 +21,5 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 
     @Query("select p from Posts p where p.status = :status")
     Slice<Posts> findAllByStatus(Pageable pageable, @Param("status") PostsStatus recruiting);
+    
 }

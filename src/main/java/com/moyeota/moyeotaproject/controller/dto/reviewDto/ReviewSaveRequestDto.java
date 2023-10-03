@@ -4,7 +4,6 @@ import com.moyeota.moyeotaproject.domain.review.Review;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
