@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.controller.dto.postsDto;
 
 import com.moyeota.moyeotaproject.domain.posts.*;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
+@ApiModel(value = "모집글 조회 응답")
 public class PostsResponseDto {
 
     @ApiModelProperty(value = "모집글 제목")
