@@ -11,6 +11,7 @@ import com.moyeota.moyeotaproject.domain.review.Review;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -96,6 +97,7 @@ public class Users extends BaseTimeEntity {
     }
 
 
+    @Transactional
     public void updateSchoolAuthenticate(String univName) {
         this.school = univName;
         this.isAuthenticated = Boolean.TRUE;
