@@ -13,15 +13,12 @@ import java.util.List;
 
 public interface PostsRepository extends JpaRepository<Posts, Long> {
 
-    List<Posts> findByUserOrderByCreatedDateDesc(Users user, Pageable pageable);
-
-//    @Query("select p from Posts p where p.category = :category order by p.createdDate desc")
-//    List<Posts> findByCategoryOrderByIdDesc(@Param("category") Category category, Pageable pageable);
+    Slice<Posts> findByUser(Users user, Pageable pageable);
 
     @Query("select p from Posts p where p.category = :category and p.status = :status")
     Slice<Posts> findByCategory(@Param("category") Category category, @Param("status") PostsStatus status, Pageable pageable);
 
 
-
-
+    @Query("select p from Posts p where p.status = :status")
+    Slice<Posts> findAllByStatus(Pageable pageable, @Param("status") PostsStatus recruiting);
 }

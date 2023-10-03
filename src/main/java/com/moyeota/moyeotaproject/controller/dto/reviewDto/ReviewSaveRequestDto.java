@@ -19,12 +19,6 @@ public class ReviewSaveRequestDto {
     @ApiModelProperty(value = "리뷰 내용", example = "친절하십니다.", required = true)
     private String content;
 
-    @Builder
-    public ReviewSaveRequestDto(double starRate, String content) {
-        this.starRate = starRate;
-        this.content = content;
-    }
-
     public Review toEntity(Users user) {
         return Review.builder()
                 .starRate(starRate)
