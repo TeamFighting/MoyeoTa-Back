@@ -4,6 +4,7 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
 import com.moyeota.moyeotaproject.domain.posts.Category;
@@ -16,6 +17,7 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
@@ -136,7 +138,7 @@ public class PostsController {
     //전체 모집글 조회 API (단, 상태가 RECRUITING 모집글만 조회 최신순으로)
     @ApiOperation(value = "모집글 전체 조회", notes = "모집글을 최신순으로 전체 조회하는 API")
     @GetMapping("")
-    public ResponseDto findAllDesc(@ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
+    public ResponseDto<Slice<PostsResponseDto>> findAllDesc(@ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllDesc(pageable));
     }
@@ -144,7 +146,7 @@ public class PostsController {
     //내 모집글 목록 조회 API (최신순으로)
     @ApiOperation(value = "특정 회원 모집글 전체 조회", notes = "특정 회원의 모집글을 전체 조회하는 API")
     @GetMapping("/users/{userId}")
-    public ResponseDto findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
+    public ResponseDto<Slice<PostsResponseDto>> findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId, pageable));
     }
@@ -152,7 +154,7 @@ public class PostsController {
     //카테고리별 모집글 조회 API (최신순으로)
     @ApiOperation(value = "카테고리별 모집글 전체 조회", notes = "특정 카테고리의 모집글 전체 최신순으로 조회하는 API")
     @GetMapping("/search")
-    public ResponseDto findAllByCategoryDesc(@RequestParam("category") Category category, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
+    public ResponseDto<Slice<PostsResponseDto>> findAllByCategoryDesc(@RequestParam("category") Category category, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, 2, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllByCategory(category, pageable));
     }
