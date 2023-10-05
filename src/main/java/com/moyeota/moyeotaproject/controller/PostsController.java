@@ -21,6 +21,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Api(tags = "Posts", description = "Post Controller")
 @ApiResponses({
         @ApiResponse(code = 200, message = "API 정상 작동"),
@@ -38,8 +40,8 @@ public class PostsController {
 
     //모집글 작성 API
     @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API")
-    @PostMapping("/users/{userId}")
-    public ResponseDto<Long> save(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @RequestBody PostsSaveRequestDto requestDto){
+    @PostMapping("")
+    public ResponseDto<Long> save(HttpServletRequest request, @RequestBody PostsSaveRequestDto requestDto){
         if(requestDto.getTitle() == null || requestDto.getTitle().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
 
@@ -58,15 +60,14 @@ public class PostsController {
         if(requestDto.getSameGenderStatus() == null)
             requestDto.setSameGenderStatus(SameGender.NO);
 
-        Long postId = postsService.save(userId, requestDto);
-        participationDetailsService.join(userId, postId);
+        Long postId = postsService.save(request.getHeader("Authorization"), requestDto);
         return ResponseUtil.SUCCESS("모집글 저장에 성공하였습니다.", postId);
     }
 
     //모집글 수정 API (단, 제목과 내용만 수정가능)
     @ApiOperation(value = "모집글 수정", notes = "특정 회원이 모집글을 수정하는 API")
     @PatchMapping("/{postId}")
-    public ResponseDto update(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
+    public ResponseDto update(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
         if(requestDto.getTitle() == null)
             requestDto.setTitle(postsService.findById(postId).getTitle());
         if(requestDto.getTitle().equals(""))
@@ -106,21 +107,22 @@ public class PostsController {
         if(requestDto.getVehicle() == null)
             requestDto.setVehicle(postsService.findById(postId).getVehicle());
 
-        return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.", postsService.update(postId, requestDto));
+        return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.", postsService.update(request.getHeader("Authorization"), postId, requestDto));
     }
 
     //모집글 삭제 API
     @ApiOperation(value = "모집글 삭제", notes = "특정 회원이 모집글을 삭제하는 API")
     @DeleteMapping("/{postId}")
-    public ResponseDto delete(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
-        postsService.delete(postId);
+    public ResponseDto delete(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+        postsService.delete(request.getHeader("Authorization") ,postId);
         return ResponseUtil.SUCCESS("모집글 삭제에 성공하였습니다.", postId);
     }
 
     //모집 마감 API
     @ApiOperation(value = "모집글 마감", notes = "특정 회원이 모집글을 마감하는 API")
     @PostMapping("/{postId}/complete")
-    public ResponseDto completePost(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+    public ResponseDto completePost(HttpServletRequest request , @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+        postsService.getUserByToken(request.getHeader("Authorization"));
         if(postsService.findById(postId).getStatus() == PostsStatus.COMPLETE)
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
         postsService.completePost(postId);
@@ -147,6 +149,7 @@ public class PostsController {
     @ApiOperation(value = "특정 회원 모집글 전체 조회", notes = "특정 회원의 모집글을 전체 조회하는 API")
     @GetMapping("/users/{userId}")
     public ResponseDto<Slice<PostsResponseDto>> findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
+
         Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId, pageable));
     }
