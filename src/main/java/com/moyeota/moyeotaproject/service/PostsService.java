@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
@@ -11,12 +12,12 @@ import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -24,8 +25,10 @@ import java.util.List;
 @Slf4j
 public class PostsService {
 
+    private final ParticipationDetailsService participationDetailsService;
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional(readOnly = true)
     public Slice<PostsResponseDto> findAllDesc(Pageable pageable) {
@@ -48,30 +51,16 @@ public class PostsService {
         return responseDto;
     }
 
-    public Long save(Long userId, PostsSaveRequestDto requestDto){
-//        Users users1 = Users.builder()
-//                .name("kyko").profileImage("profile")
-//                .phoneNumber("010-1111-1111")
-//                .email("kyko@naver.com")
-//                .loginId("loginId")
-//                .password("password")
-//                .status("join")
-//                .gender(true)
-//                .school("seoultech")
-//                .averageStarRate(3.5F)
-//                .isAuthenticated(true)
-//                .provider(OAuthProvider.KAKAO)
-//                .build();
-//        usersRepository.save(users1); //제거예정
-
-        Users user = usersRepository.findById(userId).orElseThrow(()
-        -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-
+    public Long save(String accessToken, PostsSaveRequestDto requestDto){
+        Users user = getUserByToken(accessToken);
         Posts post = requestDto.toEntity(user);
-        return postsRepository.save(post).getId();
+        Long postId = postsRepository.save(post).getId();
+        participationDetailsService.join(user.getId(), postId);
+        return postId;
     }
 
-    public Long update(Long postId, PostsUpdateRequestDto requestDto) {
+    public Long update(String accessToken, Long postId, PostsUpdateRequestDto requestDto) {
+        getUserByToken(accessToken);
         Posts posts = postsRepository.findById(postId).orElseThrow(()
         -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
 
@@ -79,7 +68,8 @@ public class PostsService {
         return postId;
     }
 
-    public void delete(Long postId) {
+    public void delete(String accessToken, Long postId) {
+        getUserByToken(accessToken);
         Posts posts = postsRepository.findById(postId).orElseThrow(()
         -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
         postsRepository.delete(posts);
@@ -109,6 +99,15 @@ public class PostsService {
         Slice<Posts> postsSlice = postsRepository.findByCategory(category, PostsStatus.RECRUITING ,pageable);
         Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(), p.getUser().getGender()));
         return postsResponseDtos;
+    }
+
+    public Users getUserByToken(String accessToken) {
+        Optional<Users> users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken));
+        if (users.isPresent()) {
+            return users.get();
+        } else {
+            throw new RuntimeException("토큰에 해당하는 멤버가 없습니다.");
+        }
     }
 
 }

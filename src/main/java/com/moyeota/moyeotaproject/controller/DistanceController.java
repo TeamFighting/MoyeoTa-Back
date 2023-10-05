@@ -36,10 +36,6 @@ public class DistanceController {
 
     //출발지에서 목적지까지 예상 이동시간 및 금액
     @ApiOperation(value = "예상 이동시간(초) 및 금액(원) 조회", notes = "출발지에서 목적지까지의 예상 이동시간 및 금액을 조회하는 API. 출발지와 도착지에 각각 x좌표,y좌표 순으로 기입해야함. ex) origin=127.073005201049,37.6254769202851&destination=127.076794742851,37.6330789279387")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "origin", value = "출발지", required = true, example = "127.073005201049,37.6254769202851"),
-            @ApiImplicitParam(name = "destination", value = "도착지", required = true, example = "127.076794742851,37.6330789279387")
-    })
     @GetMapping("/duration/fare")
     public ResponseDto getDurationAndFare(@RequestParam String origin, @RequestParam String destination) throws ParseException {
         return ResponseUtil.SUCCESS("이동 시간 및 금액 조회에 성공하였습니다.", addressSearchService.getDurationAndFare(origin, destination));

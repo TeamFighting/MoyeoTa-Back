@@ -83,7 +83,6 @@ public class UsersService {
                 .certified_date(objectMap.get("certified_date").toString())
                 .build();
     }
-
     public String schoolEmailReset(String accessToken, SchoolDto.Request schoolDto) throws IOException {
         UnivCert.clear(apiKey);
         return schoolEmail(accessToken, schoolDto);
