@@ -8,11 +8,14 @@ import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsStatus;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
+import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.service.ParticipationDetailsService;
 import com.moyeota.moyeotaproject.service.PostsService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "ParticipationDetails", description = "ParticipationDetails Controller")
 @ApiResponses({
@@ -31,24 +34,27 @@ public class ParticipationDetailsController {
 
     //참가 신청 API
     @ApiOperation(value = "참가 신청", notes = "특정 회원이 특정 모집글에 참가 신청 API")
-    @PostMapping("/users/{userId}/posts/{postId}")
-    public ResponseDto join(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+    @PostMapping("/posts/{postId}")
+    public ResponseDto join(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         PostsResponseDto responseDto = postsService.findById(postId);
         if(responseDto.getNumberOfParticipants() == responseDto.getNumberOfRecruitment())
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
         if(responseDto.getStatus() == PostsStatus.COMPLETE)
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
-        ParticipationDetails participationDetails = participationDetailsService.checkParticipation(userId, postId);
+        String accessToken = request.getHeader("Authorization");
+        ParticipationDetails participationDetails = participationDetailsService.checkParticipation(accessToken, postId);
         if(participationDetails != null && participationDetails.getStatus() == ParticipationDetailsStatus.JOIN)
             throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_JOIN);
-        Long participationDetailsId = participationDetailsService.join(userId, postId);
+        Users user = participationDetailsService.getUserByToken(accessToken);
+        Long participationDetailsId = participationDetailsService.join(user.getId(), postId);
         return ResponseUtil.SUCCESS("참가 신청이 완료되었습니다.", participationDetailsId);
     }
 
     //참가 취소 API
     @ApiOperation(value = "참가 취소", notes = "참가 취소 API")
     @PostMapping("/{participationDetailsId}") //유저 인증 먼저 하기
-    public ResponseDto cancel(@ApiParam(value = "참가내역 인덱스 번호") @PathVariable("participationDetailsId") Long participationDetailsId) {
+    public ResponseDto cancel(HttpServletRequest request, @ApiParam(value = "참가내역 인덱스 번호") @PathVariable("participationDetailsId") Long participationDetailsId) {
+        Users user = participationDetailsService.getUserByToken(request.getHeader("Authorization"));
         if(participationDetailsService.cancelParticipation(participationDetailsId)){
             throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_CANCEL);
         }
