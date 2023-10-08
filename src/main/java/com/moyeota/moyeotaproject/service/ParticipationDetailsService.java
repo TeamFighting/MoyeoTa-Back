@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.service;
 
 
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.ParticipationDetailsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
@@ -28,6 +29,7 @@ public class ParticipationDetailsService {
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
     private final ParticipationDetailsRepository participationDetailsRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public Long join(Long userId, Long postId) {
         Users user = usersRepository.findById(userId).orElseThrow(()
@@ -56,8 +58,9 @@ public class ParticipationDetailsService {
         return participationDetails;
     }
 
-    public ParticipationDetails checkParticipation(Long userId, Long postId) {
-        return participationDetailsRepository.findByUserAndPost(usersRepository.findById(userId).get(), postsRepository.findById(postId).get());
+    public ParticipationDetails checkParticipation(String accessToken, Long postId) {
+        Users user = getUserByToken(accessToken);
+        return participationDetailsRepository.findByUserAndPost(user, postsRepository.findById(postId).get());
     }
 
     @Transactional(readOnly = true)
@@ -114,6 +117,15 @@ public class ParticipationDetailsService {
         public int compare(ParticipationDetailsResponseDto p1, ParticipationDetailsResponseDto p2) {
             int result = p2.getDepartureTime().compareTo(p1.getDepartureTime());
             return result;
+        }
+    }
+
+    public Users getUserByToken(String accessToken) {
+        Optional<Users> users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken));
+        if (users.isPresent()) {
+            return users.get();
+        } else {
+            throw new RuntimeException("토큰에 해당하는 멤버가 없습니다.");
         }
     }
 

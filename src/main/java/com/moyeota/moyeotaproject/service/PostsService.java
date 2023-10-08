@@ -1,9 +1,12 @@
 package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
+import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
+import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
@@ -17,6 +20,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -28,7 +33,17 @@ public class PostsService {
     private final ParticipationDetailsService participationDetailsService;
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
+    private final ParticipationDetailsRepository participationDetailsRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Transactional(readOnly = true)
+    public List<PostsMemberDto> findPostsMembers(Long postId) {
+        List<ParticipationDetails> participationDetails = participationDetailsRepository.findParticipationDetailsByPostsId(postId);
+        List<PostsMemberDto> postsMemberDtos = new ArrayList<>();
+        for (int i=0; i<participationDetails.size(); i++)
+            postsMemberDtos.add(PostsMemberDto.builder().user(participationDetails.get(i).getUser()).build());
+        return postsMemberDtos;
+    }
 
     @Transactional(readOnly = true)
     public Slice<PostsResponseDto> findAllDesc(Pageable pageable) {

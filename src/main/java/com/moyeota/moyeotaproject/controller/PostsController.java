@@ -4,6 +4,7 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Api(tags = "Posts", description = "Post Controller")
 @ApiResponses({
@@ -132,7 +134,7 @@ public class PostsController {
     //특정 모집글 조회 API
     @ApiOperation(value = "특정 모집글 조회", notes = "특정 모집글을 조회하는 API")
     @GetMapping("/{postId}")
-    public ResponseDto findById(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+    public ResponseDto<PostsResponseDto> findById(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findById(postId));
     }
 
@@ -160,6 +162,13 @@ public class PostsController {
     public ResponseDto<Slice<PostsResponseDto>> findAllByCategoryDesc(@RequestParam("category") Category category, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, 2, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllByCategory(category, pageable));
+    }
+
+    //파티원 목록 조회 API
+    @ApiOperation(value = "모집글 파티원 목록 조회", notes = "특정 모집글 파티원 목록을 조회하는 API(본인 포함)")
+    @GetMapping("/{postId}/members")
+    public ResponseDto<List<PostsMemberDto>> findPostsMembers(@ApiParam(value = "모집글 인덱스") @PathVariable("postId") Long postId) {
+        return ResponseUtil.SUCCESS("모집글 파티원 조회에 성공하였습니다.", postsService.findPostsMembers(postId));
     }
 
 }
