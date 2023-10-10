@@ -59,6 +59,9 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false)
     private int duration;
 
+    @Column(nullable = false)
+    private double distance;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId") //FK
     private Users user;

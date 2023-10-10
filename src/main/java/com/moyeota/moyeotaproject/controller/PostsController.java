@@ -8,10 +8,7 @@ import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
-import com.moyeota.moyeotaproject.domain.posts.Category;
-import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
-import com.moyeota.moyeotaproject.domain.posts.SameGender;
-import com.moyeota.moyeotaproject.domain.posts.Vehicle;
+import com.moyeota.moyeotaproject.domain.posts.*;
 import com.moyeota.moyeotaproject.service.ParticipationDetailsService;
 import com.moyeota.moyeotaproject.service.PostsService;
 import io.swagger.annotations.*;
@@ -70,44 +67,48 @@ public class PostsController {
     @ApiOperation(value = "모집글 수정", notes = "특정 회원이 모집글을 수정하는 API")
     @PatchMapping("/{postId}")
     public ResponseDto update(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
+        PostsResponseDto post = postsService.findById(postId);
         if(requestDto.getTitle() == null)
-            requestDto.setTitle(postsService.findById(postId).getTitle());
+            requestDto.setTitle(post.getTitle());
         if(requestDto.getTitle().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
 
         if(requestDto.getContent() == null)
-            requestDto.setContent(postsService.findById(postId).getContent());
+            requestDto.setContent(post.getContent());
 
         if(requestDto.getCategory() == null)
-            requestDto.setCategory(postsService.findById(postId).getCategory());
+            requestDto.setCategory(post.getCategory());
 
         if(requestDto.getDeparture() == null)
-            requestDto.setDeparture(postsService.findById(postId).getDeparture());
+            requestDto.setDeparture(post.getDeparture());
         if(requestDto.getDeparture().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
 
         if(requestDto.getDestination() == null)
-            requestDto.setDestination(postsService.findById(postId).getDestination());
+            requestDto.setDestination(post.getDestination());
         if(requestDto.getDestination().equals(""))
             throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
 
         if(requestDto.getDepartureTime() == null)
-            requestDto.setDepartureTime(postsService.findById(postId).getDepartureTime());
+            requestDto.setDepartureTime(post.getDepartureTime());
 
         if(requestDto.getSameGenderStatus() == null)
-            requestDto.setSameGenderStatus(postsService.findById(postId).getSameGenderStatus());
+            requestDto.setSameGenderStatus(post.getSameGenderStatus());
 
         if(requestDto.getFare() == 0)
-            requestDto.setFare(postsService.findById(postId).getFare());
+            requestDto.setFare(post.getFare());
 
-        if( requestDto.getDuration() == 0)
-            requestDto.setDuration(postsService.findById(postId).getDuration());
+        if(requestDto.getDuration() == 0)
+            requestDto.setDuration(post.getDuration());
+
+        if(requestDto.getDistance() == 0)
+            requestDto.setDistance(post.getDistance());
 
         if(requestDto.getNumberOfRecruitment() == 0)
-            requestDto.setNumberOfRecruitment(postsService.findById(postId).getNumberOfRecruitment());
+            requestDto.setNumberOfRecruitment(post.getNumberOfRecruitment());
 
         if(requestDto.getVehicle() == null)
-            requestDto.setVehicle(postsService.findById(postId).getVehicle());
+            requestDto.setVehicle(post.getVehicle());
 
         return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.", postsService.update(request.getHeader("Authorization"), postId, requestDto));
     }
