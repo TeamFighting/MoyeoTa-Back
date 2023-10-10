@@ -51,8 +51,11 @@ public class PostsUpdateRequestDto {
     @ApiModelProperty(value = "이동 시간(초)")
     private int duration;
 
+    @ApiModelProperty(value = "이동 거리(km)")
+    private double distance;
+
     @Builder
-    public PostsUpdateRequestDto(String title, String content, Category category, String departure, String destination, LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int fare, int duration) {
+    public PostsUpdateRequestDto(String title, String content, Category category, String departure, String destination, LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int fare, int duration, double distance) {
         this.title = title;
         this.content = content;
         this.category = category;
@@ -64,6 +67,7 @@ public class PostsUpdateRequestDto {
         this.numberOfRecruitment = numberOfRecruitment;
         this.fare = fare;
         this.duration = duration;
+        this.distance = distance;
     }
 
 }

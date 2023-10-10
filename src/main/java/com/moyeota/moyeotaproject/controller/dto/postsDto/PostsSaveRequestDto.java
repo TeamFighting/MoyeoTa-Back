@@ -54,6 +54,9 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
     @ApiModelProperty(value = "이동 시간(초)", example = "313")
     private int duration;
 
+    @ApiModelProperty(value = "이동 거리(km)", example = "")
+    private double distance;
+
     @Builder
     public PostsSaveRequestDto(String title, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, int numberOfRecruitment, int fare, int duration) {
         this.title = title;
