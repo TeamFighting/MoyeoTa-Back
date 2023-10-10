@@ -17,7 +17,11 @@ public class TokenService {
 
     public TokenInfoDto generateRefreshToken(RefreshTokenRequest request) {
         String refreshToken = request.getRefreshToken();
-        Long usersId = jwtTokenProvider.extractSubjectFromJwt(refreshToken);
-        return jwtTokenGenerator.generate(usersId);
+        if (jwtTokenProvider.validateToken(refreshToken)) {
+            Long usersId = jwtTokenProvider.extractSubjectFromJwt(refreshToken);
+            return jwtTokenGenerator.generate(usersId);
+        } else{
+            throw new RuntimeException("RefreshToken의 기한이 만료되었습니다.");
+        }
     }
 }
