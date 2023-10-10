@@ -20,7 +20,13 @@ public class MoyeataWorkspaceApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://moyeota.shop");
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("Authorization", "Content-Type")
+                        .exposedHeaders("Custom-Header")
+                        .allowCredentials(true)
+                        .maxAge(3600);
             }
         };
     }
