@@ -50,13 +50,9 @@ public class JwtTokenProvider {
         }
     }
 
-    // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public Authentication getAuthentication(String accessToken) {
-        // 토큰 복호화
         System.out.println("accessToken = " + accessToken);
         Claims claims = parseClaims(accessToken);
-
-        // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = new User(claims.getSubject(), "", Collections.emptyList());
         return new UsernamePasswordAuthenticationToken(principal, "", Collections.emptyList());
     }
@@ -64,32 +60,29 @@ public class JwtTokenProvider {
     public Long extractSubjectFromJwt(String accessToken) {
         try {
             String token = getToken(accessToken);
-            System.out.println("token = " + token);
             Claims claims = Jwts.parser()
                     .setSigningKey(key)
                     .parseClaimsJws(token)
                     .getBody();
-            System.out.println("claims = " + claims);
             String subject = claims.getSubject();
-            System.out.println("subject = " + subject);
             return Long.parseLong(subject);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
+        } catch (ExpiredJwtException e){
+          throw new RuntimeException("AccessToken이 만료되었습니다.");
         } catch (RuntimeException e) {
             System.out.println("e = " + e);
             throw new RuntimeException(e);
         }
     }
 
-    // Bearer 제외부분
     public String getToken(String token) {
         if (token.length() < 7) {
             throw new RuntimeException("토큰에 오류가 있습니다.");
@@ -97,5 +90,4 @@ public class JwtTokenProvider {
         token = token.substring(7).trim();
         return token;
     }
-
 }

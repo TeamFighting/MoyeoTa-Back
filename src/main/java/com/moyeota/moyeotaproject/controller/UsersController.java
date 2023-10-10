@@ -2,12 +2,14 @@ package com.moyeota.moyeotaproject.controller;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.controller.dto.RefreshTokenRequest;
 import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
 import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.GoogleLoginParams;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.KakaoLoginParams;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.NaverLoginParams;
 import com.moyeota.moyeotaproject.service.OAuthLoginService;
+import com.moyeota.moyeotaproject.service.TokenService;
 import com.moyeota.moyeotaproject.service.UsersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +36,13 @@ public class UsersController {
 
     private final UsersService usersService;
     private final OAuthLoginService oAuthLoginService;
+    private final TokenService tokenService;
+
+    @ApiOperation(value = "토큰 재발급", notes = "리프레쉬 토큰을 이용한 토큰 재발급")
+    @PostMapping("/refresh-token")
+    public ResponseDto generateToken(@RequestBody RefreshTokenRequest request) {
+        return ResponseUtil.SUCCESS("토큰을 재발급하였습니다.", tokenService.generateRefreshToken(request));
+    }
 
     @ApiOperation(value = "구글 소셜 로그인", notes = "구글 소셜 로그인 회원가입 API")
     @PostMapping("/google")
@@ -54,7 +63,7 @@ public class UsersController {
     }
 
     @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보 수정 및 추가 API")
-    @PostMapping("/user-info-update")
+    @PutMapping("/info")
     public ResponseDto updateInfo(HttpServletRequest request, @RequestBody UsersDto.updateDto usersDto) {
         return ResponseUtil.SUCCESS("프로필 업데이트를 완료하였습니다", usersService.addInfo(request.getHeader("Authorization"), usersDto));
     }
@@ -66,13 +75,13 @@ public class UsersController {
     }
 
     @ApiOperation(value = "학교 인증 코드 확인", notes = "인증 코드 확인 API")
-    @PostMapping("/school-email-check")
+    @PostMapping("/school-email/verification")
     public ResponseDto schoolEmailCheck(HttpServletRequest request, @RequestBody SchoolDto.Request schoolRequestDto) throws IOException {
         return ResponseUtil.SUCCESS("학교 인증이 완료되었습니다.", usersService.schoolEmailCheck(request.getHeader("Authorization"), schoolRequestDto));
     }
 
     @ApiOperation(value = "학교 인증 코드 재전송", notes = "학교 인증을 위한 이메일 재전송 API")
-    @PostMapping("/school-email-resend")
+    @PostMapping("/school-email/resend")
     public ResponseDto schoolEmailResend(HttpServletRequest request, @RequestBody SchoolDto.Request schoolRequestDto) throws IOException {
         return ResponseUtil.SUCCESS("학교 인증 메일이 재전송되었습니다", usersService.schoolEmailReset(request.getHeader("Authorization"), schoolRequestDto));
     }
