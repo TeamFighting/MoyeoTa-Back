@@ -29,7 +29,6 @@ public class UsersService {
 
     public UsersDto.Response addInfo(String authorization, UsersDto.updateDto usersDto) {
         Users users = getUserByToken(authorization);
-        System.out.println("users = " + users);
         users.updateUsers(usersDto);
         UsersDto.Response updateDto = UsersDto.Response.builder()
                 .loginId(users.getLoginId())
@@ -41,7 +40,6 @@ public class UsersService {
                 .school(users.getSchool())
                 .gender(users.getGender())
                 .build();
-
         return updateDto;
     }
 
@@ -55,11 +53,10 @@ public class UsersService {
     }
 
     public String schoolEmail(String accessToken, SchoolDto.Request schoolDto) throws IOException {
-        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
+        usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         Map<String, Object> objectMap = UnivCert.certify(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.isUniv_check());
         String success = objectMap.get("success").toString();
-//        users.updateSchool();
         if (success.equals("false")) {
             String message = objectMap.get("message").toString();
             throw new RuntimeException(message);

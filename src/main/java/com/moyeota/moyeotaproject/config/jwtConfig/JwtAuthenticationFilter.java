@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.config.jwtConfig;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,17 +22,17 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = resolveToken((HttpServletRequest) request);
 
         if (token != null) {
-            if(jwtTokenProvider.validateToken(token)){
+            if (jwtTokenProvider.validateToken(token)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else{
-                throw new RuntimeException("Access Token 기한이 만료되었습니다.");
+            } else {
+                throw new RuntimeException("토큰의 기한이 만료되었습니다");
             }
         }
         try {
             chain.doFilter(request, response);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("토큰 검증에 실패하였습니다.");
         }
     }
 

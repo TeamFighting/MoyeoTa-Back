@@ -4,6 +4,7 @@ import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.RefreshTokenRequest;
 import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
+import com.moyeota.moyeotaproject.domain.users.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

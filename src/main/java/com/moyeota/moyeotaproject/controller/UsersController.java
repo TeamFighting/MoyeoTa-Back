@@ -53,7 +53,7 @@ public class UsersController {
     @ApiOperation(value = "카카오 소셜 로그인", notes = "카카오 소셜 로그인 회원가입 API")
     @PostMapping("/kakao")
     public ResponseDto loginKakao(@RequestBody KakaoLoginParams params) {
-        return ResponseUtil.SUCCESS( "카카오 로그인 성공하였습니다. ", oAuthLoginService.login(params));
+        return ResponseUtil.SUCCESS("카카오 로그인 성공하였습니다. ", oAuthLoginService.login(params));
     }
 
     @ApiOperation(value = "네이버 소셜 로그인", notes = "네이버 소셜 로그인 회원가입 API")
@@ -71,7 +71,7 @@ public class UsersController {
     @ApiOperation(value = "학교 인증", notes = "학교 인증을 위한 이메일 코드 전송 API")
     @PostMapping("/school-email")
     public ResponseDto schoolEmail(HttpServletRequest request, @RequestBody SchoolDto.Request schoolRequestDto) throws IOException {
-        return ResponseUtil.SUCCESS("학교 인증 메일이 전송되었습니다", usersService.schoolEmail(request.getHeader("Authorization"),schoolRequestDto));
+        return ResponseUtil.SUCCESS("학교 인증 메일이 전송되었습니다", usersService.schoolEmail(request.getHeader("Authorization"), schoolRequestDto));
     }
 
     @ApiOperation(value = "학교 인증 코드 확인", notes = "인증 코드 확인 API")

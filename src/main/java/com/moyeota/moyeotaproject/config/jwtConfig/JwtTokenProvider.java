@@ -51,7 +51,6 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String accessToken) {
-        System.out.println("accessToken = " + accessToken);
         Claims claims = parseClaims(accessToken);
         UserDetails principal = new User(claims.getSubject(), "", Collections.emptyList());
         return new UsernamePasswordAuthenticationToken(principal, "", Collections.emptyList());
@@ -78,7 +77,6 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e){
           return false;
         } catch (RuntimeException e) {
-            System.out.println("e = " + e);
             throw new RuntimeException(e);
         }
     }
