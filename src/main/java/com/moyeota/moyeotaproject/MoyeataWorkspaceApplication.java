@@ -21,12 +21,14 @@ public class MoyeataWorkspaceApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("Authorization", "Content-Type")
-                        .exposedHeaders("Custom-Header")
-                        .allowCredentials(true)
-                        .maxAge(3600);
+                        .allowedOriginPatterns("*")
+                        .allowedHeaders("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH")
+//                        .allowedHeaders("Authorization", "Content-Type", "RefreshToken")
+                        .exposedHeaders("Authorization", "RefreshToken");
+//                        .exposedHeaders("Custom-Header")
+//                        .allowCredentials(true)
+//                        .maxAge(3600);
             }
         };
     }
