@@ -15,6 +15,7 @@ public class MoyeataWorkspaceApplication {
     public static void main(String[] args) {
         SpringApplication.run(MoyeataWorkspaceApplication.class, args);
     }
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -24,11 +25,7 @@ public class MoyeataWorkspaceApplication {
                         .allowedOriginPatterns("*")
                         .allowedHeaders("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH")
-//                        .allowedHeaders("Authorization", "Content-Type", "RefreshToken")
                         .exposedHeaders("Authorization", "RefreshToken");
-//                        .exposedHeaders("Custom-Header")
-//                        .allowCredentials(true)
-//                        .maxAge(3600);
             }
         };
     }

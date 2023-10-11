@@ -144,7 +144,7 @@ public class PostsController {
     @ApiOperation(value = "모집글 전체 조회", notes = "모집글을 최신순으로 전체 조회하는 API")
     @GetMapping("")
     public ResponseDto<Slice<PostsResponseDto>> findAllDesc(@ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllDesc(pageable));
     }
 
@@ -153,7 +153,7 @@ public class PostsController {
     @GetMapping("/users/{userId}")
     public ResponseDto<Slice<PostsResponseDto>> findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId, pageable));
     }
 
@@ -161,7 +161,7 @@ public class PostsController {
     @ApiOperation(value = "카테고리별 모집글 전체 조회", notes = "특정 카테고리의 모집글 전체 최신순으로 조회하는 API")
     @GetMapping("/search")
     public ResponseDto<Slice<PostsResponseDto>> findAllByCategoryDesc(@RequestParam("category") Category category, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
-        Pageable pageable = PageRequest.of(page, 2, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, 3, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllByCategory(category, pageable));
     }
 

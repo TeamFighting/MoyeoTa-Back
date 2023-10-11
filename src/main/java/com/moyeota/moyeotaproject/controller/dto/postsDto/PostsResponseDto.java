@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @ApiModel(value = "모집글 조회 응답")
 public class PostsResponseDto {
 
+    @ApiModelProperty(value = "모집글 인덱스")
+    private Long postId;
     @ApiModelProperty(value = "모집글 제목")
     private String title;
     @ApiModelProperty(value = "카테고리")
@@ -51,6 +53,7 @@ public class PostsResponseDto {
 
     @Builder
     public PostsResponseDto(Posts posts, String userName, String profileImage, boolean userGender) {
+        this.postId = posts.getId();
         this.title = posts.getTitle();
         this.category = posts.getCategory();
         this.departure = posts.getDeparture();
