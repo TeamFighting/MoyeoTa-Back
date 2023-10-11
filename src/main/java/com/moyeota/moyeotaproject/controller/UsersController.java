@@ -70,19 +70,19 @@ public class UsersController {
 
     @ApiOperation(value = "학교 인증", notes = "학교 인증을 위한 이메일 코드 전송 API")
     @PostMapping("/school-email")
-    public ResponseDto schoolEmail(HttpServletRequest request, @RequestBody SchoolDto.Request schoolRequestDto) throws IOException {
+    public ResponseDto schoolEmail(HttpServletRequest request, @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto) throws IOException {
         return ResponseUtil.SUCCESS("학교 인증 메일이 전송되었습니다", usersService.schoolEmail(request.getHeader("Authorization"), schoolRequestDto));
     }
 
     @ApiOperation(value = "학교 인증 코드 확인", notes = "인증 코드 확인 API")
     @PostMapping("/school-email/verification")
-    public ResponseDto schoolEmailCheck(HttpServletRequest request, @RequestBody SchoolDto.Request schoolRequestDto) throws IOException {
+    public ResponseDto schoolEmailCheck(HttpServletRequest request, @RequestBody SchoolDto.RequestForUnivCodeCheck schoolRequestDto) throws IOException {
         return ResponseUtil.SUCCESS("학교 인증이 완료되었습니다.", usersService.schoolEmailCheck(request.getHeader("Authorization"), schoolRequestDto));
     }
 
     @ApiOperation(value = "학교 인증 코드 재전송", notes = "학교 인증을 위한 이메일 재전송 API")
     @PostMapping("/school-email/resend")
-    public ResponseDto schoolEmailResend(HttpServletRequest request, @RequestBody SchoolDto.Request schoolRequestDto) throws IOException {
+    public ResponseDto schoolEmailResend(HttpServletRequest request, @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto) throws IOException {
         return ResponseUtil.SUCCESS("학교 인증 메일이 재전송되었습니다", usersService.schoolEmailReset(request.getHeader("Authorization"), schoolRequestDto));
     }
 }

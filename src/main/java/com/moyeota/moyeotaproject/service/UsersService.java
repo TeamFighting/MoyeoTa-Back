@@ -52,10 +52,10 @@ public class UsersService {
         }
     }
 
-    public String schoolEmail(String accessToken, SchoolDto.Request schoolDto) throws IOException {
+    public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) throws IOException {
         usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        Map<String, Object> objectMap = UnivCert.certify(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.isUniv_check());
+        Map<String, Object> objectMap = UnivCert.certify(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), true);
         String success = objectMap.get("success").toString();
         if (success.equals("false")) {
             String message = objectMap.get("message").toString();
@@ -64,7 +64,7 @@ public class UsersService {
         return schoolDto.getEmail();
     }
 
-    public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.Request schoolDto) throws IOException {
+    public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) throws IOException {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         Map<String, Object> objectMap = UnivCert.certifyCode(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.getCode());
@@ -80,7 +80,7 @@ public class UsersService {
                 .certified_date(objectMap.get("certified_date").toString())
                 .build();
     }
-    public String schoolEmailReset(String accessToken, SchoolDto.Request schoolDto) throws IOException {
+    public String schoolEmailReset(String accessToken, SchoolDto.RequestForUnivCode schoolDto) throws IOException {
         UnivCert.clear(apiKey);
         return schoolEmail(accessToken, schoolDto);
     }

@@ -4,6 +4,7 @@ import com.moyeota.moyeotaproject.controller.dto.KakaoApproveResponse;
 import com.moyeota.moyeotaproject.controller.dto.KakaoPayReadyVO;
 import com.moyeota.moyeotaproject.controller.dto.KakaoReadyResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,6 +23,8 @@ public class KakaoPayService {
     private static final String HOST = "https://kapi.kakao.com";
 
     private KakaoPayReadyVO kakaoPayReadyVO;
+    @Value("${KAKAO.REST.API-KEY}")
+    private String apiKey;
 
     public String kakaoPayReady() {
 
@@ -50,9 +53,7 @@ public class KakaoPayService {
 
         try {
             kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST + "/v1/payment/ready"), body, KakaoPayReadyVO.class);
-
             return kakaoPayReadyVO.getNext_redirect_pc_url();
-
         } catch (RestClientException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {

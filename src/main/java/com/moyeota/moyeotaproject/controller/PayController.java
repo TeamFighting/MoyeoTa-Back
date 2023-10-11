@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-// 카카오페이 테스트용
 @RestController
 @RequiredArgsConstructor
 public class PayController {
@@ -17,7 +16,7 @@ public class PayController {
 
     @PostMapping("/kakaoPay")
     public String kakaoPay() {
-        return "redirect:" + kakaoPayService.kakaoPayReady();
+        return kakaoPayService.kakaoPayReady();
     }
 
     @GetMapping("/kakaoPaySuccess")
