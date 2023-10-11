@@ -19,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.print.Doc;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -81,14 +82,15 @@ public class AddressSearchService {
     }
 
     public DurationAndFareResponseDto getDurationAndFare(String origin, String destination) throws ParseException {
-        if(origin == null || origin.equals(""))
+        if (origin == null || origin.equals(""))
             throw new IllegalArgumentException("출발지 정보가 없습니다.");
-        if(destination == null || destination.equals(""))
+        if (destination == null || destination.equals(""))
             throw new IllegalArgumentException("목적지 정보가 없습니다.");
-
+        DocumentDto originDocumentDto = requestAddressSearch(origin);
+        DocumentDto destinationDocumentDto = requestAddressSearch(destination);
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(kakaoUrl);
-        uriComponentsBuilder.queryParam("origin", origin);
-        uriComponentsBuilder.queryParam("destination", destination);
+        uriComponentsBuilder.queryParam("origin", originDocumentDto.getLongitude(), originDocumentDto.getLatitude());
+        uriComponentsBuilder.queryParam("destination", destinationDocumentDto.getLongitude(), destinationDocumentDto.getLatitude());
         URI uri = uriComponentsBuilder.build().encode().toUri();
 
         HttpHeaders headers = new HttpHeaders();
@@ -96,7 +98,7 @@ public class AddressSearchService {
         headers.set("Content-Type", "application/json");
         HttpEntity httpEntity = new HttpEntity<>(headers);
 
-        String result =  restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class).getBody();
+        String result = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class).getBody();
 
         JSONParser parser = new JSONParser();
 
@@ -104,13 +106,13 @@ public class AddressSearchService {
         JSONArray routes = (JSONArray) object.get("routes");
         int taxi = 0;
         int duration = 0;
-        for (int i=0; i<routes.size(); i++){
+        for (int i = 0; i < routes.size(); i++) {
             object = (JSONObject) routes.get(i);
             JSONObject summary = (JSONObject) object.get("summary");
             JSONObject fare = (JSONObject) summary.get("fare");
             taxi = Integer.parseInt(fare.get("taxi").toString());
             JSONArray sections = (JSONArray) object.get("sections");
-            for (int j=0; j<sections.size(); j++){
+            for (int j = 0; j < sections.size(); j++) {
                 object = (JSONObject) sections.get(j);
                 duration = Integer.parseInt(object.get("duration").toString());
             }
