@@ -27,8 +27,9 @@ public class OAuthLoginService {
 
     public TokenInfoDto login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-        Long memberId = findOrCreateMember(oAuthInfoResponse);
-        Users user = usersRepository.findById(memberId).get();
+        Long userId = findOrCreateMember(oAuthInfoResponse);
+        Users user = usersRepository.findById(userId).orElseThrow(()
+                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
         return jwtTokenGenerator.generate(user.getId());
     }
 
@@ -65,8 +66,7 @@ public class OAuthLoginService {
     private Boolean genderStringToBoolean(String gender) {
         if (gender == null) {
             return null;
-        }
-        else if (gender.equals("F")) {
+        } else if (gender.equals("F")) {
             return Boolean.FALSE;
         } else {
             return Boolean.TRUE;

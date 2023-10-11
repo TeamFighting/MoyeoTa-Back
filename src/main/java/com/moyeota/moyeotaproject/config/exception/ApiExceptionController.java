@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.config.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,4 +38,9 @@ public class ApiExceptionController {
         return new ErrorResponse(e.getMessage(), 500, 500);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ErrorResponse illegalExpiredRuntimeExHandler(ExpiredJwtException e) {
+        return new ErrorResponse(e.getMessage(), 400, 400);
+    }
 }
