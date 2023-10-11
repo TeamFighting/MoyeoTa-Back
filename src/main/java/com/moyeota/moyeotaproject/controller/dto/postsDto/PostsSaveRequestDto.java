@@ -21,22 +21,22 @@ import java.time.LocalDateTime;
 @ApiModel(value = "모집글 작성 요청")
 public class PostsSaveRequestDto extends BaseTimeEntity {
 
-    @ApiModelProperty(value = "모집글 제목", example = "서울에서 제주까지 가즈아~~", required = true)
+    @ApiModelProperty(value = "모집글 제목", example = "공릉역에서 어의관 갈사람?", required = true)
     private String title;
 
     @ApiModelProperty(value = "카테고리", example = "일상", required = true)
     private Category category;
 
-    @ApiModelProperty(value = "출발지", example = "서울", required = true)
+    @ApiModelProperty(value = "출발지", example = "공릉역 7호선", required = true)
     private String departure;
 
-    @ApiModelProperty(value = "목적지", example = "제주", required = true)
+    @ApiModelProperty(value = "목적지", example = "서울과학기술대학교 어의관", required = true)
     private String destination;
 
     @ApiModelProperty(value = "출발 시각", example = "2023-09-04 19:57:13.000000", required = true)
     private LocalDateTime departureTime;
 
-    @ApiModelProperty(value = "내용", example = "제주도에 같이 갈 사람은 참가 신청 ㄱㄱ", required = true)
+    @ApiModelProperty(value = "내용", example = "같이 갈 사람 참가 신청 ㄱㄱ", required = true)
     private String content;
 
     @ApiModelProperty(value = "이성 가능여부", example = "YES", required = true)
@@ -54,7 +54,7 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
     @ApiModelProperty(value = "이동 시간(초)", example = "313")
     private int duration;
 
-    @ApiModelProperty(value = "이동 거리(km)", example = "")
+    @ApiModelProperty(value = "이동 거리(km)", example = "18")
     private double distance;
 
     @Builder
