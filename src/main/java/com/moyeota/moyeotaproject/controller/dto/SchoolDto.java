@@ -18,6 +18,21 @@ public class SchoolDto {
 
     @Data
     @Builder
+    public static class RequestForUnivCode {
+        private String email;
+        private String univName;
+    }
+
+    @Data
+    @Builder
+    public static class RequestForUnivCodeCheck {
+        private String email;
+        private String univName;
+        private int code;
+    }
+
+    @Data
+    @Builder
     public static class ResponseSuccess {
         private String univName;
         private String certified_email;
