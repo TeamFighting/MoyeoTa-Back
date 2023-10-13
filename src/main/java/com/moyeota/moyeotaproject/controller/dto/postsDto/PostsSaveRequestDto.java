@@ -24,7 +24,7 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
     @ApiModelProperty(value = "모집글 제목", example = "공릉역에서 어의관 갈사람?", required = true)
     private String title;
 
-    @ApiModelProperty(value = "카테고리", example = "일상", required = true)
+    @ApiModelProperty(value = "카테고리", example = "LIFE", required = true)
     private Category category;
 
     @ApiModelProperty(value = "출발지", example = "공릉역 7호선", required = true)
@@ -54,7 +54,7 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
     @ApiModelProperty(value = "이동 시간(초)", example = "313")
     private int duration;
 
-    @ApiModelProperty(value = "이동 거리(km)", example = "18")
+    @ApiModelProperty(value = "이동 거리(km)", example = "0.5")
     private double distance;
 
     @Builder

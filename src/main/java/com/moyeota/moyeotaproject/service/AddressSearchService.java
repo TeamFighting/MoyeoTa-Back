@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
+import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.AddressDto;
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DocumentDto;
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DurationAndFareResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.KakaoApiResponseDto;
@@ -31,8 +32,9 @@ public class AddressSearchService {
     @Value("${KAKAO.REST.API-KEY}")
     private String apiKey;
 
-    private static final String kakaoUrl = "https://apis-navi.kakaomobility.com/v1/directions";
+    private static final String KAKAO_DURATION_FARE_URL = "https://apis-navi.kakaomobility.com/v1/directions";
     private static final String KAKAO_LOCAL_SEARCH_ADDRESS_URL = "https://dapi.kakao.com/v2/local/search/address.json";
+    private static final String KAKAO_KEYWORD_SEARCH_URL = "https://dapi.kakao.com/v2/local/search/keyword.json";
     private final RestTemplate restTemplate;
 
     public DocumentDto requestAddressSearch(String address) {
@@ -86,7 +88,7 @@ public class AddressSearchService {
         if(destination == null || destination.equals(""))
             throw new IllegalArgumentException("목적지 정보가 없습니다.");
 
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(kakaoUrl);
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(KAKAO_DURATION_FARE_URL);
         uriComponentsBuilder.queryParam("origin", origin);
         uriComponentsBuilder.queryParam("destination", destination);
         URI uri = uriComponentsBuilder.build().encode().toUri();
@@ -122,5 +124,32 @@ public class AddressSearchService {
             throw new IllegalArgumentException("해당 경로에 대한 정보가 없습니다. 출발지=" + origin + ", 목적지=" + destination);
         }
         return durationAndFareResponseDto;
+    }
+
+    public AddressDto findAddress(String keyword) throws ParseException {
+        if(keyword == null || keyword.equals(""))
+            throw new IllegalArgumentException("키워드 정보가 없습니다.");
+
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(KAKAO_KEYWORD_SEARCH_URL);
+        uriComponentsBuilder.queryParam("query", keyword);
+        URI uri = uriComponentsBuilder.build().encode().toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "KakaoAK " + apiKey);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+
+        String result =  restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class).getBody();
+
+        JSONParser parser = new JSONParser();
+
+        JSONObject object = (JSONObject) parser.parse(result);
+        JSONArray documents = (JSONArray) object.get("documents");
+        for (int i=0; i<documents.size(); i++){
+            object = (JSONObject) documents.get(i);
+            if(object.get("place_name").equals(keyword))
+                return new AddressDto((String) object.get("place_name"), (String) object.get("address_name"), (String) object.get("road_address_name"), (String) object.get("x"), (String) object.get("y"));
+        }
+
+        return null;
     }
 }
