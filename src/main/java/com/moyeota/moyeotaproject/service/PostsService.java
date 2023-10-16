@@ -54,9 +54,9 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public PostsResponseDto findById(Long postId) {
+        updateView(postId);
         Posts posts = postsRepository.findById(postId).orElseThrow(()
         -> new IllegalArgumentException("해당 게시글이 없습니다. id="+ postId));
-
         PostsResponseDto responseDto = PostsResponseDto.builder()
                 .posts(posts)
                 .userName(posts.getUser().getName())
@@ -79,7 +79,7 @@ public class PostsService {
         Posts posts = postsRepository.findById(postId).orElseThrow(()
         -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
 
-        posts.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getCategory(), requestDto.getDeparture(), requestDto.getDestination(), requestDto.getDepartureTime(), requestDto.getSameGenderStatus(), requestDto.getVehicle(), requestDto.getNumberOfRecruitment(), requestDto.getFare(), requestDto.getDuration());
+        posts.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getCategory(), requestDto.getDeparture(), requestDto.getDestination(), requestDto.getDepartureTime(), requestDto.getSameGenderStatus(), requestDto.getVehicle(), requestDto.getNumberOfRecruitment(), requestDto.getFare(), requestDto.getDuration(), requestDto.getDistance());
         return postId;
     }
 
@@ -123,6 +123,11 @@ public class PostsService {
         } else {
             throw new RuntimeException("토큰에 해당하는 멤버가 없습니다.");
         }
+    }
+
+    @Transactional
+    public int updateView(Long id) {
+        return postsRepository.updateView(id);
     }
 
 }

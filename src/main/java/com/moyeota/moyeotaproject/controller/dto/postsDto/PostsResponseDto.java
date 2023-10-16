@@ -40,6 +40,8 @@ public class PostsResponseDto {
     private int duration;
     @ApiModelProperty(value = "이동거리(km)")
     private double distance;
+    @ApiModelProperty(value = "조회수")
+    private int view;
     @ApiModelProperty(value = "생성 시각")
     private LocalDateTime createAt;
     @ApiModelProperty(value = "모집글 상태")
@@ -67,6 +69,7 @@ public class PostsResponseDto {
         this.fare = posts.getFare();
         this.duration = posts.getDuration();
         this.distance = posts.getDistance();
+        this.view = posts.getView();
         this.createAt = posts.getCreatedDate();
         this.status = posts.getStatus();
         this.userName = userName;

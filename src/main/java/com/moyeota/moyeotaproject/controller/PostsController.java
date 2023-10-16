@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -143,7 +144,7 @@ public class PostsController {
     //전체 모집글 조회 API (단, 상태가 RECRUITING 모집글만 조회 최신순으로)
     @ApiOperation(value = "모집글 전체 조회", notes = "모집글을 최신순으로 전체 조회하는 API")
     @GetMapping("")
-    public ResponseDto<Slice<PostsResponseDto>> findAllDesc(@ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
+    public ResponseDto<Slice<PostsResponseDto>> findAllDesc(@RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, 3, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllDesc(pageable));
     }
