@@ -62,6 +62,9 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false)
     private double distance;
 
+    @Column(nullable = false)
+    private int view;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId") //FK
     private Users user;
@@ -76,7 +79,7 @@ public class Posts extends BaseTimeEntity {
     }
 
     @Builder
-    public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int numberOfParticipants, int fare, int duration, Users user) {
+    public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int numberOfParticipants, int fare, int duration, int distance, int view, Users user) {
         this.title = title;
         this.category = category;
         this.departure = departure;
@@ -90,6 +93,8 @@ public class Posts extends BaseTimeEntity {
         this.status = PostsStatus.RECRUITING;
         this.fare = fare;
         this.duration = duration;
+        this.distance = distance;
+        this.view = 0;
         this.setUser(user);
     }
 
@@ -102,7 +107,7 @@ public class Posts extends BaseTimeEntity {
         this.status = PostsStatus.RECRUITING;
     }
 
-    public void update(String title, String content, Category category, String departure, String destination, LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int fare, int duration){
+    public void update(String title, String content, Category category, String departure, String destination, LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int fare, int duration, double distance){
         this.title = title;
         this.content = content;
         this.category = category;
@@ -114,6 +119,7 @@ public class Posts extends BaseTimeEntity {
         this.numberOfRecruitment = numberOfRecruitment;
         this.fare = fare;
         this.duration = duration;
+        this.distance = distance;
     }
 
     public void postsComplete() {

@@ -69,7 +69,7 @@ public class UsersPostTest {
     @DisplayName("게시글 업데이트")
     @Test
     public void testPostUpdate() {
-        post.update("Updated 제목", "Updated 내용", Category.COLLEGE, "X", "Y", LocalDateTime.now(), SameGender.NO, Vehicle.일반, 3, 5000, 30);
+        post.update("Updated 제목", "Updated 내용", Category.COLLEGE, "X", "Y", LocalDateTime.now(), SameGender.NO, Vehicle.일반, 3, 5000, 30, 18);
         assertEquals("Updated 제목", post.getTitle());
         assertEquals("Updated 내용", post.getContent());
         assertEquals(Category.COLLEGE, post.getCategory());
@@ -80,6 +80,7 @@ public class UsersPostTest {
         assertEquals(3, post.getNumberOfRecruitment());
         assertEquals(5000, post.getFare());
         assertEquals(30, post.getDuration());
+        assertEquals(18, post.getDistance());
     }
 
     @DisplayName("게시글 상태 완료")
