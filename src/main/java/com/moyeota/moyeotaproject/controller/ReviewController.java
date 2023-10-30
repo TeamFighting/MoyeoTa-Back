@@ -30,7 +30,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     //리뷰 작성 API
-    @ApiOperation(value = "리뷰 작성", notes = "특정 회원의 리뷰 작성 API")
+    @ApiOperation(value = "리뷰 작성", notes = "특정 회원의 리뷰 작성 API(jwt토큰 필요)")
     @PostMapping("/users/{userId}")
     public ResponseDto save(HttpServletRequest request, @ApiParam(value = "평가받는 유저 인덱스 번호") @PathVariable("userId") Long userId, @RequestBody ReviewSaveRequestDto requestDto) {
         Long reviewId = reviewService.save(request.getHeader("Authorization"), userId, requestDto);
@@ -38,7 +38,7 @@ public class ReviewController {
     }
 
     //특정 리뷰 삭제 API
-    @ApiOperation(value = "리뷰 삭제", notes = "특정 회원의 리뷰 삭제 API")
+    @ApiOperation(value = "리뷰 삭제", notes = "특정 회원의 리뷰 삭제 API(jwt토큰 필요)")
     @DeleteMapping("/{reviewId}/users/{userId}") //users/{userId}를 추가해서 jwt 인증을 먼저 해야할듯
     public ResponseDto delete(HttpServletRequest request, @ApiParam(value = "리뷰 인덱스 번호") @PathVariable("reviewId") Long reviewId, @ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
         reviewService.delete(request.getHeader("Authorization"), reviewId);

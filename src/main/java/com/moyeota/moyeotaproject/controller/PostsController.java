@@ -39,7 +39,7 @@ public class PostsController {
     private final ParticipationDetailsService participationDetailsService;
 
     //모집글 작성 API
-    @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API")
+    @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API(jwt토큰 필요)")
     @PostMapping("")
     public ResponseDto<Long> save(HttpServletRequest request, @RequestBody PostsSaveRequestDto requestDto){
         if(requestDto.getTitle() == null || requestDto.getTitle().equals(""))
@@ -65,7 +65,7 @@ public class PostsController {
     }
 
     //모집글 수정 API (단, 제목과 내용만 수정가능)
-    @ApiOperation(value = "모집글 수정", notes = "특정 회원이 모집글을 수정하는 API")
+    @ApiOperation(value = "모집글 수정", notes = "특정 회원이 모집글을 수정하는 API(jwt토큰 필요)")
     @PatchMapping("/{postId}")
     public ResponseDto update(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
         PostsResponseDto post = postsService.findById(postId);
@@ -115,7 +115,7 @@ public class PostsController {
     }
 
     //모집글 삭제 API
-    @ApiOperation(value = "모집글 삭제", notes = "특정 회원이 모집글을 삭제하는 API")
+    @ApiOperation(value = "모집글 삭제", notes = "특정 회원이 모집글을 삭제하는 API(jwt토큰 필요)")
     @DeleteMapping("/{postId}")
     public ResponseDto delete(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         postsService.delete(request.getHeader("Authorization") ,postId);
@@ -123,7 +123,7 @@ public class PostsController {
     }
 
     //모집 마감 API
-    @ApiOperation(value = "모집글 마감", notes = "특정 회원이 모집글을 마감하는 API")
+    @ApiOperation(value = "모집글 마감", notes = "특정 회원이 모집글을 마감하는 API(jwt토큰 필요)")
     @PostMapping("/{postId}/complete")
     public ResponseDto completePost(HttpServletRequest request , @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         postsService.getUserByToken(request.getHeader("Authorization"));
@@ -153,7 +153,6 @@ public class PostsController {
     @ApiOperation(value = "특정 회원 모집글 전체 조회", notes = "특정 회원의 모집글을 전체 조회하는 API")
     @GetMapping("/users/{userId}")
     public ResponseDto<Slice<PostsResponseDto>> findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
-
         Pageable pageable = PageRequest.of(page, 3, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId, pageable));
     }
