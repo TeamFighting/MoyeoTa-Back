@@ -33,7 +33,7 @@ public class ParticipationDetailsController {
     private final PostsService postsService;
 
     //참가 신청 API
-    @ApiOperation(value = "참가 신청", notes = "특정 회원이 특정 모집글에 참가 신청 API")
+    @ApiOperation(value = "참가 신청", notes = "특정 회원이 특정 모집글에 참가 신청 API(jwt토큰 필요)")
     @PostMapping("/posts/{postId}")
     public ResponseDto join(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         PostsResponseDto responseDto = postsService.findById(postId);
@@ -51,7 +51,7 @@ public class ParticipationDetailsController {
     }
 
     //참가 취소 API
-    @ApiOperation(value = "참가 취소", notes = "참가 취소 API")
+    @ApiOperation(value = "참가 취소", notes = "참가 취소 API(jwt토큰 필요)")
     @PostMapping("/{participationDetailsId}") //유저 인증 먼저 하기
     public ResponseDto cancel(HttpServletRequest request, @ApiParam(value = "참가내역 인덱스 번호") @PathVariable("participationDetailsId") Long participationDetailsId) {
         Users user = participationDetailsService.getUserByToken(request.getHeader("Authorization"));
