@@ -49,6 +49,7 @@ public class OAuthLoginService {
                 .name(oAuthInfoResponse.getUsername())
                 .gender(genderStringToBoolean(oAuthInfoResponse.getGender()))
                 .profileImage(oAuthInfoResponse.getProfileImage())
+                .age(oAuthInfoResponse.getAge())
                 .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail()) // Kakaotae 77777@naver.com
                 .password(passwordEncoder.encode(oAuthInfoResponse.getOAuthProvider().name())) // 소셜로그인 정보로 인코딩
                 .build();

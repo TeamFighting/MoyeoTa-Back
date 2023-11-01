@@ -41,6 +41,7 @@ public class Users extends BaseTimeEntity {
     private String password;
     private String status;
     private Boolean gender;
+    private String age;
     private Float averageStarRate;
     private String school;
     private Boolean isAuthenticated;
@@ -82,7 +83,7 @@ public class Users extends BaseTimeEntity {
     }
 
     @Builder
-    public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated) {
+    public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated, String age) {
         this.name = name;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
@@ -94,6 +95,7 @@ public class Users extends BaseTimeEntity {
         this.averageStarRate = averageStarRate;
         this.school = school;
         this.isAuthenticated = isAuthenticated;
+        this.age = age;
     }
 
     @Transactional
