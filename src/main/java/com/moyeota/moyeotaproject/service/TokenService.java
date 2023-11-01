@@ -1,5 +1,7 @@
 package com.moyeota.moyeotaproject.service;
 
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.RefreshTokenRequest;
@@ -22,7 +24,7 @@ public class TokenService {
             Long usersId = jwtTokenProvider.extractSubjectFromJwt(refreshToken);
             return jwtTokenGenerator.generate(usersId);
         } else{
-            throw new RuntimeException("RefreshToken의 기한이 만료되었습니다.");
+            throw new ApiException(ErrorCode.EXPIRED_TOKEN);
         }
     }
 }
