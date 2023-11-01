@@ -1,10 +1,9 @@
 package com.moyeota.moyeotaproject.config.jwtConfig;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,20 +64,20 @@ public class JwtTokenProvider {
                     .getBody();
             String subject = claims.getSubject();
             return Long.parseLong(subject);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
+            throw new ApiException(ErrorCode.WRONG_TYPE_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new ApiException(ErrorCode.EXPIRED_TOKEN);
+        } catch (UnsupportedJwtException e) {
+            throw new ApiException(ErrorCode.UNSUPPORTED_TOKEN);
+        } catch (NullPointerException e) {
+            throw new ApiException(ErrorCode.UNKNOWN_ERROR);
         }
     }
 
     public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (ExpiredJwtException e){
-          return false;
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        return true;
     }
 
     public String getToken(String token) {

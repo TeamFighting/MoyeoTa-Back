@@ -10,13 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(basePackages = "com.moyeota.moyeotaproject.controller")
 public class ApiExceptionController {
 
-//    @ExceptionHandler(RuntimeException.class)
-//    protected Response<ErrorResponse> handleRuntimeException(ApiException apiException) {
-//        return Response.of(
-//                apiException.getStatus(),
-//                ErrorResponse.of(apiException.getErrorCode()));
-//    }
-
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> runtimeExHandler(ApiException e){
         ErrorResponse errorResponse = ErrorResponse.builder()

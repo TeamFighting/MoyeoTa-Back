@@ -14,8 +14,14 @@ public enum ErrorCode {
     POSTS_ALREADY_FINISH(400, "이미 마감된 공고입니다.", 421),
 
     PARTICIPATION_DETAILS_ALREADY_JOIN(400, "이미 참가 신청이 되었습니다.", 422),
-    PARTICIPATION_DETAILS_ALREADY_CANCEL(400, "이미 참가 취소가 되었습니다.", 423);
+    PARTICIPATION_DETAILS_ALREADY_CANCEL(400, "이미 참가 취소가 되었습니다.", 423),
 
+    UNKNOWN_ERROR(500, "토큰이 존재하지 않습니다.", 1001),
+    WRONG_TYPE_TOKEN(500, "변조된 토큰입니다.", 1002),
+    EXPIRED_TOKEN(500, "만료된 토큰입니다.", 1003),
+    UNSUPPORTED_TOKEN(500, "변조된 토큰입니다.", 1004),
+    ACCESS_DENIED(500, "권한이 없습니다.", 1005),
+    NO_INFO(500,"토큰에 해당하는 정보가 없습니다.", 1006);
 
 
     private final int status;
