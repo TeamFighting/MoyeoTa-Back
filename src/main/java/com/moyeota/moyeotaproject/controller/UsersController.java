@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -84,5 +85,11 @@ public class UsersController {
     @PostMapping("/school-email/resend")
     public ResponseDto schoolEmailResend(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto) throws IOException {
         return ResponseUtil.SUCCESS("학교 인증 메일이 재전송되었습니다", usersService.schoolEmailReset(tokenInfo, schoolRequestDto));
+    }
+
+    @ApiOperation(value = "사용자 이미지 변경", notes = "사용자 이미지 변경을 위한 API")
+    @PostMapping("/profile-Image")
+    public ResponseDto profileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
+        return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", usersService.changeProfileImage(tokenInfo, profileImage));
     }
 }

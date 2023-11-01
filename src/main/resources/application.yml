@@ -1,23 +1,28 @@
+spring:
+  profiles:
+    include: secure
+  datasource:
+    driver-class-name:
+      com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/moyeota
+    username: root
+    password: rlaxogjs8312
+#spring:
+#  profiles:
+#    include: secure
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/moyeota
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+---
 #spring:
 #  datasource:
-#    driver-class-name:
-#      com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/moyeota
-#    username: root
-#    password: rlaxogjs8312
+#    url: jdbc:mariadb://moyeota-db.cn9h5fkyju6p.ap-northeast-2.rds.amazonaws.com:3306/moyeota_database
+#    username: admin
+#    password: moyeota!
+#    driver-class-name: org.mariadb.jdbc.Driver
 spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/moyeota
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
----
-spring:
-  datasource:
-    url: jdbc:mariadb://moyeota-db.cn9h5fkyju6p.ap-northeast-2.rds.amazonaws.com:3306/moyeota_database
-    username: admin
-    password: moyeota!
-    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
 #      hbm2ddl:

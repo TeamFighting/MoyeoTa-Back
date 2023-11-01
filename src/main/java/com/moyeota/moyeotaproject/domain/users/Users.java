@@ -96,6 +96,10 @@ public class Users extends BaseTimeEntity {
         this.isAuthenticated = isAuthenticated;
     }
 
+    @Transactional
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
     @Transactional
     public void updateSchoolAuthenticate(String univName) {
