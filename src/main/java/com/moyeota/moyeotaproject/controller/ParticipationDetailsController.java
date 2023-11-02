@@ -43,8 +43,8 @@ public class ParticipationDetailsController {
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
         String accessToken = request.getHeader("Authorization");
         ParticipationDetails participationDetails = participationDetailsService.checkParticipation(accessToken, postId);
-        if(participationDetails != null && participationDetails.getStatus() == ParticipationDetailsStatus.JOIN)
-            throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_JOIN);
+//        if(participationDetails != null && participationDetails.getStatus() == ParticipationDetailsStatus.JOIN)
+//            throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_JOIN);
         Users user = participationDetailsService.getUserByToken(accessToken);
         Long participationDetailsId = participationDetailsService.join(user.getId(), postId);
         return ResponseUtil.SUCCESS("참가 신청이 완료되었습니다.", participationDetailsId);
@@ -55,9 +55,9 @@ public class ParticipationDetailsController {
     @PostMapping("/{participationDetailsId}") //유저 인증 먼저 하기
     public ResponseDto cancel(HttpServletRequest request, @ApiParam(value = "참가내역 인덱스 번호") @PathVariable("participationDetailsId") Long participationDetailsId) {
         Users user = participationDetailsService.getUserByToken(request.getHeader("Authorization"));
-        if(participationDetailsService.cancelParticipation(participationDetailsId)){
-            throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_CANCEL);
-        }
+//        if(participationDetailsService.cancelParticipation(participationDetailsId)){
+//            throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_CANCEL);
+//        }
         ParticipationDetails participationDetails = participationDetailsService.findById(participationDetailsId);
         postsService.cancelParticipation(participationDetails.getPost().getId());
         return ResponseUtil.SUCCESS("참가 취소가 완료되었습니다.", participationDetailsId);
