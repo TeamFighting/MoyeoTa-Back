@@ -55,6 +55,7 @@ public class ParticipationDetailsController {
     @PostMapping("/{participationDetailsId}") //유저 인증 먼저 하기
     public ResponseDto cancel(HttpServletRequest request, @ApiParam(value = "참가내역 인덱스 번호") @PathVariable("participationDetailsId") Long participationDetailsId) {
         Users user = participationDetailsService.getUserByToken(request.getHeader("Authorization"));
+        participationDetailsService.cancelParticipation(participationDetailsId);
 //        if(participationDetailsService.cancelParticipation(participationDetailsId)){
 //            throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_CANCEL);
 //        }

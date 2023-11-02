@@ -108,7 +108,9 @@ public class ParticipationDetailsService {
     public boolean cancelParticipation(Long participationDetailsId) {
         ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId).orElseThrow(()
                 -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
-        return participationDetails.cancel();
+        participationDetailsRepository.delete(participationDetails);
+        return true;
+//        return participationDetails.cancel();
     }
 
     //모집글의 출발 날짜 비교 로직
