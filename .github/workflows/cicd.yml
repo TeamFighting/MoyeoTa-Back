@@ -26,25 +26,32 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-    # - name: init with Gradle
-    #   uses: gradle/gradle-build-action@v2
+    - name: Copy secret
+      env:
+        OCCUPY_SECRET: ${{ secrets.secure_yml }}
+        OCCUPY_SECRET_DIR: src/main/resources
+        OCCUPY_SECRET_DIR_FILE_NAME: application-secure.yml
+      run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
+        
+    - name: init with Gradle
+      uses: gradle/gradle-build-action@v2
 
-    # - name: Build with Gradle
-    #   run: |
-    #     chmod +x ./gradlew
-    #     ./gradlew clean build
+    - name: Build with Gradle
+      run: |
+        chmod +x ./gradlew
+        ./gradlew clean build
 
-    # - name: Set up Docker Buildx
-    #   uses: docker/setup-buildx-action@v1
-    #   with:
-    #     version: v0.7.0
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+        version: v0.7.0
 
-    # - name: Docker build & push to docker repo
-    #   run: |
-    #       pwd
-    #       docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-    #       docker build -t jakeheon/moyeota -f Dockerfile .
-    #       docker push jakeheon/moyeota
+    - name: Docker build & push to docker repo
+      run: |
+          pwd
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+          docker build -t jakeheon/moyeota -f Dockerfile .
+          docker push jakeheon/moyeota
 
     - name: Build and deploy
       uses: appleboy/ssh-action@master
