@@ -7,15 +7,15 @@
 #    url: jdbc:mysql://localhost:3306/moyeota
 #    username: root
 #    password: rlaxogjs8312
-spring:
-  profiles:
-    include: secure
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/moyeota
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
----
+#spring:
+#  profiles:
+#    include: secure
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/moyeota
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#---
 spring:
   profiles:
     include: secure
@@ -69,4 +69,4 @@ oauth:
 # 거리계산을 위한 REST API 키
 KAKAO:
   REST:
-    API-KEY: 25b39eb533332c2b9c961afdbc365d8c
+    API-KEY: ec0f3d7c12dec41f8f917b8b05682e5b
