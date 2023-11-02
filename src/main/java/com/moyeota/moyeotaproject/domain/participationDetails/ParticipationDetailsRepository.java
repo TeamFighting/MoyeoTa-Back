@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface ParticipationDetailsRepository extends JpaRepository<ParticipationDetails, Long> {
 
-    ParticipationDetails findByUserAndPost(Users user, Posts post);
-
 //    @Query("select p from ParticipationDetails p order by p.id desc ")
 //    List<ParticipationDetails> findAllDesc();
 
@@ -19,5 +17,8 @@ public interface ParticipationDetailsRepository extends JpaRepository<Participat
 
     @Query("select p from ParticipationDetails p where p.post.id = :postId and p.status = 'JOIN' order by p.createdDate")
     List<ParticipationDetails> findParticipationDetailsByPostsId(@Param("postId") Long postId);
+
+    @Query("select p from ParticipationDetails p where p.post = :post and p.user = :user and p.status = 'JOIN'")
+    ParticipationDetails findParticipationDetailsByUserAndPost(@Param("user") Users user, @Param("post") Posts post);
 
 }

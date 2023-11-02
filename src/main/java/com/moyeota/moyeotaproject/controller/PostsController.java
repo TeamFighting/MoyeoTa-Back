@@ -8,20 +8,33 @@ import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
-import com.moyeota.moyeotaproject.domain.posts.*;
+import com.moyeota.moyeotaproject.domain.posts.Category;
+import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
+import com.moyeota.moyeotaproject.domain.posts.SameGender;
+import com.moyeota.moyeotaproject.domain.posts.Vehicle;
 import com.moyeota.moyeotaproject.service.ParticipationDetailsService;
 import com.moyeota.moyeotaproject.service.PostsService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "Posts", description = "Post Controller")
 @ApiResponses({

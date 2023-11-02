@@ -4,6 +4,8 @@ import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.AddressDto;
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DocumentDto;
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DurationAndFareResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.KakaoApiResponseDto;
+import java.net.URI;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -19,11 +21,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.print.Doc;
-import java.net.URI;
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
