@@ -60,7 +60,7 @@ public class ParticipationDetailsService {
 
     public ParticipationDetails checkParticipation(String accessToken, Long postId) {
         Users user = getUserByToken(accessToken);
-        return participationDetailsRepository.findByUserAndPost(user, postsRepository.findById(postId).get());
+        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get());
     }
 
     @Transactional(readOnly = true)
