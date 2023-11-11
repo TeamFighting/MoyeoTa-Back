@@ -3,6 +3,7 @@ package com.moyeota.moyeotaproject.controller.dto;
 import lombok.Builder;
 import lombok.Data;
 
+
 public class SchoolDto {
 
     @Data
@@ -27,7 +28,7 @@ public class SchoolDto {
     public static class RequestForUnivCodeCheck {
         private String email;
         private String univName;
-        private int code;
+        private String code;
     }
 
     @Data
@@ -35,7 +36,6 @@ public class SchoolDto {
     public static class ResponseSuccess {
         private String univName;
         private String certified_email;
-        private String certified_date;
     }
 
 }
