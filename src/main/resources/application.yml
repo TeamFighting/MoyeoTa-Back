@@ -70,6 +70,3 @@ oauth:
 KAKAO:
   REST:
     API-KEY: ec0f3d7c12dec41f8f917b8b05682e5b
-server:
-  port: 443
-  port.http: 80
