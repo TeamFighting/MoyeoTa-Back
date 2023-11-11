@@ -11,25 +11,25 @@ import java.io.IOException;
 
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        Integer exception = (Integer)request.getAttribute("exception");
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
+        Integer exception = (Integer) request.getAttribute("exception");
 
-        if(exception == null) {
+        if (exception == null) {
             setResponse(response, ErrorCode.UNKNOWN_ERROR);
         }
         //잘못된 타입의 토큰인 경우
-        else if(exception == 1004) {
+        else if (exception == 1004) {
             setResponse(response, ErrorCode.WRONG_TYPE_TOKEN);
         }
         //토큰 만료된 경우
-        else if(exception == 1005) {
+        else if (exception == 1005) {
             setResponse(response, ErrorCode.EXPIRED_TOKEN);
         }
         //지원되지 않는 토큰인 경우
-        else if(exception == 1006) {
+        else if (exception == 1006) {
             setResponse(response, ErrorCode.UNSUPPORTED_TOKEN);
-        }
-        else {
+        } else {
             setResponse(response, ErrorCode.ACCESS_DENIED);
         }
     }

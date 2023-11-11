@@ -13,8 +13,8 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
     Slice<Posts> findByUser(Users user, Pageable pageable);
 
     @Query("select p from Posts p where p.category = :category and p.status = :status")
-    Slice<Posts> findByCategory(@Param("category") Category category, @Param("status") PostsStatus status, Pageable pageable);
-
+    Slice<Posts> findByCategory(@Param("category") Category category, @Param("status") PostsStatus status,
+                                Pageable pageable);
 
     @Query("select p from Posts p where p.status = :status")
     Slice<Posts> findAllByStatus(Pageable pageable, @Param("status") PostsStatus recruiting);

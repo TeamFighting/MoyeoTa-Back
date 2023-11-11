@@ -38,17 +38,21 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public List<PostsMemberDto> findPostsMembers(Long postId) {
-        List<ParticipationDetails> participationDetails = participationDetailsRepository.findParticipationDetailsByPostsId(postId);
+        List<ParticipationDetails> participationDetails = participationDetailsRepository.findParticipationDetailsByPostsId(
+                postId);
         List<PostsMemberDto> postsMemberDtos = new ArrayList<>();
-        for (int i=0; i<participationDetails.size(); i++)
+        for (int i = 0; i < participationDetails.size(); i++) {
             postsMemberDtos.add(PostsMemberDto.builder().user(participationDetails.get(i).getUser()).build());
+        }
         return postsMemberDtos;
     }
 
     @Transactional(readOnly = true)
     public Slice<PostsResponseDto> findAllDesc(Pageable pageable) {
         Slice<Posts> postsSlice = postsRepository.findAllByStatus(pageable, PostsStatus.RECRUITING);
-        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(), p.getUser().getGender()));
+        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(
+                p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(),
+                        p.getUser().getGender()));
         return postsResponseDtos;
     }
 
@@ -56,7 +60,7 @@ public class PostsService {
     public PostsResponseDto findById(Long postId) {
         updateView(postId);
         Posts posts = postsRepository.findById(postId).orElseThrow(()
-        -> new IllegalArgumentException("해당 게시글이 없습니다. id="+ postId));
+                -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
         PostsResponseDto responseDto = PostsResponseDto.builder()
                 .posts(posts)
                 .userName(posts.getUser().getName())
@@ -66,7 +70,7 @@ public class PostsService {
         return responseDto;
     }
 
-    public Long save(String accessToken, PostsSaveRequestDto requestDto){
+    public Long save(String accessToken, PostsSaveRequestDto requestDto) {
         Users user = getUserByToken(accessToken);
         Posts post = requestDto.toEntity(user);
         Long postId = postsRepository.save(post).getId();
@@ -77,42 +81,49 @@ public class PostsService {
     public Long update(String accessToken, Long postId, PostsUpdateRequestDto requestDto) {
         getUserByToken(accessToken);
         Posts posts = postsRepository.findById(postId).orElseThrow(()
-        -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+                -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
 
-        posts.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getCategory(), requestDto.getDeparture(), requestDto.getDestination(), requestDto.getDepartureTime(), requestDto.getSameGenderStatus(), requestDto.getVehicle(), requestDto.getNumberOfRecruitment(), requestDto.getFare(), requestDto.getDuration(), requestDto.getDistance());
+        posts.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getCategory(),
+                requestDto.getDeparture(), requestDto.getDestination(), requestDto.getDepartureTime(),
+                requestDto.getSameGenderStatus(), requestDto.getVehicle(), requestDto.getNumberOfRecruitment(),
+                requestDto.getFare(), requestDto.getDuration(), requestDto.getDistance());
         return postId;
     }
 
     public void delete(String accessToken, Long postId) {
         getUserByToken(accessToken);
         Posts posts = postsRepository.findById(postId).orElseThrow(()
-        -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+                -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
         postsRepository.delete(posts);
     }
 
     public void completePost(Long postId) {
         Posts post = postsRepository.findById(postId).orElseThrow(()
-        -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+                -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
         post.postsComplete();
     }
 
     public Slice<PostsResponseDto> findMyPostsByIdDesc(Long userId, Pageable pageable) {
         Users user = usersRepository.findById(userId).orElseThrow(()
-        -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
         Slice<Posts> postsSlice = postsRepository.findByUser(user, pageable);
-        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(), p.getUser().getGender()));
+        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(
+                p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(),
+                        p.getUser().getGender()));
         return postsResponseDtos;
     }
 
     public void cancelParticipation(Long postId) {
         Posts post = postsRepository.findById(postId).orElseThrow(()
-        -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+                -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
         post.minusUser();
     }
 
     public Slice<PostsResponseDto> findAllByCategory(Category category, Pageable pageable) {
-        Slice<Posts> postsSlice = postsRepository.findByCategory(category, PostsStatus.RECRUITING ,pageable);
-        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(), p.getUser().getGender()));
+        Slice<Posts> postsSlice = postsRepository.findByCategory(category, PostsStatus.RECRUITING, pageable);
+        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(
+                p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(),
+                        p.getUser().getGender()));
         return postsResponseDtos;
     }
 

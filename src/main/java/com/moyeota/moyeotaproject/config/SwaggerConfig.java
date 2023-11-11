@@ -19,7 +19,7 @@ import java.util.List;
 public class SwaggerConfig {
 
     @Bean
-    public Docket docket(){
+    public Docket docket() {
         return new Docket(DocumentationType.OAS_30)
                 .useDefaultResponseMessages(false)
                 .securityContexts(List.of(this.securityContext()))

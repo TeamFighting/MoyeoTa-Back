@@ -2,11 +2,16 @@ package com.moyeota.moyeotaproject.domain.review;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.users.Users;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -25,7 +30,7 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "userId")
     private Users user;
 
-    public void setUser(Users user){
+    public void setUser(Users user) {
         this.user = user;
         user.getReviews().add(this);
     }

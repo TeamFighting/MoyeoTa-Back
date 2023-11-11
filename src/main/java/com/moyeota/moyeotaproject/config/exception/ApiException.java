@@ -3,7 +3,7 @@ package com.moyeota.moyeotaproject.config.exception;
 import lombok.Getter;
 
 @Getter
-public class ApiException extends RuntimeException{
+public class ApiException extends RuntimeException {
 
     private ErrorCode errorCode;
 

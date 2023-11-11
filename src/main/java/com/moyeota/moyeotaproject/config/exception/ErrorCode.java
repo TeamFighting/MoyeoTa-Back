@@ -21,7 +21,7 @@ public enum ErrorCode {
     EXPIRED_TOKEN(500, "만료된 토큰입니다.", 1003),
     UNSUPPORTED_TOKEN(500, "변조된 토큰입니다.", 1004),
     ACCESS_DENIED(500, "권한이 없습니다.", 1005),
-    NO_INFO(500,"토큰에 해당하는 정보가 없습니다.", 1006);
+    NO_INFO(500, "토큰에 해당하는 정보가 없습니다.", 1006);
 
 
     private final int status;

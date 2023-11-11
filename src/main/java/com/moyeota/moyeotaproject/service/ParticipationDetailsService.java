@@ -36,11 +36,12 @@ public class ParticipationDetailsService {
                 -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 
         Posts post = postsRepository.findById(postId).orElseThrow(()
-        -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+                -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
 
         post.addUser();
-        if(post.getNumberOfParticipants() == post.getNumberOfRecruitment())
+        if (post.getNumberOfParticipants() == post.getNumberOfRecruitment()) {
             post.postsComplete();
+        }
 
         ParticipationDetails participationDetails = ParticipationDetails.builder()
                 .user(user)
@@ -52,25 +53,28 @@ public class ParticipationDetailsService {
 
     @Transactional(readOnly = true)
     public ParticipationDetails findById(Long participationDetailsId) {
-        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId).orElseThrow(()
-        -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + participationDetailsId));
+        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + participationDetailsId));
 
         return participationDetails;
     }
 
     public ParticipationDetails checkParticipation(String accessToken, Long postId) {
         Users user = getUserByToken(accessToken);
-        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get());
+        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user,
+                postsRepository.findById(postId).get());
     }
 
     @Transactional(readOnly = true)
     public List<ParticipationDetailsResponseDto> findAllDesc(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(()
-        -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(user);
+                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(
+                user);
         List<ParticipationDetailsResponseDto> responseDtoList = new ArrayList<>();
-        for (int i=0; i<participationDetailsList.size(); i++) {
-            if(participationDetailsList.get(i).getStatus().equals(ParticipationDetailsStatus.JOIN)) {
+        for (int i = 0; i < participationDetailsList.size(); i++) {
+            if (participationDetailsList.get(i).getStatus().equals(ParticipationDetailsStatus.JOIN)) {
                 ParticipationDetailsResponseDto responseDto = ParticipationDetailsResponseDto.builder()
                         .posts(participationDetailsList.get(i).getPost())
                         .status(participationDetailsList.get(i).getStatus())
@@ -86,11 +90,12 @@ public class ParticipationDetailsService {
     public List<PostsResponseDto> findMyParticipationDetailsDesc(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(user);
+        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(
+                user);
         List<PostsResponseDto> list = new ArrayList<>();
-        for (int i=0; i<participationDetailsList.size(); i++) {
+        for (int i = 0; i < participationDetailsList.size(); i++) {
             Posts post = participationDetailsList.get(i).getPost();
-            if(post.getDepartureTime().isAfter(LocalDateTime.now())) {
+            if (post.getDepartureTime().isAfter(LocalDateTime.now())) {
                 if (post.getUser().getId() != userId) {
                     PostsResponseDto responseDto = PostsResponseDto.builder()
                             .posts(post)
@@ -106,8 +111,9 @@ public class ParticipationDetailsService {
     }
 
     public boolean cancelParticipation(Long participationDetailsId) {
-        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId).orElseThrow(()
-                -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
+        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
         participationDetailsRepository.delete(participationDetails);
         return true;
     }

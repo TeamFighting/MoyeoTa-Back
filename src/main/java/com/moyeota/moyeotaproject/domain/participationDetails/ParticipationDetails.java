@@ -3,11 +3,19 @@ package com.moyeota.moyeotaproject.domain.participationDetails;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.users.Users;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -42,16 +50,18 @@ public class ParticipationDetails extends BaseTimeEntity {
     }
 
     @Builder
-    public ParticipationDetails(Users user, Posts post) {
-        this.status = ParticipationDetailsStatus.JOIN;
+    public ParticipationDetails(ParticipationDetailsStatus status, Users user, Posts post) {
+        this.status = status;
         this.setUser(user);
         this.setPost(post);
     }
-
-    public boolean cancel() {
-        if(this.status == ParticipationDetailsStatus.CANCEL)
-            return true;
-        this.status = ParticipationDetailsStatus.CANCEL;
-        return false;
-    }
+    /**
+     public boolean cancel() {
+     if (this.status == ParticipationDetailsStatus.CANCEL) {
+     return true;
+     }
+     this.status = ParticipationDetailsStatus.CANCEL;
+     return false;
+     }
+     */
 }

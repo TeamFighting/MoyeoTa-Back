@@ -1,7 +1,5 @@
 package com.moyeota.moyeotaproject.config.exception;
 
-import com.moyeota.moyeotaproject.config.exception.Response;
-
 import java.time.LocalDateTime;
 
 public class TypeResponse<T> implements Response<T> {
