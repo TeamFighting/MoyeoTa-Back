@@ -41,8 +41,8 @@ public class UsersService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    public UsersDto.Response addInfo(String authorization, UsersDto.updateDto usersDto) {
-        Users users = getUserByToken(authorization);
+    public UsersDto.Response addInfo(String accessToken, UsersDto.updateDto usersDto) {
+        Users users = getUserByToken(accessToken);
         users.updateUsers(usersDto);
         UsersDto.Response updateDto = UsersDto.Response.builder()
                 .loginId(users.getLoginId())
@@ -57,7 +57,16 @@ public class UsersService {
         return updateDto;
     }
 
-    public Users getUserByToken(String accessToken) {
+    public UsersDto.deleteDto deleteUser(String accessToken) {
+        Users users = getUserByToken(accessToken);
+        UsersDto.deleteDto deleteDto = UsersDto.deleteDto.builder()
+                .name(users.getName())
+                .email(users.getEmail()).build();
+        usersRepository.delete(users);
+        return deleteDto;
+    }
+
+    private Users getUserByToken(String accessToken) {
         Optional<Users> users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken));
         if (users.isPresent()) {
             return users.get();

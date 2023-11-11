@@ -44,5 +44,12 @@ public class UsersDto {
         private Boolean gender;
     }
 
+    @Data
+    @Builder
+    public static class deleteDto {
+        private String name;
+        private String email;
+    }
+
 
 }

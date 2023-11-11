@@ -85,4 +85,10 @@ public class UsersController {
     public ResponseDto profileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
         return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", usersService.changeProfileImage(tokenInfo, profileImage));
     }
+
+    @ApiOperation(value = "사용자 삭제", notes = "사용자 탈퇴를 위한 API")
+    @DeleteMapping()
+    public ResponseDto deleteUser(@RequestHeader(value = "Authorization") String tokenInfo) {
+        return ResponseUtil.SUCCESS("사용자 탈퇴 및 데이터를 삭제하였습니다.", usersService.deleteUser(tokenInfo));
+    }
 }

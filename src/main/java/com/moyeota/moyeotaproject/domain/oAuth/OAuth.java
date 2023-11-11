@@ -24,10 +24,15 @@ public class OAuth extends BaseTimeEntity {
     @JoinColumn(name = "userId")
     private Users user;
 
+    public void setUser(Users user) {
+        this.user = user;
+        user.getOAuths().add(this);
+    }
+
     @Builder
     public OAuth(String name, String email, Users user) {
         this.name = name;
         this.email = email;
-        this.user = user;
+        this.setUser(user);
     }
 }
