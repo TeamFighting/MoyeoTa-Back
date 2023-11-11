@@ -46,19 +46,19 @@ public class Users extends BaseTimeEntity {
     private String school;
     private Boolean isAuthenticated;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<OAuth> oAuths = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Posts> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     public List<Posts> getPosts() {
