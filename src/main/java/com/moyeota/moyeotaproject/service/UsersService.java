@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,12 +75,22 @@ public class UsersService {
     public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) throws IOException {
         usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        Map<String, Object> objectMap = UnivCert.certify(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), true);
-        String success = objectMap.get("success").toString();
-        if (success.equals("false")) {
-            String message = objectMap.get("message").toString();
-            throw new RuntimeException(message);
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        try {
+            simpleMailMessage.setTo(email);
+            simpleMailMessage.setSubject("학교 인증 코드 번호입니다.");
+            String verificationCode = generateVerificationCode();
+            simpleMailMessage.setText(String.format("code : %s", verificationCode));
+            if (schoolEmailRepository.findByEmail(email).isPresent()) {
+                schoolEmailRepository.delete(schoolEmailRepository.findByEmail(email).get());
+            }
+            SchoolEmail schoolEmail = SchoolEmail.builder().email(email).code(verificationCode).build();
+            schoolEmailRepository.save(schoolEmail);
+            javaMailSender.send(simpleMailMessage);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+        return ResponseUtil.SUCCESS("학교 메일이 전송되었습니다.", email);
         return schoolDto.getEmail();
     }
 
