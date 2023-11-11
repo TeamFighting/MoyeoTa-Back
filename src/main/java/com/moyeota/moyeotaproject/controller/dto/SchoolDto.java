@@ -3,7 +3,6 @@ package com.moyeota.moyeotaproject.controller.dto;
 import lombok.Builder;
 import lombok.Data;
 
-
 public class SchoolDto {
 
     @Data

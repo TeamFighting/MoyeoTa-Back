@@ -54,24 +54,30 @@ public class PostsController {
     //모집글 작성 API
     @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API(jwt토큰 필요)")
     @PostMapping("")
-    public ResponseDto<Long> save(HttpServletRequest request, @RequestBody PostsSaveRequestDto requestDto){
-        if(requestDto.getTitle() == null || requestDto.getTitle().equals(""))
+    public ResponseDto<Long> save(HttpServletRequest request, @RequestBody PostsSaveRequestDto requestDto) {
+        if (requestDto.getTitle() == null || requestDto.getTitle().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
+        }
 
-        if(requestDto.getDeparture() == null || requestDto.getDeparture().equals(""))
+        if (requestDto.getDeparture() == null || requestDto.getDeparture().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
+        }
 
-        if(requestDto.getDestination() == null || requestDto.getDestination().equals(""))
+        if (requestDto.getDestination() == null || requestDto.getDestination().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
+        }
 
-        if(requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals(""))
+        if (requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
+        }
 
-        if(requestDto.getVehicle() == null)
+        if (requestDto.getVehicle() == null) {
             requestDto.setVehicle(Vehicle.일반);
+        }
 
-        if(requestDto.getSameGenderStatus() == null)
+        if (requestDto.getSameGenderStatus() == null) {
             requestDto.setSameGenderStatus(SameGender.NO);
+        }
 
         Long postId = postsService.save(request.getHeader("Authorization"), requestDto);
         return ResponseUtil.SUCCESS("모집글 저장에 성공하였습니다.", postId);
@@ -80,68 +86,89 @@ public class PostsController {
     //모집글 수정 API (단, 제목과 내용만 수정가능)
     @ApiOperation(value = "모집글 수정", notes = "특정 회원이 모집글을 수정하는 API(jwt토큰 필요)")
     @PatchMapping("/{postId}")
-    public ResponseDto update(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId, @RequestBody PostsUpdateRequestDto requestDto) {
+    public ResponseDto update(HttpServletRequest request,
+                              @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId,
+                              @RequestBody PostsUpdateRequestDto requestDto) {
         PostsResponseDto post = postsService.findById(postId);
-        if(requestDto.getTitle() == null)
+        if (requestDto.getTitle() == null) {
             requestDto.setTitle(post.getTitle());
-        if(requestDto.getTitle().equals(""))
+        }
+        if (requestDto.getTitle().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
+        }
 
-        if(requestDto.getContent() == null)
+        if (requestDto.getContent() == null) {
             requestDto.setContent(post.getContent());
+        }
 
-        if(requestDto.getCategory() == null)
+        if (requestDto.getCategory() == null) {
             requestDto.setCategory(post.getCategory());
+        }
 
-        if(requestDto.getDeparture() == null)
+        if (requestDto.getDeparture() == null) {
             requestDto.setDeparture(post.getDeparture());
-        if(requestDto.getDeparture().equals(""))
+        }
+        if (requestDto.getDeparture().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
+        }
 
-        if(requestDto.getDestination() == null)
+        if (requestDto.getDestination() == null) {
             requestDto.setDestination(post.getDestination());
-        if(requestDto.getDestination().equals(""))
+        }
+        if (requestDto.getDestination().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
+        }
 
-        if(requestDto.getDepartureTime() == null)
+        if (requestDto.getDepartureTime() == null) {
             requestDto.setDepartureTime(post.getDepartureTime());
+        }
 
-        if(requestDto.getSameGenderStatus() == null)
+        if (requestDto.getSameGenderStatus() == null) {
             requestDto.setSameGenderStatus(post.getSameGenderStatus());
+        }
 
-        if(requestDto.getFare() == 0)
+        if (requestDto.getFare() == 0) {
             requestDto.setFare(post.getFare());
+        }
 
-        if(requestDto.getDuration() == 0)
+        if (requestDto.getDuration() == 0) {
             requestDto.setDuration(post.getDuration());
+        }
 
-        if(requestDto.getDistance() == 0)
+        if (requestDto.getDistance() == 0) {
             requestDto.setDistance(post.getDistance());
+        }
 
-        if(requestDto.getNumberOfRecruitment() == 0)
+        if (requestDto.getNumberOfRecruitment() == 0) {
             requestDto.setNumberOfRecruitment(post.getNumberOfRecruitment());
+        }
 
-        if(requestDto.getVehicle() == null)
+        if (requestDto.getVehicle() == null) {
             requestDto.setVehicle(post.getVehicle());
+        }
 
-        return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.", postsService.update(request.getHeader("Authorization"), postId, requestDto));
+        return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.",
+                postsService.update(request.getHeader("Authorization"), postId, requestDto));
     }
 
     //모집글 삭제 API
     @ApiOperation(value = "모집글 삭제", notes = "특정 회원이 모집글을 삭제하는 API(jwt토큰 필요)")
     @DeleteMapping("/{postId}")
-    public ResponseDto delete(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
-        postsService.delete(request.getHeader("Authorization") ,postId);
+    public ResponseDto delete(HttpServletRequest request,
+                              @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+        postsService.delete(request.getHeader("Authorization"), postId);
         return ResponseUtil.SUCCESS("모집글 삭제에 성공하였습니다.", postId);
     }
 
     //모집 마감 API
     @ApiOperation(value = "모집글 마감", notes = "특정 회원이 모집글을 마감하는 API(jwt토큰 필요)")
     @PostMapping("/{postId}/complete")
-    public ResponseDto completePost(HttpServletRequest request , @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+    public ResponseDto completePost(HttpServletRequest request,
+                                    @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         postsService.getUserByToken(request.getHeader("Authorization"));
-        if(postsService.findById(postId).getStatus() == PostsStatus.COMPLETE)
+        if (postsService.findById(postId).getStatus() == PostsStatus.COMPLETE) {
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
+        }
         postsService.completePost(postId);
         return ResponseUtil.SUCCESS("모집글 공고가 마감되었습니다.", postId);
     }
@@ -165,7 +192,9 @@ public class PostsController {
     //내 모집글 목록 조회 API (최신순으로)
     @ApiOperation(value = "특정 회원 모집글 전체 조회", notes = "특정 회원의 모집글을 전체 조회하는 API")
     @GetMapping("/users/{userId}")
-    public ResponseDto<Slice<PostsResponseDto>> findMyPostsByIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
+    public ResponseDto<Slice<PostsResponseDto>> findMyPostsByIdDesc(
+            @ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId,
+            @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, 3, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findMyPostsByIdDesc(userId, pageable));
     }
@@ -173,7 +202,8 @@ public class PostsController {
     //카테고리별 모집글 조회 API (최신순으로)
     @ApiOperation(value = "카테고리별 모집글 전체 조회", notes = "특정 카테고리의 모집글 전체 최신순으로 조회하는 API")
     @GetMapping("/search")
-    public ResponseDto<Slice<PostsResponseDto>> findAllByCategoryDesc(@RequestParam("category") Category category, @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
+    public ResponseDto<Slice<PostsResponseDto>> findAllByCategoryDesc(@RequestParam("category") Category category,
+                                                                      @ApiParam(value = "페이지 번호(0부터 시작)") @RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, 3, Sort.by("id").descending());
         return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", postsService.findAllByCategory(category, pageable));
     }
@@ -181,7 +211,8 @@ public class PostsController {
     //파티원 목록 조회 API
     @ApiOperation(value = "모집글 파티원 목록 조회", notes = "특정 모집글 파티원 목록을 조회하는 API(본인 포함)")
     @GetMapping("/{postId}/members")
-    public ResponseDto<List<PostsMemberDto>> findPostsMembers(@ApiParam(value = "모집글 인덱스") @PathVariable("postId") Long postId) {
+    public ResponseDto<List<PostsMemberDto>> findPostsMembers(
+            @ApiParam(value = "모집글 인덱스") @PathVariable("postId") Long postId) {
         return ResponseUtil.SUCCESS("모집글 파티원 조회에 성공하였습니다.", postsService.findPostsMembers(postId));
     }
 

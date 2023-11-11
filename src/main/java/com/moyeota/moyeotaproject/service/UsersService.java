@@ -82,10 +82,12 @@ public class UsersService {
     }
 
     @Transactional
-    public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) throws IOException {
+    public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto)
+            throws IOException {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        Map<String, Object> objectMap = UnivCert.certifyCode(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.getCode());
+        Map<String, Object> objectMap = UnivCert.certifyCode(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(),
+                schoolDto.getCode());
         if (objectMap.get("success").toString().equals("false")) {
             String message = objectMap.get("message").toString();
             throw new RuntimeException(message);

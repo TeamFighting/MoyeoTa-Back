@@ -9,7 +9,7 @@ public interface Response<T> {
     }
 
     static <T> Response<T> of(T data) {
-        return  new TypeResponse<>(200, data);
+        return new TypeResponse<>(200, data);
     }
 
     int getStatus();

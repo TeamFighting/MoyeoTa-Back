@@ -65,31 +65,38 @@ public class UsersController {
 
     @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보 수정 및 추가 API")
     @PutMapping("/info")
-    public ResponseDto updateInfo(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateDto usersDto) {
+    public ResponseDto updateInfo(@RequestHeader(value = "Authorization") String tokenInfo,
+                                  @RequestBody UsersDto.updateDto usersDto) {
         return ResponseUtil.SUCCESS("프로필 업데이트를 완료하였습니다", usersService.addInfo(tokenInfo, usersDto));
     }
 
     @ApiOperation(value = "학교 인증", notes = "학교 인증을 위한 이메일 코드 전송 API")
     @PostMapping("/school-email")
-    public ResponseDto schoolEmail(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto) throws IOException {
+    public ResponseDto schoolEmail(@RequestHeader(value = "Authorization") String tokenInfo,
+                                   @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto) throws IOException {
         return ResponseUtil.SUCCESS("학교 인증 메일이 전송되었습니다", usersService.schoolEmail(tokenInfo, schoolRequestDto));
     }
 
     @ApiOperation(value = "학교 인증 코드 확인", notes = "인증 코드 확인 API")
     @PostMapping("/school-email/verification")
-    public ResponseDto schoolEmailCheck(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody SchoolDto.RequestForUnivCodeCheck schoolRequestDto) throws IOException {
+    public ResponseDto schoolEmailCheck(@RequestHeader(value = "Authorization") String tokenInfo,
+                                        @RequestBody SchoolDto.RequestForUnivCodeCheck schoolRequestDto)
+            throws IOException {
         return ResponseUtil.SUCCESS("학교 인증이 완료되었습니다.", usersService.schoolEmailCheck(tokenInfo, schoolRequestDto));
     }
 
     @ApiOperation(value = "학교 인증 코드 재전송", notes = "학교 인증을 위한 이메일 재전송 API")
     @PostMapping("/school-email/resend")
-    public ResponseDto schoolEmailResend(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto) throws IOException {
+    public ResponseDto schoolEmailResend(@RequestHeader(value = "Authorization") String tokenInfo,
+                                         @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto)
+            throws IOException {
         return ResponseUtil.SUCCESS("학교 인증 메일이 재전송되었습니다", usersService.schoolEmailReset(tokenInfo, schoolRequestDto));
     }
 
     @ApiOperation(value = "사용자 이미지 변경", notes = "사용자 이미지 변경을 위한 API")
     @PostMapping("/profile-Image")
-    public ResponseDto profileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
+    public ResponseDto profileImage(@RequestHeader(value = "Authorization") String tokenInfo,
+                                    @RequestParam("file") MultipartFile profileImage) {
         return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", usersService.changeProfileImage(tokenInfo, profileImage));
     }
 }

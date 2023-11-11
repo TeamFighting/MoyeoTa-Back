@@ -29,14 +29,14 @@ public class ReviewService {
     public Long save(String accessToken, Long userId, ReviewSaveRequestDto requestDto) {
         getUserByToken(accessToken);
         Users user = usersRepository.findById(userId).orElseThrow(()
-        -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
         return reviewRepository.save(requestDto.toEntity(user)).getId();
     }
 
     public void delete(String accessToken, Long reviewId) {
         getUserByToken(accessToken);
         Review review = reviewRepository.findById(reviewId).orElseThrow(()
-        -> new IllegalArgumentException("해당 리뷰가 없습니다. id=" + reviewId));
+                -> new IllegalArgumentException("해당 리뷰가 없습니다. id=" + reviewId));
         reviewRepository.delete(review);
     }
 

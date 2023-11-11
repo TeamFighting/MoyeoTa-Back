@@ -79,7 +79,9 @@ public class Posts extends BaseTimeEntity {
     }
 
     @Builder
-    public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int numberOfParticipants, int fare, int duration, int distance, int view, Users user) {
+    public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime,
+                 String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment,
+                 int numberOfParticipants, int fare, int duration, int distance, int view, Users user) {
         this.title = title;
         this.category = category;
         this.departure = departure;
@@ -107,7 +109,9 @@ public class Posts extends BaseTimeEntity {
         this.status = PostsStatus.RECRUITING;
     }
 
-    public void update(String title, String content, Category category, String departure, String destination, LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment, int fare, int duration, double distance){
+    public void update(String title, String content, Category category, String departure, String destination,
+                       LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle,
+                       int numberOfRecruitment, int fare, int duration, double distance) {
         this.title = title;
         this.content = content;
         this.category = category;
@@ -123,8 +127,9 @@ public class Posts extends BaseTimeEntity {
     }
 
     public void postsComplete() {
-        if(this.status == PostsStatus.COMPLETE)
+        if (this.status == PostsStatus.COMPLETE) {
             throw new IllegalStateException("이미 모집이 마감된 글입니다.");
+        }
         this.status = PostsStatus.COMPLETE;
     }
 }
