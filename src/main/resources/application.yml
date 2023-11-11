@@ -37,6 +37,18 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: taeheon7757@gmail.com
+    password: cuql rhai iksw slit
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
 
 logging:
   level:
