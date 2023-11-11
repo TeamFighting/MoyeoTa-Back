@@ -2,19 +2,16 @@ package com.moyeota.moyeotaproject.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.moyeota.moyeotaproject.config.exception.ApiException;
-import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
 import com.moyeota.moyeotaproject.controller.dto.UsersDto;
+import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmail;
+import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
-import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,10 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -37,15 +33,13 @@ public class UsersService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AmazonS3Client amazonS3Client;
     private final JavaMailSender javaMailSender;
+    private final SchoolEmailRepository schoolEmailRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Value("${cloud.aws.region.static}")
     private String region;
-
-    @Value("${univcert.api.key}")
-    String apiKey;
 
     public UsersDto.Response addInfo(String authorization, UsersDto.updateDto usersDto) {
         Users users = getUserByToken(authorization);
@@ -72,10 +66,11 @@ public class UsersService {
         }
     }
 
-    public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) throws IOException {
+    public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) {
         usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        String email = schoolDto.getEmail();
         try {
             simpleMailMessage.setTo(email);
             simpleMailMessage.setSubject("학교 인증 코드 번호입니다.");
@@ -90,7 +85,6 @@ public class UsersService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return ResponseUtil.SUCCESS("학교 메일이 전송되었습니다.", email);
         return schoolDto.getEmail();
     }
 
@@ -98,23 +92,15 @@ public class UsersService {
     public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) throws IOException {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        Map<String, Object> objectMap = UnivCert.certifyCode(apiKey, schoolDto.getEmail(), schoolDto.getUnivName(), schoolDto.getCode());
-        if (objectMap.get("success").toString().equals("false")) {
-            String message = objectMap.get("message").toString();
-            throw new RuntimeException(message);
+        SchoolEmail bySchoolEmail = schoolEmailRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
+        if (bySchoolEmail.getCode().equals(schoolDto.getCode())) {
+            users.updateSchoolAuthenticate(schoolDto.getUnivName());
+            return SchoolDto.ResponseSuccess.builder()
+                    .univName(schoolDto.getUnivName())
+                    .certified_email(schoolDto.getEmail())
+                    .build();
         }
-        // 유저 학교 인증
-        users.updateSchoolAuthenticate(schoolDto.getUnivName());
-        return SchoolDto.ResponseSuccess.builder()
-                .univName(objectMap.get("univName").toString())
-                .certified_email(objectMap.get("certified_email").toString())
-                .certified_date(objectMap.get("certified_date").toString())
-                .build();
-    }
-
-    public String schoolEmailReset(String accessToken, SchoolDto.RequestForUnivCode schoolDto) throws IOException {
-        UnivCert.clear(apiKey);
-        return schoolEmail(accessToken, schoolDto);
+        throw new RuntimeException("코드가 일치하지 않습니다. 코드를 다시 확인하세요");
     }
 
     public String findNameByUserId(Long userId) {
@@ -140,5 +126,10 @@ public class UsersService {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    private String generateVerificationCode() {
+        Random random = new Random();
+        return String.format("%04d", random.nextInt(10000));
     }
 }

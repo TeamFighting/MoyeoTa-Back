@@ -80,12 +80,6 @@ public class UsersController {
         return ResponseUtil.SUCCESS("학교 인증이 완료되었습니다.", usersService.schoolEmailCheck(tokenInfo, schoolRequestDto));
     }
 
-    @ApiOperation(value = "학교 인증 코드 재전송", notes = "학교 인증을 위한 이메일 재전송 API")
-    @PostMapping("/school-email/resend")
-    public ResponseDto schoolEmailResend(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody SchoolDto.RequestForUnivCode schoolRequestDto) throws IOException {
-        return ResponseUtil.SUCCESS("학교 인증 메일이 재전송되었습니다", usersService.schoolEmailReset(tokenInfo, schoolRequestDto));
-    }
-
     @ApiOperation(value = "사용자 이미지 변경", notes = "사용자 이미지 변경을 위한 API")
     @PostMapping("/profile-Image")
     public ResponseDto profileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
