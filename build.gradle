@@ -60,7 +60,7 @@ dependencies {
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
     // Univcert
-    implementation 'com.github.in-seo:univcert:master-SNAPSHOT'
+    // implementation 'com.github.in-seo:univcert:master-SNAPSHOT'
 
     // S3 설정
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
