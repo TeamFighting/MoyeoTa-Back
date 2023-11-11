@@ -8,10 +8,11 @@ import org.springframework.util.MultiValueMap;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 @Getter
 @NoArgsConstructor
-public class GoogleLoginParams implements OAuthLoginParams{
+public class GoogleLoginParams implements OAuthLoginParams {
 
     private String authorizationCode;
 
@@ -27,13 +28,10 @@ public class GoogleLoginParams implements OAuthLoginParams{
         return body;
     }
 
-    public String decodeUrl(String encodedUrl) {
-        String decodedUrl = null;
-        try {
-            decodedUrl = URLDecoder.decode(encodedUrl, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+    private String decodeUrl(String encodedUrl) {
+        if (encodedUrl == null) {
+            throw new IllegalArgumentException("Encoded URL은 null이 될 수 없습니다.");
         }
-        return decodedUrl;
+        return URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8);
     }
 }
