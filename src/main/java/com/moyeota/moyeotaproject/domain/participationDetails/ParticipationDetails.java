@@ -50,8 +50,8 @@ public class ParticipationDetails extends BaseTimeEntity {
     }
 
     @Builder
-    public ParticipationDetails(ParticipationDetailsStatus status, Users user, Posts post) {
-        this.status = status;
+    public ParticipationDetails(Users user, Posts post) {
+        this.status = ParticipationDetailsStatus.JOIN;
         this.setUser(user);
         this.setPost(post);
     }

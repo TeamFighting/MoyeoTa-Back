@@ -73,6 +73,7 @@ public class PostsService {
     public Long save(String accessToken, PostsSaveRequestDto requestDto) {
         Users user = getUserByToken(accessToken);
         Posts post = requestDto.toEntity(user);
+        System.out.println(post.getStatus());
         Long postId = postsRepository.save(post).getId();
         participationDetailsService.join(user.getId(), postId);
         return postId;
