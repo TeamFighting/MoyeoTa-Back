@@ -70,7 +70,7 @@ public class Posts extends BaseTimeEntity {
     @JoinColumn(name = "userId") //FK
     private Users user;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
     //연관관계 메서드
