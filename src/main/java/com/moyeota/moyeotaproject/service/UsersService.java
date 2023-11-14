@@ -41,6 +41,22 @@ public class UsersService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+
+    public UsersDto.Response getInfo(String accessToken) {
+        Users users = getUserByToken(accessToken);
+        UsersDto.Response usersDto = UsersDto.Response.builder()
+                .loginId(users.getLoginId())
+                .name(users.getName())
+                .profileImage(users.getProfileImage())
+                .email(users.getEmail())
+                .status(users.getStatus())
+                .averageStarRate(users.getAverageStarRate())
+                .school(users.getSchool())
+                .gender(users.getGender())
+                .build();
+        return usersDto;
+    }
+
     public UsersDto.Response addInfo(String accessToken, UsersDto.updateDto usersDto) {
         Users users = getUserByToken(accessToken);
         users.updateUsers(usersDto);

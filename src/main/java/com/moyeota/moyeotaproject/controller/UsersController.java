@@ -38,6 +38,12 @@ public class UsersController {
     private final OAuthLoginService oAuthLoginService;
     private final TokenService tokenService;
 
+    @ApiOperation(value = "사용자 정보 받기", notes = "사용자 정보 API")
+    @GetMapping("")
+    public ResponseDto getUserInfo(@RequestHeader(value = "Authorization") String tokenInfo) {
+        return ResponseUtil.SUCCESS("사용자 정보를 받아왔습니다.", usersService.getInfo(tokenInfo));
+    }
+
     @ApiOperation(value = "토큰 재발급", notes = "리프레쉬 토큰을 이용한 토큰 재발급")
     @PostMapping("/refresh-token")
     public ResponseDto generateToken(@RequestBody RefreshTokenRequest request) {
