@@ -45,6 +45,7 @@ public class UsersService {
     public UsersDto.Response getInfo(String accessToken) {
         Users users = getUserByToken(accessToken);
         UsersDto.Response usersDto = UsersDto.Response.builder()
+                .id(users.getId())
                 .loginId(users.getLoginId())
                 .name(users.getName())
                 .profileImage(users.getProfileImage())

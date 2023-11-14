@@ -23,6 +23,7 @@ public class UsersDto {
     @Data
     @Builder
     public static class Response {
+        private Long id;
         private String loginId;
         private String name;
         private String profileImage;
