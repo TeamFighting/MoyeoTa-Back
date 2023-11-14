@@ -27,6 +27,6 @@ public class JwtTokenGenerator {
         String accessToken = jwtTokenProvider.generateToken(subject, accessTokenExpiredAt);
         String refreshToken = jwtTokenProvider.generateToken(subject, refreshTokenExpiredAt);
 
-        return TokenInfoDto.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+        return TokenInfoDto.of(userId, accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
 }
