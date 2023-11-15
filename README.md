@@ -68,7 +68,7 @@
   DistancePriceInfo <거리,가격 정보> <br>
 </details>
 
-[AQueryTool로 이동](https://aquerytool.com/aquerymain/index/?rurl=1b3efc22-a4f6-4189-bed1-912745de38cf&) <br>
+👉🏻[AQueryTool로 이동](https://aquerytool.com/aquerymain/index/?rurl=1b3efc22-a4f6-4189-bed1-912745de38cf&) <br>
 Password : w4nui5
 
  ## 🧑‍💻Author
@@ -81,4 +81,4 @@ Password : w4nui5
 
  ## 📝 License
 
-This project is [MIT](https://github.com/wupitch/wupitch-server/blob/main/LICENSE) licensed.
+This project is [MIT](https://github.com/TeamFighting/MoyeoTa-Back/blob/main/LICENSE) licensed.
