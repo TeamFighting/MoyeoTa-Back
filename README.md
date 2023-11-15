@@ -1,5 +1,6 @@
 <div align=center>
 	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Moyeota!&fontSize=90" />	
+<br>
 <img width="150" alt="모여타" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/2b19dd68-b233-449c-824a-ef32e0e3d159">
 <h1>모여타 - 실시간 택시 메이트 매칭 서비스</h1>
 <img width="230" height="240" alt="image" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/83d4a2b9-7836-4316-83f4-88f63a42fb30">
