@@ -78,7 +78,7 @@ Password : w4nui5
  👀GitHub: [@rhrudska987](https://github.com/rhrudska987) <br>
 
  **Jake-huen** <br>
- 👀GitHub: 추가
+ 👀GitHub: [@Jake-huen](https://github.com/Jake-huen) <br>
 
  ## 📝 License
 
