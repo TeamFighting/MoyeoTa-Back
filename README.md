@@ -1,17 +1,20 @@
 <div align=center>
 	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Moyeota!&fontSize=90" />	
 <br>
-<img width="150" alt="모여타" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/2b19dd68-b233-449c-824a-ef32e0e3d159">
-<h1>모여타 - 실시간 택시 메이트 매칭 서비스</h1>
-<img width="230" height="240" alt="image" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/83d4a2b9-7836-4316-83f4-88f63a42fb30">
-<img width="115" height="240" alt="image" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/a34d60df-bb3d-4c4c-8363-543f559b1b77">
-<img width="230" height="240" alt="image" src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/0daa59e6-d58b-4cb6-8e76-9b4195b8f66b">
+<img src="https://github.com/TeamFighting/Moyeota-Web/assets/108210492/5cb7b142-a345-41a9-9ef2-a57b8b13ff76">
+<h1>모여타 - 실시간 택시 메이트 매칭 서비스</h1> <br> <br>
+<img width="260" height="280" alt="image" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/83d4a2b9-7836-4316-83f4-88f63a42fb30">
+<img width="130" height="280" alt="image" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/a34d60df-bb3d-4c4c-8363-543f559b1b77">
+<img width="260" height="280" alt="image" src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/0daa59e6-d58b-4cb6-8e76-9b4195b8f66b">
 </div>
 
 ## 🎬구동 영상
-<img src="https://user-images.githubusercontent.com/108210492/281268168-9e476162-e9c2-4ead-8cca-0d00fae1f54d.gif">
+<img src="https://github.com/TeamFighting/Moyeota-Web/assets/108210492/d670fd11-a9b9-439f-ad58-209bb120e5eb"> <br>
+**빠른 매칭**
+<br><br>
+<img src="https://github.com/TeamFighting/Moyeota-Web/assets/108210492/a5b90907-de37-454c-bbb8-a9aed8cce514"> <br>
+**택시팟 매칭 신청**
 <br>
-더 추가 예정 <br>
 
 <div>
 	<h2>📚 Tech Stack 📚</h2>
