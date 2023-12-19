@@ -11,6 +11,7 @@ public class UsersDto {
         private String loginId;
         private String password;
         private String name;
+        private String nickName;
         private String profileImage;
         private String phoneNumber;
         private String email;
@@ -26,6 +27,7 @@ public class UsersDto {
         private Long id;
         private String loginId;
         private String name;
+        private String nickName;
         private String profileImage;
         private String phoneNumber;
         private String email;
@@ -39,6 +41,7 @@ public class UsersDto {
     @Builder
     public static class updateDto {
         private String name;
+        private String nickName;
         private String profileImage;
         private String phoneNumber;
         private String email;

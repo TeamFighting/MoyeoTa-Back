@@ -30,6 +30,8 @@ public class Users extends BaseTimeEntity {
     private String name;
     private String profileImage;
 
+    private String nickName;
+
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -76,6 +78,7 @@ public class Users extends BaseTimeEntity {
 
     public void updateUsers(UsersDto.updateDto usersDto) {
         this.name = Optional.ofNullable(usersDto.getName()).orElse(this.name);
+        this.nickName = Optional.ofNullable(usersDto.getNickName()).orElse(this.nickName);
         this.profileImage = Optional.ofNullable(usersDto.getProfileImage()).orElse(this.profileImage);
         this.phoneNumber = Optional.ofNullable(usersDto.getPhoneNumber()).orElse(this.phoneNumber);
         this.email = Optional.ofNullable(usersDto.getEmail()).orElse(this.email);
@@ -83,8 +86,9 @@ public class Users extends BaseTimeEntity {
     }
 
     @Builder
-    public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated, String age) {
+    public Users(String name, String nickName, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated, String age) {
         this.name = name;
+        this.nickName = nickName;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -101,6 +105,10 @@ public class Users extends BaseTimeEntity {
     @Transactional
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public void updateNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     @Transactional

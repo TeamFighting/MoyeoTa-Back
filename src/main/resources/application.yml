@@ -59,7 +59,7 @@ jwt:
 
 oauth:
   kakao:
-    client-id: 3b7fe612c8054aa522c8728a78c2eb28
+    client-id: 6df7210843b7ca9a56d32af1fa86995c #3b7fe612c8054aa522c8728a78c2eb28
     url:
       auth: https://kauth.kakao.com
       api: https://kapi.kakao.com
