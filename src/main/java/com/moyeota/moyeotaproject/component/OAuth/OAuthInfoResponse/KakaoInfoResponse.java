@@ -40,12 +40,12 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
 
     @Override
     public String getEmail() {
-        return kakaoAccount.getEmail();
+        return kakaoAccount.email;
     }
 
     @Override
     public String getUsername() {
-        return kakaoAccount.getName();
+        return kakaoAccount.name;
     }
 
     @Override

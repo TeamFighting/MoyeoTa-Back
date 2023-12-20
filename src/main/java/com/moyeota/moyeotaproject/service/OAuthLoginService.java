@@ -10,6 +10,7 @@ import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthInfoResponse.OAuthInfoResponse;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.OAuthLoginParams;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OAuthLoginService {
 
     private final UsersRepository usersRepository;
@@ -34,7 +36,8 @@ public class OAuthLoginService {
     }
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
-        Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(oAuthInfoResponse.getEmail(), oAuthInfoResponse.getOAuthProvider().name());
+        log.info("oAuthInfoResponse Email", oAuthInfoResponse.getEmail());
+        Optional<OAuth> oAuthEntity = oAuthRepository.findByName(oAuthInfoResponse.getOAuthProvider().name());
         if (oAuthEntity.isPresent()) {
             Users user = oAuthEntity.get().getUser();
             return user.getId();
