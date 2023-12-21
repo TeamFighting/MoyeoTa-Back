@@ -78,3 +78,9 @@ oauth:
 KAKAO:
   REST:
     API-KEY: ec0f3d7c12dec41f8f917b8b05682e5b
+server:
+  port: 443
+  ssl:
+    key-store: classpath:ssl/keystore.p12
+    key-store-type: PKCS12
+    key-store-password: moyeota
