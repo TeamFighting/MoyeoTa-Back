@@ -86,8 +86,14 @@ public class UsersController {
         return ResponseUtil.SUCCESS("학교 인증이 완료되었습니다.", usersService.schoolEmailCheck(tokenInfo, schoolRequestDto));
     }
 
-    @ApiOperation(value = "닉네임 생성 및 수정", notes = "닉네임 생성 및 수정 API")
-    @PostMapping("/nickName")
+    @ApiOperation(value = "닉네임 생성", notes = "닉네임 생성 API")
+    @PostMapping("/nickname")
+    public ResponseDto createNickName(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateDto usersDto) {
+        return ResponseUtil.SUCCESS("닉네임이 생성되었습니다.", usersService.createNickName(tokenInfo, usersDto.getNickName()));
+    }
+
+    @ApiOperation(value = "닉네임 수정", notes = "닉네임 수정 API")
+    @PutMapping("/nickname")
     public ResponseDto updateNickname(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateDto usersDto) {
         return ResponseUtil.SUCCESS("닉네임이 변경되었습니다.", usersService.updateNickName(tokenInfo, usersDto.getNickName()));
     }

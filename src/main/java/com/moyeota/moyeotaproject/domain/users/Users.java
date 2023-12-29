@@ -72,7 +72,7 @@ public class Users extends BaseTimeEntity {
         post.setUser(this);
     }
 
-    public void updateOAuth(OAuth oAuth){
+    public void updateOAuth(OAuth oAuth) {
         oAuths.add(oAuth);
     }
 
@@ -102,16 +102,18 @@ public class Users extends BaseTimeEntity {
         this.age = age;
     }
 
-    @Transactional
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public void createNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
     }
 
-    @Transactional
     public void updateSchoolAuthenticate(String univName) {
         this.school = univName;
         this.isAuthenticated = Boolean.TRUE;

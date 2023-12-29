@@ -162,6 +162,25 @@ public class UsersService {
     }
 
     @Transactional
+    public UsersDto.Response createNickName(String tokenInfo, String nickname) {
+        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
+                -> new RuntimeException("해당하는 유저가 없습니다."));
+        users.createNickName(nickname);
+        UsersDto.Response updateDto = UsersDto.Response.builder()
+                .loginId(users.getLoginId())
+                .name(users.getName())
+                .nickName(users.getNickName())
+                .profileImage(users.getProfileImage())
+                .email(users.getEmail())
+                .status(users.getStatus())
+                .averageStarRate(users.getAverageStarRate())
+                .school(users.getSchool())
+                .gender(users.getGender())
+                .build();
+        return updateDto;
+    }
+
+    @Transactional
     public UsersDto.Response updateNickName(String tokenInfo, String nickname) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
