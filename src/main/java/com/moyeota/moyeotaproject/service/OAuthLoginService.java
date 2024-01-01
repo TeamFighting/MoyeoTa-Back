@@ -36,18 +36,6 @@ public class OAuthLoginService {
     }
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
-        try {
-            log.info("oAuthInfoResponse1 : " + oAuthInfoResponse.getOAuthProvider().name());
-            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getEmail());
-            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getAge());
-            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getProfileImage());
-            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getGender());
-            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getPhoneNumber());
-            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getUsername());
-            // 나머지 로그도 동일하게 처리
-        } catch (Exception e) {
-            log.error("Exception while processing oAuthInfoResponse", e);
-        }
         Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(oAuthInfoResponse.getEmail(), oAuthInfoResponse.getOAuthProvider().name()); // 소셜로그인 이름으로 조회
         if (oAuthEntity.isPresent()) {
             Users user = oAuthEntity.get().getUser();
@@ -58,13 +46,6 @@ public class OAuthLoginService {
     }
 
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
-        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getOAuthProvider().name());
-        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getEmail());
-        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getAge());
-        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getProfileImage());
-        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getGender());
-        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getPhoneNumber());
-        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getUsername());
         Users user = Users.builder()
                 .email(oAuthInfoResponse.getEmail())
                 .name(oAuthInfoResponse.getUsername())
