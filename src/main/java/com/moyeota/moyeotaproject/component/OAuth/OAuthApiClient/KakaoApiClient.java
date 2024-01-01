@@ -47,11 +47,12 @@ public class KakaoApiClient implements OAuthApiClient {
         MultiValueMap<String, String> body = params.makeBody();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
-        System.out.println("body = " + body);
+
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
 
         KakaoTokens response = restTemplate.postForObject(url, request, KakaoTokens.class);
 
+        assert response != null;
         return response.getAccessToken();
     }
 
