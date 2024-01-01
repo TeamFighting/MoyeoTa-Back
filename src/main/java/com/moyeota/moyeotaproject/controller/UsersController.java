@@ -35,7 +35,6 @@ import java.io.IOException;
 public class UsersController {
 
     private final UsersService usersService;
-    private final OAuthLoginService oAuthLoginService;
     private final TokenService tokenService;
 
     @ApiOperation(value = "사용자 정보 받기", notes = "사용자 정보 API")
@@ -51,7 +50,7 @@ public class UsersController {
     }
 
     @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보 수정 및 추가 API")
-    @PostMapping("/info")
+    @PutMapping("/info")
     public ResponseDto updateInfo(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateDto usersDto) {
         return ResponseUtil.SUCCESS("프로필 업데이트를 완료하였습니다", usersService.addInfo(tokenInfo, usersDto));
     }
@@ -70,13 +69,13 @@ public class UsersController {
 
     @ApiOperation(value = "닉네임 생성", notes = "닉네임 생성 API")
     @PostMapping("/nickname")
-    public ResponseDto createNickName(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateDto usersDto) {
+    public ResponseDto createNickName(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateNickName usersDto) {
         return ResponseUtil.SUCCESS("닉네임이 생성되었습니다.", usersService.createNickName(tokenInfo, usersDto.getNickName()));
     }
 
     @ApiOperation(value = "닉네임 수정", notes = "닉네임 수정 API")
     @PutMapping("/nickname")
-    public ResponseDto updateNickname(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateDto usersDto) {
+    public ResponseDto updateNickname(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateNickName usersDto) {
         return ResponseUtil.SUCCESS("닉네임이 변경되었습니다.", usersService.updateNickName(tokenInfo, usersDto.getNickName()));
     }
 

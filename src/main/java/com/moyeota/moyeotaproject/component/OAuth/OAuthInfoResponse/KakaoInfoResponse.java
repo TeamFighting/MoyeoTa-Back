@@ -18,7 +18,10 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class KakaoAccount {
         private KakaoProfile profile;
+        private Boolean email_needs_agreement;
+        private Boolean is_email_valid;
         private String email;
+        private String birthyear;
         private String name; // 카카오계정의 이름
         private Boolean is_email_verified; // 이메일 인증 여부
         private String age_range;
@@ -48,12 +51,15 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
 
     @Override
     public String getEmail() {
+        System.out.println("동의 : " + kakaoAccount.email_needs_agreement);
+        System.out.println("동의 : " + kakaoAccount.is_email_verified);
+        System.out.println("동의 : " + kakaoAccount.is_email_valid);
         return kakaoAccount.email;
     }
 
     @Override
     public String getUsername() {
-        return kakaoAccount.profile.getNickname();
+        return kakaoAccount.profile.nickname;
     }
 
     @Override

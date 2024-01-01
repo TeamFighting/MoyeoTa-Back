@@ -5,6 +5,8 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
 import com.moyeota.moyeotaproject.controller.dto.UsersDto;
+import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
+import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
 import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmail;
 import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
@@ -29,7 +31,7 @@ import java.util.Random;
 public class UsersService {
 
     private final UsersRepository usersRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final OAuthRepository oAuthRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AmazonS3Client amazonS3Client;
     private final JavaMailSender javaMailSender;
@@ -41,7 +43,7 @@ public class UsersService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-
+    @Transactional
     public UsersDto.Response getInfo(String accessToken) {
         Users users = getUserByToken(accessToken);
         UsersDto.Response usersDto = UsersDto.Response.builder()
@@ -51,6 +53,7 @@ public class UsersService {
                 .nickName(users.getNickName())
                 .profileImage(users.getProfileImage())
                 .email(users.getEmail())
+                .age(users.getAge())
                 .status(users.getStatus())
                 .averageStarRate(users.getAverageStarRate())
                 .school(users.getSchool())
@@ -59,9 +62,12 @@ public class UsersService {
         return usersDto;
     }
 
+    @Transactional
     public UsersDto.Response addInfo(String accessToken, UsersDto.updateDto usersDto) {
         Users users = getUserByToken(accessToken);
         users.updateUsers(usersDto);
+        Optional<OAuth> oauthEntity = oAuthRepository.findByUserId(users.getId());
+        oauthEntity.ifPresent(oAuth -> oAuth.updateEmail(usersDto.getEmail()));
         UsersDto.Response updateDto = UsersDto.Response.builder()
                 .loginId(users.getLoginId())
                 .name(users.getName())
@@ -69,6 +75,7 @@ public class UsersService {
                 .profileImage(users.getProfileImage())
                 .email(users.getEmail())
                 .status(users.getStatus())
+                .age(users.getAge())
                 .averageStarRate(users.getAverageStarRate())
                 .school(users.getSchool())
                 .gender(users.getGender())
@@ -76,6 +83,7 @@ public class UsersService {
         return updateDto;
     }
 
+    @Transactional
     public UsersDto.deleteDto deleteUser(String accessToken) {
         Users users = getUserByToken(accessToken);
         UsersDto.deleteDto deleteDto = UsersDto.deleteDto.builder()
@@ -94,6 +102,7 @@ public class UsersService {
         }
     }
 
+    @Transactional
     public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) {
         usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
@@ -117,7 +126,7 @@ public class UsersService {
     }
 
     @Transactional
-    public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) throws IOException {
+    public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         SchoolEmail bySchoolEmail = schoolEmailRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
@@ -166,12 +175,14 @@ public class UsersService {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         users.createNickName(nickname);
+
         UsersDto.Response updateDto = UsersDto.Response.builder()
                 .loginId(users.getLoginId())
                 .name(users.getName())
                 .nickName(users.getNickName())
                 .profileImage(users.getProfileImage())
                 .email(users.getEmail())
+                .age(users.getAge())
                 .status(users.getStatus())
                 .averageStarRate(users.getAverageStarRate())
                 .school(users.getSchool())
@@ -188,6 +199,7 @@ public class UsersService {
         UsersDto.Response updateDto = UsersDto.Response.builder()
                 .loginId(users.getLoginId())
                 .name(users.getName())
+                .age(users.getAge())
                 .nickName(users.getNickName())
                 .profileImage(users.getProfileImage())
                 .email(users.getEmail())

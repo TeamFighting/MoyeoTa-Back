@@ -29,6 +29,10 @@ public class OAuth extends BaseTimeEntity {
         user.getOAuths().add(this);
     }
 
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
     @Builder
     public OAuth(String name, String email, Users user) {
         this.name = name;
