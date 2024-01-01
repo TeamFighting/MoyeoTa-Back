@@ -30,13 +30,14 @@ public class Users extends BaseTimeEntity {
     private String name;
     private String profileImage;
 
+    private String nickName;
+
     private String phoneNumber;
 
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
-    private String loginId;
+    private String loginId; // OAuthProvider + email
     @Column(nullable = false)
     private String password;
     private String status;
@@ -70,10 +71,12 @@ public class Users extends BaseTimeEntity {
         post.setUser(this);
     }
 
-    public void updateOAuth(OAuth oAuth){
+    public void updateOAuth(OAuth oAuth) {
         oAuths.add(oAuth);
     }
 
+    // 프로필 정보 전체 업데이트
+    // TODO: OAuth도 같이 업데이트
     public void updateUsers(UsersDto.updateDto usersDto) {
         this.name = Optional.ofNullable(usersDto.getName()).orElse(this.name);
         this.profileImage = Optional.ofNullable(usersDto.getProfileImage()).orElse(this.profileImage);
@@ -83,8 +86,9 @@ public class Users extends BaseTimeEntity {
     }
 
     @Builder
-    public Users(String name, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated, String age) {
+    public Users(String name, String nickName, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated, String age) {
         this.name = name;
+        this.nickName = nickName;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -98,12 +102,18 @@ public class Users extends BaseTimeEntity {
         this.age = age;
     }
 
-    @Transactional
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 
-    @Transactional
+    public void createNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void updateNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public void updateSchoolAuthenticate(String univName) {
         this.school = univName;
         this.isAuthenticated = Boolean.TRUE;

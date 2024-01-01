@@ -21,6 +21,9 @@ public class NaverLoginParams implements OAuthLoginParams {
     @Override
     public MultiValueMap<String, String> makeBody() {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        if (authorizationCode.contains("&state")) {
+            authorizationCode = authorizationCode.substring(0, authorizationCode.indexOf("&state"));
+        }
         body.add("code", authorizationCode);
         body.add("state", state);
         return body;

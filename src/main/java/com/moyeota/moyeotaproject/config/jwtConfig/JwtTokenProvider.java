@@ -64,12 +64,8 @@ public class JwtTokenProvider {
                     .getBody();
             String subject = claims.getSubject();
             return Long.parseLong(subject);
-        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new ApiException(ErrorCode.WRONG_TYPE_TOKEN);
-        } catch (ExpiredJwtException e) {
-            throw new ApiException(ErrorCode.EXPIRED_TOKEN);
-        } catch (UnsupportedJwtException e) {
-            throw new ApiException(ErrorCode.UNSUPPORTED_TOKEN);
         } catch (NullPointerException e) {
             throw new ApiException(ErrorCode.UNKNOWN_ERROR);
         }

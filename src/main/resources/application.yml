@@ -59,13 +59,14 @@ jwt:
 
 oauth:
   kakao:
-    client-id: 3b7fe612c8054aa522c8728a78c2eb28
+    client-id: 6df7210843b7ca9a56d32af1fa86995c #3b7fe612c8054aa522c8728a78c2eb28
     url:
       auth: https://kauth.kakao.com
       api: https://kapi.kakao.com
   naver:
     secret: 8uZ9AVKzSa
     client-id: YAr_BNWN5Q_wraQE0iCy
+    state: hLiDdL2uhPtsftcU
     url:
       auth: https://nid.naver.com
       api: https://openapi.naver.com
@@ -77,4 +78,10 @@ oauth:
 # 거리계산을 위한 REST API 키
 KAKAO:
   REST:
-    API-KEY: ec0f3d7c12dec41f8f917b8b05682e5b
+    API-KEY: 6df7210843b7ca9a56d32af1fa86995c
+server:
+  port: 443
+  ssl:
+    key-store: classpath:ssl/keystore.p12
+    key-store-type: PKCS12
+    key-store-password: moyeota

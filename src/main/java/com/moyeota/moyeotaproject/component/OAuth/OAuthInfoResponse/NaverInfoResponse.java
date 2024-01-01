@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import lombok.Getter;
 
+import java.util.Calendar;
+
 @Getter
 public class NaverInfoResponse implements OAuthInfoResponse {
 
@@ -15,6 +17,7 @@ public class NaverInfoResponse implements OAuthInfoResponse {
         private String email;
         private String name;
         private String mobile;
+        private String birthyear;
         private String profile_image;
         private String age;
         private String gender; // F: 여자 M: 남자 U: 확인불가
@@ -37,7 +40,20 @@ public class NaverInfoResponse implements OAuthInfoResponse {
 
     @Override
     public String getAge(){
-        return response.getAge();
+        int nowYear = Calendar.getInstance().get(Calendar.YEAR);
+        System.out.println("nowYear = " + nowYear);
+        String birthyear = response.birthyear;
+        System.out.println("birthyear = " + birthyear);
+        try {
+            int birthyearInt = Integer.parseInt(birthyear);
+            System.out.println("birthyearInt = " + birthyearInt);
+            int age = nowYear - birthyearInt;
+            System.out.println("age = " + age);
+            System.out.println("나이: " + age);
+        } catch (NumberFormatException e) {
+            System.out.println("생년월일이 올바른 형식이 아닙니다.");
+        }
+        return String.valueOf(response.age);
     }
 
     @Override

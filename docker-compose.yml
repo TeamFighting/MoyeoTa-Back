@@ -1,0 +1,24 @@
+#version: '3'
+#
+#services:
+#  backend:
+#    container_name: moyeota
+#    build: . # springboot Dockerfile 경로
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - moyeota
+#
+#  nginx:
+#    image: nginx:latest
+#    volumes:
+#      - ./nginx/:/etc/nginx/ # 왼쪽이 로컬 경로, 오른쪽이 도커 컨테이너 내부 경로
+#    ports:
+#      - 80:80
+#    depends_on: # 빌드 시작 순서를 정해주는 옵션
+#      - moyeota
+#    networks:
+#      - moyeota
+#
+#networks: # 컨테이너를 연결할 네트워크
+#  moyeota:
