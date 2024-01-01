@@ -136,7 +136,7 @@ public class UsersService {
     }
 
     @Transactional
-    public String changeProfileImage(String accessToken, MultipartFile profileImage) {
+    public String updateProfileImage(String accessToken, MultipartFile profileImage) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         try {

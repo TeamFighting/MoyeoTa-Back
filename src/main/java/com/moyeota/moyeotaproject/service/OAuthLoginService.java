@@ -36,8 +36,19 @@ public class OAuthLoginService {
     }
 
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
-        log.info("oAuthInfoResponse Email", oAuthInfoResponse.getEmail());
-        Optional<OAuth> oAuthEntity = oAuthRepository.findByName(oAuthInfoResponse.getOAuthProvider().name());
+        try {
+            log.info("oAuthInfoResponse1 : " + oAuthInfoResponse.getOAuthProvider().name());
+            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getEmail());
+            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getAge());
+            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getProfileImage());
+            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getGender());
+            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getPhoneNumber());
+            log.info("oAuthInfoResposne1 : " + oAuthInfoResponse.getUsername());
+            // 나머지 로그도 동일하게 처리
+        } catch (Exception e) {
+            log.error("Exception while processing oAuthInfoResponse", e);
+        }
+        Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(oAuthInfoResponse.getEmail(), oAuthInfoResponse.getOAuthProvider().name()); // 소셜로그인 이름으로 조회
         if (oAuthEntity.isPresent()) {
             Users user = oAuthEntity.get().getUser();
             return user.getId();
@@ -47,14 +58,22 @@ public class OAuthLoginService {
     }
 
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
+        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getOAuthProvider().name());
+        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getEmail());
+        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getAge());
+        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getProfileImage());
+        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getGender());
+        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getPhoneNumber());
+        log.info("oAuthInfoResposne : " + oAuthInfoResponse.getUsername());
         Users user = Users.builder()
                 .email(oAuthInfoResponse.getEmail())
                 .name(oAuthInfoResponse.getUsername())
-                .gender(genderStringToBoolean(oAuthInfoResponse.getGender()))
+                .gender(genderStringToBoolean(oAuthInfoResponse.getGender())) // TODO: 의논해서 바꾸는 것도 좋아보임(Entity에서 String으로 변경)
                 .profileImage(oAuthInfoResponse.getProfileImage())
                 .age(oAuthInfoResponse.getAge())
-                .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail()) // Kakaotae 77777@naver.com
+                .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail()) // Kakao tae77777@naver.com
                 .password(passwordEncoder.encode(oAuthInfoResponse.getOAuthProvider().name())) // 소셜로그인 정보로 인코딩
+                .phoneNumber(oAuthInfoResponse.getPhoneNumber())
                 .build();
         OAuth oAuth = OAuth.builder()
                 .name(oAuthInfoResponse.getOAuthProvider().name())

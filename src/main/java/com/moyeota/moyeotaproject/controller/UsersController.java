@@ -50,24 +50,6 @@ public class UsersController {
         return ResponseUtil.SUCCESS("토큰을 재발급하였습니다.", tokenService.generateRefreshToken(request));
     }
 
-    @ApiOperation(value = "구글 소셜 로그인", notes = "구글 소셜 로그인 회원가입 API")
-    @PostMapping("/google")
-    public ResponseDto loginGoogle(@RequestBody GoogleLoginParams params) {
-        return ResponseUtil.SUCCESS("구글에 로그인 성공하였습니다. ", oAuthLoginService.login(params));
-    }
-
-    @ApiOperation(value = "카카오 소셜 로그인", notes = "카카오 소셜 로그인 회원가입 API")
-    @PostMapping("/kakao")
-    public ResponseDto loginKakao(@RequestBody KakaoLoginParams params) {
-        return ResponseUtil.SUCCESS("카카오 로그인 성공하였습니다. ", oAuthLoginService.login(params));
-    }
-
-    @ApiOperation(value = "네이버 소셜 로그인", notes = "네이버 소셜 로그인 회원가입 API")
-    @PostMapping("/naver")
-    public ResponseDto loginNaver(@RequestBody NaverLoginParams params) {
-        return ResponseUtil.SUCCESS("네이버 로그인 성공하였습니다. ", oAuthLoginService.login(params));
-    }
-
     @ApiOperation(value = "사용자 정보 수정", notes = "사용자 정보 수정 및 추가 API")
     @PostMapping("/info")
     public ResponseDto updateInfo(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UsersDto.updateDto usersDto) {
@@ -100,8 +82,8 @@ public class UsersController {
 
     @ApiOperation(value = "사용자 이미지 변경", notes = "사용자 이미지 변경을 위한 API")
     @PostMapping("/profile-Image")
-    public ResponseDto profileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
-        return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", usersService.changeProfileImage(tokenInfo, profileImage));
+    public ResponseDto updateProfileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
+        return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", usersService.updateProfileImage(tokenInfo, profileImage));
     }
 
     @ApiOperation(value = "사용자 삭제", notes = "사용자 탈퇴를 위한 API")

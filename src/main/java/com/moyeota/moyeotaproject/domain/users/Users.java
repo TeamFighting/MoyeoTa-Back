@@ -34,11 +34,10 @@ public class Users extends BaseTimeEntity {
 
     private String phoneNumber;
 
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
-    private String loginId;
+    private String loginId; // OAuthProvider + email
     @Column(nullable = false)
     private String password;
     private String status;
@@ -76,6 +75,7 @@ public class Users extends BaseTimeEntity {
         oAuths.add(oAuth);
     }
 
+    // 프로필 정보 전체 업데이트
     public void updateUsers(UsersDto.updateDto usersDto) {
         this.name = Optional.ofNullable(usersDto.getName()).orElse(this.name);
         this.nickName = Optional.ofNullable(usersDto.getNickName()).orElse(this.nickName);
