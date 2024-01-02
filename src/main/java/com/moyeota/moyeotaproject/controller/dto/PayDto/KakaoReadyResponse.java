@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.controller.dto;
+package com.moyeota.moyeotaproject.controller.dto.PayDto;
 
 import lombok.Getter;
 import lombok.Setter;

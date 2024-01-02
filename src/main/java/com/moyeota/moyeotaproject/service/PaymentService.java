@@ -9,6 +9,7 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,17 +19,17 @@ import java.math.BigDecimal;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentService {
 
     private final InvoiceRepository invoiceRepository;
     private final PaymentRepository paymentRepository;
     private final IamportClient iamportClient;
 
+    // 결제 요청 데이터 조회
     public RequestPayDto findRequestDto(String orderUid) {
-
-        Invoice invoice = invoiceRepository.findOrderAndPaymentAndMember(orderUid)
+        Invoice invoice = invoiceRepository.findInvoiceAndPaymentAndUsers(orderUid)
                 .orElseThrow(() -> new IllegalArgumentException("주문이 없습니다."));
-
         return RequestPayDto.builder()
                 .buyerName(invoice.getUsers().getName())
                 .buyerEmail(invoice.getUsers().getEmail())
@@ -39,16 +40,17 @@ public class PaymentService {
                 .build();
     }
 
+    // 결제 (콜백)
     public IamportResponse<Payment> paymentByCallback(PaymentCallbackRequest request) {
         try {
             // 결제 단건 조회(아임포트)
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
             // 주문내역 조회
-            Invoice invoice = invoiceRepository.findOrderAndPayment(request.getOrderUid())
+            Invoice invoice = invoiceRepository.findInvoiceAndPayment(request.getOrderUid())
                     .orElseThrow(() -> new IllegalArgumentException("주문 내역이 없습니다."));
 
             // 결제 완료가 아니면
-            if(!iamportResponse.getResponse().getStatus().equals("paid")) {
+            if (!iamportResponse.getResponse().getStatus().equals("paid")) {
                 // 주문, 결제 삭제
                 invoiceRepository.delete(invoice);
                 paymentRepository.delete(invoice.getPayment());
@@ -62,7 +64,7 @@ public class PaymentService {
             int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
 
             // 결제 금액 검증
-            if(iamportPrice != price) {
+            if (iamportPrice != price) {
                 // 주문, 결제 삭제
                 invoiceRepository.delete(invoice);
                 paymentRepository.delete(invoice.getPayment());

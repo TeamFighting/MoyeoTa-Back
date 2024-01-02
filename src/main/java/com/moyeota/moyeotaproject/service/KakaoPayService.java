@@ -1,9 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.controller.dto.KakaoApproveResponse;
-import com.moyeota.moyeotaproject.controller.dto.KakaoPayReadyVO;
-import com.moyeota.moyeotaproject.controller.dto.KakaoReadyResponse;
-import lombok.RequiredArgsConstructor;
+import com.moyeota.moyeotaproject.controller.dto.PayDto.KakaoPayReadyVO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

@@ -30,7 +30,7 @@ public class InvoiceService {
         Invoice invoice = Invoice.builder()
                 .users(users)
                 .price(1000L)
-                .itemName("4333원 결제")
+                .itemName("N빵 결제")
                 .orderUid(UUID.randomUUID().toString())
                 .payment(payment)
                 .build();

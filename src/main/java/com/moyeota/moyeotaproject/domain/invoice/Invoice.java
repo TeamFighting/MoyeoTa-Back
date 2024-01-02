@@ -19,7 +19,7 @@ public class Invoice {
     private String orderUid; // 주문 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "users_id")
     private Users users;
 
     @OneToOne(fetch = FetchType.LAZY)
