@@ -10,32 +10,21 @@ import com.moyeota.moyeotaproject.service.PaymentService;
 import com.moyeota.moyeotaproject.service.UsersService;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@Api(tags = "Pay", description = "Pay Controller")
-@ApiResponses({
-        @ApiResponse(code = 200, message = "API 정상 작동"),
-        @ApiResponse(code = 400, message = "BAD REQUEST"),
-        @ApiResponse(code = 404, message = "NOT FOUND"),
-        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
-})
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/api")
 @Slf4j
-public class PayController {
+public class PayControllerTemp {
     private final KakaoPayService kakaoPayService;
     private final UsersService usersService;
     private final InvoiceService invoiceService;
@@ -51,19 +40,22 @@ public class PayController {
     public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
     }
 
-//    @ApiOperation(value = "구글 소셜 로그인", notes = "구글 소셜 로그인 회원가입 API")
-//    @GetMapping("/order")
-//    public String order(@RequestParam(name = "message", required = false) String message,
-//                        @RequestParam(name = "orderUid", required = false) String id,
-//                        Model model) {
-//
-//        model.addAttribute("message", message);
-//        model.addAttribute("orderUid", id);
-//
-//        return "order";
-//    }
+    @GetMapping("/")
+    public String home() {
+        return "home";
+    }
 
-    @ApiOperation(value = "비용 지불 요청", notes = "방장이 다른 사용자에게 비용 지불 요청하는 API")
+    @GetMapping("/order")
+    public String order(@RequestParam(name = "message", required = false) String message,
+                        @RequestParam(name = "orderUid", required = false) String id,
+                        Model model) {
+
+        model.addAttribute("message", message);
+        model.addAttribute("orderUid", id);
+
+        return "order";
+    }
+
     @PostMapping("/order")
     public String autoOrder() {
         Users users = usersService.autoRegister(); // 사용자 임시 등록
@@ -79,7 +71,6 @@ public class PayController {
         return "redirect:/order?message=" + encode + "&orderUid=" + invoice.getOrderUid();
     }
 
-    @ApiOperation(value = "", notes = " API")
     @GetMapping("/payment/{id}")
     public String paymentPage(@PathVariable(name = "id", required = false) String id, Model model) {
         log.info("id : " + id);
@@ -89,9 +80,8 @@ public class PayController {
         return "payment";
     }
 
-    @ApiOperation(value = "결제 요청", notes = "KG이니시스 결제 요청 API")
     @ResponseBody
-    @PostMapping("/payment/KG")
+    @PostMapping("/payment")
     public ResponseEntity<IamportResponse<Payment>> validationPayment(@RequestBody PaymentCallbackRequest request) {
         IamportResponse<Payment> iamportResponse = paymentService.paymentByCallback(request);
 

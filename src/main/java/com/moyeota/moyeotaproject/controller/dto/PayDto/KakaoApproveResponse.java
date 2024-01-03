@@ -1,5 +1,6 @@
-package com.moyeota.moyeotaproject.controller.dto;
+package com.moyeota.moyeotaproject.controller.dto.PayDto;
 
+import com.moyeota.moyeotaproject.controller.dto.Amount;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

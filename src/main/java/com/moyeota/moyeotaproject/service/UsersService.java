@@ -43,6 +43,15 @@ public class UsersService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+    public Users autoRegister() {
+        Users users = Users.builder()
+                .loginId("5000")
+                .password("1234")
+                .email("example@naver.com")
+                .build();
+        return usersRepository.save(users);
+    }
+
     @Transactional
     public UsersDto.Response getInfo(String accessToken) {
         Users users = getUserByToken(accessToken);
