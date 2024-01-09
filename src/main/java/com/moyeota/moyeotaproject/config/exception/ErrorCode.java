@@ -16,6 +16,9 @@ public enum ErrorCode {
     PARTICIPATION_DETAILS_ALREADY_JOIN(400, "이미 참가 신청이 되었습니다.", 422),
     PARTICIPATION_DETAILS_ALREADY_CANCEL(400, "이미 참가 취소가 되었습니다.", 423),
 
+    TOTAL_DETAIL_EMPTY_DISTANCE(400, "최종 거리를 입력하세요.", 424),
+    TOTAL_DETAIL_EMPTY_PAYMENT(400, "최종 금액을 입력하세요.", 425),
+
     UNKNOWN_ERROR(500, "토큰이 존재하지 않습니다.", 1001),
     WRONG_TYPE_TOKEN(500, "변조된 토큰입니다.", 1002),
     EXPIRED_TOKEN(500, "만료된 토큰입니다.", 1003),

@@ -11,6 +11,8 @@ import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
+import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetail;
+import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class PostsService {
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
     private final ParticipationDetailsRepository participationDetailsRepository;
+    private final TotalDetailRepository totalDetailRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional(readOnly = true)
@@ -142,4 +145,22 @@ public class PostsService {
         return postsRepository.updateView(id);
     }
 
+    public Long calcPrice(Long postId) {
+        List<ParticipationDetails> list = participationDetailsRepository.findParticipationDetailsByPostsId(postId);
+        TotalDetail totalDetail = totalDetailRepository.findByPostId(postId).orElseThrow(()
+                -> new IllegalArgumentException("해당 내역이 없습니다. id=" + postId));
+
+        double sum = 0;
+        double totalPayment = totalDetail.getTotalPayment();
+        for (int i=0; i<list.size(); i++) {
+            sum += list.get(i).getDistance();
+        }
+
+        for (int i=0; i<list.size(); i++) {
+            ParticipationDetails participationDetails = list.get(i);
+            participationDetails.updatePrice((participationDetails.getDistance() / sum) * totalPayment);
+        }
+
+        return postId;
+    }
 }
