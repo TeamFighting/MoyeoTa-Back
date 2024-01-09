@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "Users", description = "Users Controller")
+@Api(tags = "OAuth", description = "OAuth Login Controller")
 @ApiResponses({
         @ApiResponse(code = 200, message = "API 정상 작동"),
         @ApiResponse(code = 400, message = "BAD REQUEST"),
