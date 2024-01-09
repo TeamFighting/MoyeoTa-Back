@@ -51,10 +51,10 @@ public class PostsResponseDto {
     @ApiModelProperty(value = "프로필 이미지")
     private String profileImage;
     @ApiModelProperty(value = "유저 성별")
-    private boolean userGender;
+    private String userGender;
 
     @Builder
-    public PostsResponseDto(Posts posts, String userName, String profileImage, boolean userGender) {
+    public PostsResponseDto(Posts posts, String userName, String profileImage, String userGender) {
         this.postId = posts.getId();
         this.title = posts.getTitle();
         this.category = posts.getCategory();

@@ -41,7 +41,7 @@ public class Users extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
     private String status;
-    private Boolean gender;
+    private String gender;
     private String age;
     private Float averageStarRate;
     private String school;
@@ -86,7 +86,7 @@ public class Users extends BaseTimeEntity {
     }
 
     @Builder
-    public Users(String name, String nickName, String profileImage, String phoneNumber, String email, String loginId, String password, String status, Boolean gender, Float averageStarRate, String school, Boolean isAuthenticated, String age) {
+    public Users(String name, String nickName, String profileImage, String phoneNumber, String email, String loginId, String password, String status, String gender, Float averageStarRate, String school, Boolean isAuthenticated, String age) {
         this.name = name;
         this.nickName = nickName;
         this.profileImage = profileImage;

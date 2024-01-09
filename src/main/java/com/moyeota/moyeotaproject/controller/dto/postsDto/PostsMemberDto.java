@@ -15,7 +15,7 @@ public class PostsMemberDto {
     @ApiModelProperty(value = "프로필 이미지")
     private String profileImage;
     @ApiModelProperty(value = "유저 성별")
-    private boolean userGender;
+    private String userGender;
 
     @Builder
     public PostsMemberDto(Users user) {

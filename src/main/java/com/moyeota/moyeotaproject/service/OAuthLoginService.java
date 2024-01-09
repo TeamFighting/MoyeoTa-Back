@@ -13,12 +13,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class OAuthLoginService {
 
     private final UsersRepository usersRepository;
@@ -62,7 +64,7 @@ public class OAuthLoginService {
         Users user = Users.builder()
                 .email(email)
                 .name(oAuthInfoResponse.getUsername())
-                .gender(genderStringToBoolean(oAuthInfoResponse.getGender())) // TODO: 의논해서 바꾸는 것도 좋아보임(Entity에서 String으로 변경)
+                .gender(oAuthInfoResponse.getGender()) // TODO: 의논해서 바꾸는 것도 좋아보임(Entity에서 String으로 변경)
                 .profileImage(oAuthInfoResponse.getProfileImage())
                 .age(oAuthInfoResponse.getAge())
                 .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail()) // Kakao tae77777@naver.com
@@ -81,13 +83,13 @@ public class OAuthLoginService {
     }
 
     // TODO: 논의 후 변경!
-    private Boolean genderStringToBoolean(String gender) {
-        if (gender == null) {
-            return null;
-        } else if (gender.equals("F")) {
-            return Boolean.FALSE;
-        } else {
-            return Boolean.TRUE;
-        }
-    }
+//    private Boolean genderStringToBoolean(String gender) {
+//        if (gender == null) {
+//            return null;
+//        } else if (gender.equals("F")) {
+//            return Boolean.FALSE;
+//        } else {
+//            return Boolean.TRUE;
+//        }
+//    }
 }

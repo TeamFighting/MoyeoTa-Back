@@ -28,6 +28,7 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class UsersService {
 
     private final UsersRepository usersRepository;

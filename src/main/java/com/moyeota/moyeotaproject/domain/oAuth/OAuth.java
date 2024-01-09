@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class OAuth extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

@@ -19,7 +19,7 @@ public class UsersDto {
         private String status;
         private Float averageStarRate;
         private String school;
-        private Boolean gender;
+        private String gender;
     }
 
     @Data
@@ -36,7 +36,7 @@ public class UsersDto {
         private Float averageStarRate;
         private String school;
         private String age;
-        private Boolean gender;
+        private String gender;
     }
 
     @Data
@@ -47,7 +47,7 @@ public class UsersDto {
         private String phoneNumber;
         private String age;
         private String email;
-        private Boolean gender;
+        private String gender;
     }
 
     @Data
