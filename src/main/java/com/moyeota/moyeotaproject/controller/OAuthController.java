@@ -5,6 +5,7 @@ import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.KakaoLoginPar
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.NaverLoginParams;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.controller.dto.OAuthEmailDto;
 import com.moyeota.moyeotaproject.service.OAuthLoginService;
 import com.moyeota.moyeotaproject.service.TokenService;
 import com.moyeota.moyeotaproject.service.UsersService;
@@ -51,5 +52,17 @@ public class OAuthController {
     @PostMapping("/naver")
     public ResponseDto loginNaver(@RequestBody NaverLoginParams params) {
         return ResponseUtil.SUCCESS("네이버 로그인 성공하였습니다. ", oAuthLoginService.login(params));
+    }
+
+    @ApiOperation(value = "이메일 소셜 회원가입", notes = "이메일 전송 시 회원가입 API")
+    @PostMapping("/signup")
+    public ResponseDto signup(@RequestBody OAuthEmailDto oAuthEmailDto) {
+        System.out.println("oAuthEmailDto = " + oAuthEmailDto);
+        String message = oAuthEmailDto.getOauth() +
+                " " +
+                oAuthEmailDto.getEmail() +
+                "로 회원가입 되었습니다.";
+        System.out.println(message);
+        return ResponseUtil.SUCCESS(message, oAuthLoginService.signup(oAuthEmailDto));
     }
 }

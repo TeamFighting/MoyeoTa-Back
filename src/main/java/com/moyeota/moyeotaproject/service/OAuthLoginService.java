@@ -1,7 +1,11 @@
 package com.moyeota.moyeotaproject.service;
 
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
+import com.moyeota.moyeotaproject.controller.dto.OAuthEmailDto;
 import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
+import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
@@ -40,11 +44,11 @@ public class OAuthLoginService {
     private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
         String oAuthProvider = oAuthInfoResponse.getOAuthProvider().name();
         String userEmail = oAuthInfoResponse.getEmail();
+        if (userEmail == null) {
+            throw new ApiException(ErrorCode.NO_EMAIL_ERROR);
+        }
 
-        // 이메일이 없는 경우 또는 소셜로그인 이름으로 조회
-        Optional<OAuth> oAuthEntity = userEmail == null ?
-                Optional.empty() :
-                oAuthRepository.findByEmailAndName(userEmail, oAuthProvider);
+        Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(userEmail, oAuthProvider);
 
         if (oAuthEntity.isPresent()) {
             Users user = oAuthEntity.get().getUser();
@@ -55,16 +59,11 @@ public class OAuthLoginService {
     }
 
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
-        String email = "";
-        if (oAuthInfoResponse.getEmail() == null && oAuthInfoResponse.getOAuthProvider().name().equals("KAKAO")) {
-            email = "@kakao.com";
-        } else {
-            email = oAuthInfoResponse.getEmail();
-        }
+        String email = oAuthInfoResponse.getEmail();
         Users user = Users.builder()
                 .email(email)
                 .name(oAuthInfoResponse.getUsername())
-                .gender(oAuthInfoResponse.getGender()) // TODO: 의논해서 바꾸는 것도 좋아보임(Entity에서 String으로 변경)
+                .gender(oAuthInfoResponse.getGender())
                 .profileImage(oAuthInfoResponse.getProfileImage())
                 .age(oAuthInfoResponse.getAge())
                 .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail()) // Kakao tae77777@naver.com
@@ -82,14 +81,19 @@ public class OAuthLoginService {
         return user.getId();
     }
 
-    // TODO: 논의 후 변경!
-//    private Boolean genderStringToBoolean(String gender) {
-//        if (gender == null) {
-//            return null;
-//        } else if (gender.equals("F")) {
-//            return Boolean.FALSE;
-//        } else {
-//            return Boolean.TRUE;
-//        }
-//    }
+    public Long signup(OAuthEmailDto oAuthEmailDto) {
+        Users user = Users.builder()
+                .loginId(oAuthEmailDto.getOauth() + " " + oAuthEmailDto.getEmail())
+                .password(passwordEncoder.encode(oAuthEmailDto.getOauth()))
+                .email(oAuthEmailDto.getEmail())
+                .build();
+        usersRepository.save(user);
+        OAuth oAuth = OAuth.builder()
+                .name(oAuthEmailDto.getOauth())
+                .email(oAuthEmailDto.getEmail())
+                .user(user)
+                .build();
+        oAuthRepository.save(oAuth);
+        return user.getId();
+    }
 }

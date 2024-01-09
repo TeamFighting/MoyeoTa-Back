@@ -10,30 +10,31 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(basePackages = "com.moyeota.moyeotaproject.controller")
 public class ApiExceptionController {
 
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> runtimeExHandler(ApiException e) {
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponse> handleApiException(ApiException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(e.getErrorCode().getCode())
                 .status(e.getErrorCode().getStatus())
-                .message(e.getErrorCode().getMessage()).build();
+                .message(e.getErrorCode().getMessage())
+                .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResponse illegalExHandler(IllegalArgumentException e) {
-        return new ErrorResponse(e.getMessage(), 500, 500);
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 500, 500);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
-    public ErrorResponse illegalRuntimeExHandler(RuntimeException e) {
-        return new ErrorResponse(e.getMessage(), 500, 500);
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 500, 500);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ExpiredJwtException.class)
-    public ErrorResponse illegalExpiredRuntimeExHandler(ExpiredJwtException e) {
-        return new ErrorResponse(e.getMessage(), 400, 400);
+    public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 400, 400);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
