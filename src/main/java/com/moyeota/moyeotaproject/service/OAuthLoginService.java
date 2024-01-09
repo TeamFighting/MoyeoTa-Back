@@ -3,11 +3,8 @@ package com.moyeota.moyeotaproject.service;
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
-import com.moyeota.moyeotaproject.controller.dto.OAuthEmailDto;
 import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
-import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
-import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
@@ -35,13 +32,12 @@ public class OAuthLoginService {
 
     public TokenInfoDto login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-        Long userId = findOrCreateMember(oAuthInfoResponse);
-        Users user = usersRepository.findById(userId).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+        Long userId = findOrCreateUserAndOAuth(oAuthInfoResponse);
+        Users user = getUserById(userId);
         return jwtTokenGenerator.generate(user.getId());
     }
 
-    private Long findOrCreateMember(OAuthInfoResponse oAuthInfoResponse) {
+    private Long findOrCreateUserAndOAuth(OAuthInfoResponse oAuthInfoResponse) {
         String oAuthProvider = oAuthInfoResponse.getOAuthProvider().name();
         String userEmail = oAuthInfoResponse.getEmail();
         if (userEmail == null) {
@@ -50,50 +46,46 @@ public class OAuthLoginService {
 
         Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(userEmail, oAuthProvider);
 
-        if (oAuthEntity.isPresent()) {
-            Users user = oAuthEntity.get().getUser();
-            return user.getId();
-        } else {
-            return newMember(oAuthInfoResponse);
-        }
+        return oAuthEntity.map(oAuth -> oAuth.getUser().getId())
+                .orElseGet(() -> createUserAndOAuth(oAuthInfoResponse));
     }
 
-    private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
-        String email = oAuthInfoResponse.getEmail();
-        Users user = Users.builder()
-                .email(email)
+    private Long createUserAndOAuth(OAuthInfoResponse oAuthInfoResponse) {
+        Users user = createUserFromOAuthInfo(oAuthInfoResponse);
+        OAuth oAuth = createOAuthFromOAuthInfo(user, oAuthInfoResponse);
+        saveUserAndOAuth(user, oAuth);
+        return user.getId();
+    }
+
+    private Users createUserFromOAuthInfo(OAuthInfoResponse oAuthInfoResponse) {
+        return Users.builder()
+                .email(oAuthInfoResponse.getEmail())
                 .name(oAuthInfoResponse.getUsername())
                 .gender(oAuthInfoResponse.getGender())
                 .profileImage(oAuthInfoResponse.getProfileImage())
                 .age(oAuthInfoResponse.getAge())
-                .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail()) // Kakao tae77777@naver.com
-                .password(passwordEncoder.encode(oAuthInfoResponse.getOAuthProvider().name())) // 소셜로그인 정보로 인코딩
+                .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail())
+                .password(passwordEncoder.encode(oAuthInfoResponse.getOAuthProvider().name()))
                 .phoneNumber(oAuthInfoResponse.getPhoneNumber())
                 .build();
-        OAuth oAuth = OAuth.builder()
-                .name(oAuthInfoResponse.getOAuthProvider().name())
-                .email(email)
-                .user(user)
-                .build();
-        user.updateOAuth(oAuth);
-        usersRepository.save(user);
-        oAuthRepository.save(oAuth);
-        return user.getId();
     }
 
-    public Long signup(OAuthEmailDto oAuthEmailDto) {
-        Users user = Users.builder()
-                .loginId(oAuthEmailDto.getOauth() + " " + oAuthEmailDto.getEmail())
-                .password(passwordEncoder.encode(oAuthEmailDto.getOauth()))
-                .email(oAuthEmailDto.getEmail())
-                .build();
-        usersRepository.save(user);
-        OAuth oAuth = OAuth.builder()
-                .name(oAuthEmailDto.getOauth())
-                .email(oAuthEmailDto.getEmail())
+    private OAuth createOAuthFromOAuthInfo(Users user, OAuthInfoResponse oAuthInfoResponse) {
+        return OAuth.builder()
+                .name(oAuthInfoResponse.getOAuthProvider().name())
+                .email(oAuthInfoResponse.getEmail())
                 .user(user)
                 .build();
-        oAuthRepository.save(oAuth);
-        return user.getId();
     }
+
+    private void saveUserAndOAuth(Users user, OAuth oAuth) {
+        usersRepository.save(user);
+        oAuthRepository.save(oAuth);
+    }
+
+    private Users getUserById(Long userId) {
+        return usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+    }
+
 }
