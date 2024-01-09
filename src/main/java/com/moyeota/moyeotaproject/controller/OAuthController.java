@@ -6,8 +6,6 @@ import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.NaverLoginPar
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.service.OAuthLoginService;
-import com.moyeota.moyeotaproject.service.TokenService;
-import com.moyeota.moyeotaproject.service.UsersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

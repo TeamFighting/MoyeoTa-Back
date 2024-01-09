@@ -76,7 +76,6 @@ public class Users extends BaseTimeEntity {
     }
 
     // 프로필 정보 전체 업데이트
-    // TODO: OAuth도 같이 업데이트
     public void updateUsers(UsersDto.updateDto usersDto) {
         this.name = Optional.ofNullable(usersDto.getName()).orElse(this.name);
         this.profileImage = Optional.ofNullable(usersDto.getProfileImage()).orElse(this.profileImage);
@@ -100,6 +99,13 @@ public class Users extends BaseTimeEntity {
         this.school = school;
         this.isAuthenticated = isAuthenticated;
         this.age = age;
+    }
+
+    @Builder
+    public Users(String loginId, String password, String email) {
+        this.loginId = loginId;
+        this.password = password;
+        this.email = email;
     }
 
     public void updateProfileImage(String profileImage) {
