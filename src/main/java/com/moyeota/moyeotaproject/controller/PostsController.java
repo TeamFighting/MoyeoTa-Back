@@ -216,4 +216,11 @@ public class PostsController {
         return ResponseUtil.SUCCESS("모집글 파티원 조회에 성공하였습니다.", postsService.findPostsMembers(postId));
     }
 
+    //택시 이용 종료 및 더치페이 금액 계산
+    @ApiOperation(value = "택시 이용 종료시 더치페이 금액 계산")
+    @PostMapping("/calculation/{postId}")
+    public ResponseDto<Long> calcPrice(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+        return ResponseUtil.SUCCESS("더치페이 금액 계산에 성공하였습니다.", postsService.calcPrice(postId));
+    }
+
 }

@@ -2,22 +2,20 @@ package com.moyeota.moyeotaproject.service;
 
 
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.ParticipationDetailsResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.participationDetailsDto.DistancePriceDto;
+import com.moyeota.moyeotaproject.controller.dto.participationDetailsDto.ParticipationDetailsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsStatus;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
-import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -116,6 +114,25 @@ public class ParticipationDetailsService {
                         -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
         participationDetailsRepository.delete(participationDetails);
         return true;
+    }
+
+    public Long saveDistance(Long participationDetailsId, double distance) {
+        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
+        participationDetails.updateDistance(distance);
+        return participationDetailsId;
+    }
+
+    public DistancePriceDto findDistanceAndPrice(Long participationDetailsId) {
+        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
+        DistancePriceDto distancePriceDto = DistancePriceDto.builder()
+                .distance(participationDetails.getDistance())
+                .price(participationDetails.getPrice())
+                .build();
+        return distancePriceDto;
     }
 
     //모집글의 출발 날짜 비교 로직

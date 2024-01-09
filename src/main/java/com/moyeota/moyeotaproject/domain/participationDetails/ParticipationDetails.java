@@ -30,6 +30,10 @@ public class ParticipationDetails extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ParticipationDetailsStatus status;
 
+    private double distance;
+
+    private double price;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private Users user;
@@ -47,6 +51,14 @@ public class ParticipationDetails extends BaseTimeEntity {
     public void setPost(Posts post) {
         this.post = post;
         post.getParticipationDetails().add(this);
+    }
+
+    public void updateDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public void updatePrice(double price) {
+        this.price = price;
     }
 
     @Builder
