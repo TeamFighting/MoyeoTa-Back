@@ -60,8 +60,8 @@ public class ParticipationDetailsService {
 
     public ParticipationDetails checkParticipation(String accessToken, Long postId) {
         Users user = getUserByToken(accessToken);
-        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user,
-                postsRepository.findById(postId).get());
+        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get()).orElseThrow(
+                () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
     }
 
     @Transactional(readOnly = true)
@@ -108,26 +108,34 @@ public class ParticipationDetailsService {
 
     }
 
-    public boolean cancelParticipation(Long participationDetailsId) {
-        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
-                .orElseThrow(()
-                        -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
+    public boolean cancelParticipation(Long postId, Users user) {
+        Posts post = postsRepository.findById(postId).orElseThrow(()
+                -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+        ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
+                user, post).orElseThrow(
+                        () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
         participationDetailsRepository.delete(participationDetails);
         return true;
     }
 
-    public Long saveDistance(Long participationDetailsId, double distance) {
-        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
-                .orElseThrow(()
-                        -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
+    public Long saveDistance(Users user, Long postId, double distance) {
+        Posts post = postsRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+        ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
+                user, post).orElseThrow(
+                        () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
         participationDetails.updateDistance(distance);
-        return participationDetailsId;
+        return participationDetails.getId();
     }
 
-    public DistancePriceDto findDistanceAndPrice(Long participationDetailsId) {
-        ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
+    public DistancePriceDto findDistanceAndPrice(Long userId, Long postId) {
+        Users user = usersRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+        Posts post = postsRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+        ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(user, post)
                 .orElseThrow(()
-                        -> new IllegalArgumentException("해당 참가내역이 없습니다. id=" + participationDetailsId));
+                        -> new IllegalArgumentException("해당 참가내역이 없습니다."));
         DistancePriceDto distancePriceDto = DistancePriceDto.builder()
                 .distance(participationDetails.getDistance())
                 .price(participationDetails.getPrice())

@@ -2,11 +2,11 @@ package com.moyeota.moyeotaproject.domain.participationDetails;
 
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.users.Users;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface ParticipationDetailsRepository extends JpaRepository<ParticipationDetails, Long> {
 
@@ -16,6 +16,6 @@ public interface ParticipationDetailsRepository extends JpaRepository<Participat
     List<ParticipationDetails> findParticipationDetailsByPostsId(@Param("postId") Long postId);
 
     @Query("select p from ParticipationDetails p where p.post = :post and p.user = :user and p.status = 'JOIN'")
-    ParticipationDetails findParticipationDetailsByUserAndPost(@Param("user") Users user, @Param("post") Posts post);
+    Optional<ParticipationDetails> findParticipationDetailsByUserAndPost(@Param("user") Users user, @Param("post") Posts post);
 
 }
