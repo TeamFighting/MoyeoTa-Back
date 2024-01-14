@@ -1,8 +1,12 @@
 package com.moyeota.moyeotaproject.controller.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@Builder
 public class UsersDto {
 
     @Data
@@ -52,6 +56,8 @@ public class UsersDto {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class updateNickName {
         private String nickName;
     }

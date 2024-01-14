@@ -187,6 +187,7 @@ public class UsersService {
         users.createNickName(nickname);
 
         UsersDto.Response updateDto = UsersDto.Response.builder()
+                .id(users.getId())
                 .loginId(users.getLoginId())
                 .name(users.getName())
                 .nickName(users.getNickName())
@@ -207,6 +208,7 @@ public class UsersService {
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         users.updateNickName(nickname);
         UsersDto.Response updateDto = UsersDto.Response.builder()
+                .id(users.getId())
                 .loginId(users.getLoginId())
                 .name(users.getName())
                 .age(users.getAge())
