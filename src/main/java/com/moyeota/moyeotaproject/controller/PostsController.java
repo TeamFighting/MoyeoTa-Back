@@ -55,9 +55,9 @@ public class PostsController {
     @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API(jwt토큰 필요)")
     @PostMapping("")
     public ResponseDto<Long> save(HttpServletRequest request, @RequestBody PostsSaveRequestDto requestDto) {
-        if (requestDto.getTitle() == null || requestDto.getTitle().equals("")) {
-            throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
-        }
+//        if (requestDto.getTitle() == null || requestDto.getTitle().equals("")) {
+//            throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
+//        }
 
         if (requestDto.getDeparture() == null || requestDto.getDeparture().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
