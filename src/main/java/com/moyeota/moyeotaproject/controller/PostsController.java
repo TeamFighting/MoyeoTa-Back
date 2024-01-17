@@ -59,17 +59,17 @@ public class PostsController {
 //            throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
 //        }
 
-        if (requestDto.getDeparture() == null || requestDto.getDeparture().equals("")) {
-            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
-        }
-
-        if (requestDto.getDestination() == null || requestDto.getDestination().equals("")) {
-            throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
-        }
-
-        if (requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals("")) {
-            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
-        }
+//        if (requestDto.getDeparture() == null || requestDto.getDeparture().equals("")) {
+//            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
+//        }
+//
+//        if (requestDto.getDestination() == null || requestDto.getDestination().equals("")) {
+//            throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
+//        }
+//
+//        if (requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals("")) {
+//            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
+//        }
 
         if (requestDto.getVehicle() == null) {
             requestDto.setVehicle(Vehicle.일반);
