@@ -60,8 +60,10 @@ public class ParticipationDetailsService {
 
     public ParticipationDetails checkParticipation(String accessToken, Long postId) {
         Users user = getUserByToken(accessToken);
-        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get()).orElseThrow(
-                () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+        if (!participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get()).isPresent()) {
+            return null;
+        }
+        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get()).get();
     }
 
     @Transactional(readOnly = true)
