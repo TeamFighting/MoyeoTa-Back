@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Random;
 
@@ -159,7 +160,8 @@ public class UsersService {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         try {
-            String fileName = profileImage.getOriginalFilename();
+            String fileName = users.getId() + "_" + Instant.now().toEpochMilli() + "_" + sanitizeFileName(profileImage.getOriginalFilename());
+
             String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(profileImage.getContentType());
@@ -170,9 +172,13 @@ public class UsersService {
             log.info("users ={}", users.getProfileImage());
             return users.getName() + "의 프로필이미지가 " + fileUrl + " 로 변경되었습니다.";
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    // 특수문자나 공백 등을 제거하여 안전한 파일 이름 생성
+    private String sanitizeFileName(String fileName) {
+        return fileName.replaceAll("[^a-zA-Z0-9.-]", "_");
     }
 
     private String generateVerificationCode() {
