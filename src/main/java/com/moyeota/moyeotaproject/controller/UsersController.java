@@ -8,6 +8,7 @@ import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.GoogleLoginParams;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.KakaoLoginParams;
 import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.NaverLoginParams;
+import com.moyeota.moyeotaproject.service.ImageService;
 import com.moyeota.moyeotaproject.service.OAuthLoginService;
 import com.moyeota.moyeotaproject.service.TokenService;
 import com.moyeota.moyeotaproject.service.UsersService;
@@ -36,6 +37,7 @@ public class UsersController {
 
     private final UsersService usersService;
     private final TokenService tokenService;
+    private final ImageService imageService;
 
     @ApiOperation(value = "사용자 정보 받기", notes = "사용자 정보 API")
     @GetMapping("")
@@ -82,7 +84,7 @@ public class UsersController {
     @ApiOperation(value = "사용자 이미지 변경", notes = "사용자 이미지 변경을 위한 API")
     @PostMapping("/profile-Image")
     public ResponseDto updateProfileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
-        return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", usersService.updateProfileImage(tokenInfo, profileImage));
+        return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", imageService.updateProfileImage(tokenInfo, profileImage));
     }
 
     @ApiOperation(value = "사용자 삭제", notes = "사용자 탈퇴를 위한 API")

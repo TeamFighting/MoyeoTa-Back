@@ -29,6 +29,7 @@ public class OAuthLoginService {
     private final JwtTokenGenerator jwtTokenGenerator;
     private final RequestOAuthInfoService requestOAuthInfoService;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
     public TokenInfoDto login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
@@ -62,12 +63,24 @@ public class OAuthLoginService {
                 .email(oAuthInfoResponse.getEmail())
                 .name(oAuthInfoResponse.getUsername())
                 .gender(oAuthInfoResponse.getGender())
-                .profileImage(oAuthInfoResponse.getProfileImage())
+                .profileImage(getProfileImage(oAuthInfoResponse))
                 .age(oAuthInfoResponse.getAge())
                 .loginId(oAuthInfoResponse.getOAuthProvider().name() + " " + oAuthInfoResponse.getEmail())
                 .password(passwordEncoder.encode(oAuthInfoResponse.getOAuthProvider().name()))
                 .phoneNumber(oAuthInfoResponse.getPhoneNumber())
                 .build();
+    }
+
+    private String getProfileImage(OAuthInfoResponse oAuthInfoResponse) {
+        log.error("userProfileImageURL={}", oAuthInfoResponse.getProfileImage());
+        if (oAuthInfoResponse.getProfileImage() == null) {
+            return imageService.defaultProfileImage();
+        }
+        if(oAuthInfoResponse.getProfileImage().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png")){
+            return imageService.defaultProfileImage();
+        }
+
+        return oAuthInfoResponse.getProfileImage();
     }
 
     private OAuth createOAuthFromOAuthInfo(Users user, OAuthInfoResponse oAuthInfoResponse) {

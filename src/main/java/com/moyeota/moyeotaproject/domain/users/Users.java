@@ -108,6 +108,10 @@ public class Users extends BaseTimeEntity {
         this.email = email;
     }
 
+    public void defaultProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
