@@ -81,9 +81,16 @@ public class UsersController {
         return ResponseUtil.SUCCESS("닉네임이 변경되었습니다.", usersService.updateNickName(tokenInfo, usersDto.getNickName()));
     }
 
+    @ApiOperation(value = "사용자 이미지 DEAFULT 이미지 설정", notes = "사용자 이미지 DEFAULT 이미지 설정 테스트 API(테스트용)")
+    @PostMapping("/default/profile-Image")
+    public ResponseDto setProfileImageDefault(@RequestHeader(value = "Authorization") String tokenInfo) {
+        return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 Default이미지로 변경되었습니다.", imageService.defaultProfileImageWithToken(tokenInfo));
+    }
+
     @ApiOperation(value = "사용자 이미지 변경", notes = "사용자 이미지 변경을 위한 API")
     @PostMapping("/profile-Image")
     public ResponseDto updateProfileImage(@RequestHeader(value = "Authorization") String tokenInfo, @RequestParam("file") MultipartFile profileImage) {
+
         return ResponseUtil.SUCCESS("사용자의 프로필 이미지가 변경되었습니다.", imageService.updateProfileImage(tokenInfo, profileImage));
     }
 

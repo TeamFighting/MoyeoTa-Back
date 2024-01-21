@@ -35,6 +35,15 @@ public class ImageService {
     private String region;
 
     @Transactional
+    public String defaultProfileImageWithToken(String accessToken) {
+        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
+                -> new RuntimeException("해당하는 유저가 없습니다."));
+        String fileUrl = defaultProfileImage();
+        users.defaultProfileImage(fileUrl);
+        return fileUrl;
+    }
+
+    @Transactional
     public String defaultProfileImage() {
         int randomNumber = generateRandomNumber();
         String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/%08defaultProfileImage" + randomNumber + ".png";
