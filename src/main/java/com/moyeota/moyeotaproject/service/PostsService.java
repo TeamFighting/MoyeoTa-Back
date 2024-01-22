@@ -51,11 +51,15 @@ public class PostsService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<PostsResponseDto> findAllDesc(Pageable pageable) {
-        Slice<Posts> postsSlice = postsRepository.findAllByStatus(pageable, PostsStatus.RECRUITING);
-        Slice<PostsResponseDto> postsResponseDtos = postsSlice.map(
-                p -> new PostsResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(),
-                        p.getUser().getGender()));
+    public List<PostsResponseDto> findAllDesc() {
+        List<Posts> postsList = postsRepository.findAllByStatus(PostsStatus.RECRUITING);
+        List<PostsResponseDto> postsResponseDtos = new ArrayList<>();
+        for (int i = 0; i < postsList.size(); i++) {
+            Posts p = postsList.get(i);
+            PostsResponseDto postsResponseDto = new PostsResponseDto(p, p.getUser().getName(),
+                    p.getUser().getProfileImage(), p.getUser().getGender());
+            postsResponseDtos.add(postsResponseDto);
+        }
         return postsResponseDtos;
     }
 
@@ -76,7 +80,6 @@ public class PostsService {
     public Long save(String accessToken, PostsSaveRequestDto requestDto) {
         Users user = getUserByToken(accessToken);
         Posts post = requestDto.toEntity(user);
-        System.out.println(post.getStatus());
         Long postId = postsRepository.save(post).getId();
         participationDetailsService.join(user.getId(), postId);
         return postId;
@@ -152,11 +155,11 @@ public class PostsService {
 
         double sum = 0;
         double totalPayment = totalDetail.getTotalPayment();
-        for (int i=0; i<list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             sum += list.get(i).getDistance();
         }
 
-        for (int i=0; i<list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             ParticipationDetails participationDetails = list.get(i);
             participationDetails.updatePrice((participationDetails.getDistance() / sum) * totalPayment);
         }
