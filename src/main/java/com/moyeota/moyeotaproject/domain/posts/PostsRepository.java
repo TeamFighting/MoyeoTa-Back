@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.domain.posts;
 
 import com.moyeota.moyeotaproject.domain.users.Users;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
                                 Pageable pageable);
 
     @Query("select p from Posts p where p.status = :status")
-    Slice<Posts> findAllByStatus(Pageable pageable, @Param("status") PostsStatus recruiting);
+    List<Posts> findAllByStatus(@Param("status") PostsStatus recruiting);
 
     @Modifying
     @Query("update Posts p set p.view = p.view + 1 where p.id = :id")
