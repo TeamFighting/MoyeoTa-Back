@@ -18,23 +18,18 @@ public class ChatMessageDto {
     @ApiModelProperty(value = "메시지 내용", example = "안녕! 잘 지냈어?", required = true)
     private String message;
 
-    @ApiModelProperty(value = "채팅방 아이디", example = "93615d98-4b21-4bb3-9e41-530689440589", required = true)
-    private String roomId;
-
-    @ApiModelProperty(value = "메시지 타입", example = "TALK or ENTER", required = true)
-    private MessageType type;
+//    @ApiModelProperty(value = "채팅방 아이디", example = "93615d98-4b21-4bb3-9e41-530689440589", required = true)
+//    private String roomId;
 
     @Builder
-    public ChatMessageDto(String message, String roomId, MessageType type) {
+    public ChatMessageDto(String message) {
         this.message = message;
-        this.type = type;
-        this.roomId = roomId;
+//        this.roomId = roomId;
     }
 
     public ChatMessage toEntity(Users user, ChatRoom chatRoom) {
         return ChatMessage.builder()
                 .message(message)
-                .type(type)
                 .user(user)
                 .chatRoom(chatRoom)
                 .build();

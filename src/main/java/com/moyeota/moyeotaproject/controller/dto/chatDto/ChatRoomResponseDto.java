@@ -11,12 +11,16 @@ import java.time.LocalDateTime;
 public class ChatRoomResponseDto {
 
     private String name;
+    private String roomId;
+    private int userCount;
     private LocalDateTime createdDate;
     private String lastMessage;
 
     @Builder
-    public ChatRoomResponseDto(String name, LocalDateTime createdDate, ChatMessage message) {
+    public ChatRoomResponseDto(String name, String roomId, int userCount, LocalDateTime createdDate, ChatMessage message) {
         this.name = name;
+        this.roomId = roomId;
+        this.userCount = userCount;
         this.createdDate = createdDate;
         this.lastMessage = message.getMessage();
     }

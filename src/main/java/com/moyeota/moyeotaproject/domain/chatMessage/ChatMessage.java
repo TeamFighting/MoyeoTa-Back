@@ -22,12 +22,7 @@ public class ChatMessage extends BaseTimeEntity {
 
     private String message;
 
-    private String roomId;
-
     private String sender;
-
-    @Enumerated(EnumType.STRING)
-    private MessageType type;
 
     @Enumerated(EnumType.STRING)
     private MessageStatus status;
@@ -51,11 +46,9 @@ public class ChatMessage extends BaseTimeEntity {
     }
 
     @Builder
-    public ChatMessage(String message, MessageType type, String sender, String roomId, Users user, ChatRoom chatRoom) {
+    public ChatMessage(String message, String sender, Users user, ChatRoom chatRoom) {
         this.message = message;
-        this.type = type;
         this.sender = sender;
-        this.roomId = roomId;
         this.setChatRoom(chatRoom);
         this.setUser(user);
         this.status = MessageStatus.VALID;

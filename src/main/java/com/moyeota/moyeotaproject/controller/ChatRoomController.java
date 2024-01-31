@@ -2,6 +2,7 @@ package com.moyeota.moyeotaproject.controller;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.service.ChatRoomService;
 import com.moyeota.moyeotaproject.service.ChatService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,13 @@ import org.springframework.web.bind.annotation.*;
 public class ChatRoomController {
 
     private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
 
     //채팅방 생성 API
     @ApiOperation(value = "채팅방 생성", notes = "채팅방 생성 API")
-    @PostMapping("/{senderId}/{receiverId}")
-    public ResponseDto createRoom(@ApiParam(value = "유저1 인덱스 번호") @PathVariable("senderId") Long user1Id, @ApiParam(value = "유저2 인덱스 번호") @PathVariable("receiverId")Long user2Id) {
-        return ResponseUtil.SUCCESS("채팅방 생성 성공", chatService.createRoom(user1Id, user2Id));
+    @PostMapping("/create-room")
+    public ResponseDto<Long> createRoom(@ApiParam(value = "채팅방 이름") @RequestParam("roomName") String roomName) {
+        return ResponseUtil.SUCCESS("채팅방 생성 성공", chatRoomService.createRoom(roomName));
     }
 
     //채팅방 메시지 조회 API
@@ -35,18 +37,17 @@ public class ChatRoomController {
         return ResponseUtil.SUCCESS("메시지 조회 성공", chatService.findAllMessagesDesc(userId, chatRoomId));
     }
 
-    //채팅방 목록 조회 API 아직 미완성
     @ApiOperation(value = "채팅방 목록 조회", notes = "특정 유저 채팅방 목록 조회 API")
     @GetMapping("/users/{userId}")
-    public ResponseDto findAllRoomsDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
-        return ResponseUtil.SUCCESS("채팅방 조회 성공", chatService.findAllRoomsDesc(userId));
+    public ResponseDto findAllRoomsByUserIdDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
+        return ResponseUtil.SUCCESS("채팅방 조회 성공", chatRoomService.findAllRoomsByUserIdDesc(userId));
     }
 
     //채팅방 삭제 API
     @ApiOperation(value = "채팅방 삭제", notes = "특정 채팅방 삭제 API")
     @DeleteMapping("/{chatRoomId}")
     public ResponseDto deleteRoom(@ApiParam(value = "채팅방 인덱스 번호") @PathVariable("chatRoomId") Long chatRoomId) {
-        chatService.deleteRoom(chatRoomId);
+        chatRoomService.deleteRoom(chatRoomId);
         return ResponseUtil.SUCCESS("채팅방 삭제에 성공하였습니다.", chatRoomId);
     }
 
