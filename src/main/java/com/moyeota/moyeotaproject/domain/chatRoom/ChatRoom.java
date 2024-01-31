@@ -2,7 +2,9 @@ package com.moyeota.moyeotaproject.domain.chatRoom;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
+import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -29,8 +31,13 @@ public class ChatRoom extends BaseTimeEntity {
 
     private String name;
 
+    private int userCount;
+
     @Enumerated(EnumType.STRING)
     private ChatRoomStatus status;
+
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatRoomAndUsers> chatRoomAndUsersList = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessages = new ArrayList<>();
@@ -44,10 +51,15 @@ public class ChatRoom extends BaseTimeEntity {
         message.setChatRoom(this);
     }
 
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
+    }
+
     @Builder
-    public ChatRoom(String roomId, String name) {
+    public ChatRoom(String roomId, String name, int userCount) {
         this.roomId = roomId;
         this.name = name;
+        this.userCount = userCount;
         this.status = ChatRoomStatus.VALID;
     }
 

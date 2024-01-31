@@ -4,6 +4,7 @@ package com.moyeota.moyeotaproject.domain.users;
 import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
+import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
@@ -61,6 +62,9 @@ public class Users extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<ChatRoomAndUsers> chatRoomAndUsersList = new ArrayList<>();
 
     public List<Posts> getPosts() {
         return this.posts;
