@@ -35,7 +35,6 @@ public class ChatController {
     private final UsersService usersService;
 
 //    @ApiOperation(value = "메시지 보내기", notes = "채팅 API")
-
 //    @SendTo("/sub/public")
     @MessageMapping("chat/enter/users/{userId}/chat-rooms/{chatRoomId}")
     public ResponseDto<Long> enterUser(@DestinationVariable("userId") Long userId, @DestinationVariable("chatRoomId") Long chatRoomId) {

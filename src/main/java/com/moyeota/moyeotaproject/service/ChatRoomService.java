@@ -50,27 +50,16 @@ public class ChatRoomService {
     public List<ChatRoomResponseDto> findAllRoomsByUserIdDesc(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<MessageRoomIdMapping> roomIds = chatMessageRepository.findRoomIdByUser(user);
-        Set<String> roomIdSet = new HashSet<>();
-        for (int i=0; i<roomIds.size(); i++)
-            roomIdSet.add(roomIds.get(i).getRoomId());
-        Iterator iterator = roomIdSet.iterator();
+
+        List<ChatRoomAndUsers> chatRoomAndUsersList = chatRoomAndUsersRepository.findAllByUserOrderByCreatedDateDesc(user);
         List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
-        while(iterator.hasNext()){
-            String roomId = (String) iterator.next();
-            ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId).orElseThrow(()
-                    -> new IllegalArgumentException("해당 채팅방이 존재하지 않습니다."));
-            List<ChatMessage> chatMessageList = chatMessageRepository.findChatMessage(roomId);
-            ChatMessage chatMessage = chatMessageList.get(0);
-            ChatRoomResponseDto responseDto = ChatRoomResponseDto.builder()
-                    .name(chatRoom.getName())
-                    .roomId(chatRoom.getRoomId())
-                    .userCount(chatRoom.getUserCount())
-                    .createdDate(chatMessage.getCreatedDate())
-                    .message(chatMessage)
-                    .build();
-            chatRoomResponseDtoList.add(responseDto);
+
+        for (int i=0; i<chatRoomAndUsersList.size(); i++) {
+            ChatRoom chatRoom = chatRoomAndUsersList.get(i).getChatRoom();
+            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().chatRoom(chatRoom).build();
+            chatRoomResponseDtoList.add(chatRoomResponseDto);
         }
+
         return chatRoomResponseDtoList;
     }
 
