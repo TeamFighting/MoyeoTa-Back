@@ -2,6 +2,7 @@ package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.domain.posts.*;
 import com.moyeota.moyeotaproject.domain.users.Users;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class UsersPostTest {
 
@@ -48,7 +50,7 @@ public class UsersPostTest {
         // 사용자 추가
         post.addUser();
         // 참여자 수 확인
-        assertEquals(1, post.getNumberOfParticipants());
+        Assert.assertEquals(1, post.getNumberOfParticipants());
     }
 
 
