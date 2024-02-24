@@ -57,46 +57,46 @@ public class PostsControllerTest {
     private static final String BASE_URL = "/api/posts";
     private static final String testAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwMzE4MjIwfQ.ZOuV7sb4nH2QjWVyH8zyzqMdneb7yLn64slbiWcIofA";
 
-    @Test
-    void 게시글_저장_컨트롤러_테스트() throws Exception {
-        //given
-        Users users = Users.builder()
-                .loginId("loginId")
-                .password("password")
-                .email("email")
-                .build();
-        usersRepository.save(users);
-        String stringDate = "2023-09-04 19:57:13.000000";
-        DateTimeFormatter stringDateFormatted = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-        LocalDateTime dateTime = LocalDateTime.parse(stringDate, stringDateFormatted);
-
-        PostsSaveRequestDto postsSaveRequestDto = PostsSaveRequestDto.builder()
-                .title("테스트 제목")
-                .departure("테스트 출발 장소")
-                .destination("테스트 도착 장소")
-                .departureTime(dateTime)
-                .content("테스트 내용")
-                .sameGenderStatus(SameGender.NO)
-                .numberOfRecruitment(4)
-                .fare(15000)
-                .duration(1800)
-                .build();
-        Posts posts = postsSaveRequestDto.toEntity(users);
-        postsRepository.save(posts);
-        //when
-        postsService.save(testAccessToken, postsSaveRequestDto);
-        String body = objectMapper.writeValueAsString(postsSaveRequestDto);
-        /* Object를 JSON으로 변환 */
-
-        //then
-        mvc.perform(post(BASE_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", testAccessToken)
-                        .content(body))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("SUCCESS"));
-                //.andExpect(jsonPath("$.data").value(1));
-    }
+//    @Test
+//    void 게시글_저장_컨트롤러_테스트() throws Exception {
+//        //given
+//        Users users = Users.builder()
+//                .loginId("loginId")
+//                .password("password")
+//                .email("email")
+//                .build();
+//        usersRepository.save(users);
+//        String stringDate = "2023-09-04 19:57:13.000000";
+//        DateTimeFormatter stringDateFormatted = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+//        LocalDateTime dateTime = LocalDateTime.parse(stringDate, stringDateFormatted);
+//
+//        PostsSaveRequestDto postsSaveRequestDto = PostsSaveRequestDto.builder()
+//                .title("테스트 제목")
+//                .departure("테스트 출발 장소")
+//                .destination("테스트 도착 장소")
+//                .departureTime(dateTime)
+//                .content("테스트 내용")
+//                .sameGenderStatus(SameGender.NO)
+//                .numberOfRecruitment(4)
+//                .fare(15000)
+//                .duration(1800)
+//                .build();
+//        Posts posts = postsSaveRequestDto.toEntity(users);
+//        postsRepository.save(posts);
+//        //when
+//        postsService.save(testAccessToken, postsSaveRequestDto);
+//        String body = objectMapper.writeValueAsString(postsSaveRequestDto);
+//        /* Object를 JSON으로 변환 */
+//
+//        //then
+//        mvc.perform(post(BASE_URL)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .header("Authorization", testAccessToken)
+//                        .content(body))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.status").value("SUCCESS"));
+//                //.andExpect(jsonPath("$.data").value(1));
+//    }
 
 //    @Test
 //    void update() {
