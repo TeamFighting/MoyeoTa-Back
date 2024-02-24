@@ -1,24 +1,33 @@
-#version: '3'
-#
-#services:
-#  backend:
-#    container_name: moyeota
-#    build: . # springboot Dockerfile 경로
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - moyeota
-#
-#  nginx:
-#    image: nginx:latest
-#    volumes:
-#      - ./nginx/:/etc/nginx/ # 왼쪽이 로컬 경로, 오른쪽이 도커 컨테이너 내부 경로
-#    ports:
-#      - 80:80
-#    depends_on: # 빌드 시작 순서를 정해주는 옵션
-#      - moyeota
-#    networks:
-#      - moyeota
-#
-#networks: # 컨테이너를 연결할 네트워크
-#  moyeota:
+version: '3'
+services:
+  server:
+    container_name: server
+    image: jakeheon/moyeota
+    expose:
+      - 8081
+    ports:
+      - 8081:8081
+    restart: "always"
+
+  nginx:
+    container_name: nginx
+    image: jakeheon/moyeota-nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - "server"
+    command : "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
