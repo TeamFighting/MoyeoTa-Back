@@ -1,0 +1,97 @@
+name: Branch Deploy pipeline
+
+on:
+  push:
+    branches: [ "deploy" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Grant execute permission for gradlew and build
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Copy secret
+        env:
+          OCCUPY_SECRET: ${{ secrets.secure_yml }}
+          OCCUPY_SECRET_DIR: src/main/resources
+          OCCUPY_SECRET_DIR_FILE_NAME: application-secure.yml
+        run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
+
+      - name: init with Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build with Gradle
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: v0.7.0
+
+      - name: server Docker build & push to docker repo
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+          docker build -t jakeheon/moyeota -f Dockerfile .
+          docker push jakeheon/moyeota
+
+      - name: nginx docker build and push to docker repo
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+          pwd
+          docker build -t jakeheon/moyeota-nginx -f Dockerfile-nginx .
+          docker push jakeheon/moyeota-nginx
+
+      - name: Copy docker-compose.yaml to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ec2-user
+          key: ${{ secrets.KEY }}
+          source: "/github/workspace/docker-compose.yml"
+          target: "/home/ec2-user"
+
+      - name: Build and deploy
+        uses: appleboy/ssh-action@master
+        id: deploy
+        with:
+          host: ${{ secrets.HOST }}
+          username: ec2-user
+          key: ${{ secrets.KEY }}
+          envs: GITHUB_SHA
+          script: |
+            sudo docker stop $(sudo docker ps -aq)
+            sudo docker rm -f $(docker ps -qa)
+            sudo docker pull jakeheon/moyeota
+            sudo docker pull jakeheon/moyeota-nginx
+            docker-compose -f /home/ubuntu/github/workspace/docker-compose.yml up -d
+            docker image prune -f
+
+#          sudo docker run -it -d -p 443:443 jakeheon/moyeota
+#        run: |
+#          echo "$SSH_PEM_KEY" >> $HOME/key.pem
+#          chmod 400 $HOME/key.pem
+#          ssh -i $HOME/key.pem -o StrictHostKeyChecking=no host@$SSH_KNOWN_HOSTS
+#          sudo docker ps -a
+#          sudo docker rm -f $(docker ps -qa)
+#          sudo docker pull jakeheon/moyeota
+#          sudo docker run -p 80:8080 jakeheon/moyeota
+#          sudo docker container prune
+#          sudo docker image prune -f
