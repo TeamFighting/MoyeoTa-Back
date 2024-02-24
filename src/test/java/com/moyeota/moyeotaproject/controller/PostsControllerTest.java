@@ -98,21 +98,21 @@ public class PostsControllerTest {
                 //.andExpect(jsonPath("$.data").value(1));
     }
 
-    @Test
-    void update() {
-    }
-
-    @Test
-    void delete() {
-    }
-
-    @Test
-    void completePost() {
-    }
-
-    @Test
-    void findById() {
-    }
+//    @Test
+//    void update() {
+//    }
+//
+//    @Test
+//    void delete() {
+//    }
+//
+//    @Test
+//    void completePost() {
+//    }
+//
+//    @Test
+//    void findById() {
+//    }
 
 //    @Test
 //    @DisplayName("게시글 내림차순으로 모두 조회")
@@ -123,19 +123,19 @@ public class PostsControllerTest {
 //                .andExpect(status().is2xxSuccessful());
 //    }
 
-    @Test
-    void findMyPostsByIdDesc() {
-    }
-
-    @Test
-    void findAllByCategoryDesc() {
-    }
-
-    @Test
-    void findPostsMembers() {
-    }
-
-    @Test
-    void calcPrice() {
-    }
+//    @Test
+//    void findMyPostsByIdDesc() {
+//    }
+//
+//    @Test
+//    void findAllByCategoryDesc() {
+//    }
+//
+//    @Test
+//    void findPostsMembers() {
+//    }
+//
+//    @Test
+//    void calcPrice() {
+//    }
 }
