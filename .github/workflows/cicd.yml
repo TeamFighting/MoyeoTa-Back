@@ -1,4 +1,4 @@
-name: Branch Deploy pipeline
+name: Branch Main pipeline
 
 on:
   push:
