@@ -78,5 +78,5 @@ jobs:
             sudo docker pull jakeheon/moyeota
             sudo docker pull jakeheon/moyeota-nginx
             
-            docker-compose -f /home/ec2-user/github/workspace/docker-compose.yml up -d
+            sudo docker-compose -f /home/ec2-user/github/workspace/docker-compose.yml up -d
             docker image prune -f
