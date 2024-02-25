@@ -72,8 +72,9 @@ jobs:
           key: ${{ secrets.KEY }}
           envs: GITHUB_SHA
           script: |
-            sudo docker stop $(sudo docker ps -aq)
-            sudo docker rm -f $(docker ps -qa)
+            if [ "$(docker ps -qa)" ]; then
+              sudo docker rm -f $(docker ps -qa)
+            fi
             sudo docker pull jakeheon/moyeota
             sudo docker pull jakeheon/moyeota-nginx
             
