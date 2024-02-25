@@ -75,6 +75,9 @@ jobs:
             if [ "$(docker ps -qa)" ]; then
               sudo docker rm -f $(docker ps -qa)
             fi
+            sudo docker stop $(sudo docker ps -aq)
+            sudo docker rm -f $(docker ps -qa)
+            
             sudo docker pull jakeheon/moyeota
             sudo docker pull jakeheon/moyeota-nginx
             
