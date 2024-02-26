@@ -81,6 +81,7 @@ KAKAO:
     API-KEY: 6df7210843b7ca9a56d32af1fa86995c
 server:
   port: 8080
+#  port: 443
 #  ssl:
 #    key-store: classpath:ssl/keystore.p12
 #    key-store-type: PKCS12
