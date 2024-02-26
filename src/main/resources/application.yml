@@ -16,7 +16,7 @@
 #    password:
 #    driver-class-name: org.h2.Driver
 #---
-spring:asdfasdf
+spring:
   profiles:
     include: secure
   datasource:
