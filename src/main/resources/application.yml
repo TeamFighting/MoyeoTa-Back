@@ -16,7 +16,7 @@
 #    password:
 #    driver-class-name: org.h2.Driver
 #---
-spring:
+spring:asdfasdf
   profiles:
     include: secure
   datasource:
@@ -80,7 +80,7 @@ KAKAO:
   REST:
     API-KEY: 6df7210843b7ca9a56d32af1fa86995c
 server:
-  port: 8081
+  port: 8080
 #  ssl:
 #    key-store: classpath:ssl/keystore.p12
 #    key-store-type: PKCS12
