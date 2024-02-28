@@ -35,6 +35,7 @@ public class MoyeataWorkspaceApplication {
                         .allowedOriginPatterns("*")
                         .allowedHeaders("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH")
+                        .allowCredentials(true)
                         .exposedHeaders("Authorization", "RefreshToken");
             }
         };
