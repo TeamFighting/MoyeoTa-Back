@@ -3,19 +3,13 @@ package com.moyeota.moyeotaproject.controller;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessageDto;
-import com.moyeota.moyeotaproject.domain.chatMessage.MessageType;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
-import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.service.ChatRoomService;
 import com.moyeota.moyeotaproject.service.ChatService;
 import com.moyeota.moyeotaproject.service.UsersService;
-import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //@Api(tags = "Chat", description = "Chat Controller")
