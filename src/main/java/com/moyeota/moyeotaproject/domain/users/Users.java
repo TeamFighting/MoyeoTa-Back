@@ -3,21 +3,23 @@ package com.moyeota.moyeotaproject.domain.users;
 
 import com.moyeota.moyeotaproject.controller.dto.UsersDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
-import com.moyeota.moyeotaproject.domain.chatMessage.ChatMessage;
 import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.review.Review;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
@@ -60,8 +62,8 @@ public class Users extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<ChatMessage> chatMessages = new ArrayList<>();
+//    @OneToMany(mappedBy = "user", orphanRemoval = true)
+//    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<ChatRoomAndUsers> chatRoomAndUsersList = new ArrayList<>();

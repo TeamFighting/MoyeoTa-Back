@@ -97,7 +97,7 @@ public class UsersService {
         return deleteDto;
     }
 
-    private Users getUserByToken(String accessToken) {
+    public Users getUserByToken(String accessToken) {
         Optional<Users> users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken));
         if (users.isPresent()) {
             return users.get();

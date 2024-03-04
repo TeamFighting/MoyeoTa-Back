@@ -38,16 +38,19 @@ public class ParticipationDetailsController {
     //참가 신청 API
     @ApiOperation(value = "참가 신청", notes = "특정 회원이 특정 모집글에 참가 신청 API(jwt토큰 필요)")
     @PostMapping("/join/posts/{postId}")
-    public ResponseDto<Long> join(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+    public ResponseDto<Long> join(HttpServletRequest request,
+                                  @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
         PostsResponseDto responseDto = postsService.findById(postId);
-        if(responseDto.getNumberOfParticipants() == responseDto.getNumberOfRecruitment())
+        if (responseDto.getNumberOfParticipants() == responseDto.getNumberOfRecruitment()) {
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
-        if(responseDto.getStatus() == PostsStatus.COMPLETE)
+        } else if (responseDto.getStatus() == PostsStatus.COMPLETE) {
             throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
+        }
         String accessToken = request.getHeader("Authorization");
         ParticipationDetails participationDetails = participationDetailsService.checkParticipation(accessToken, postId);
-        if(participationDetails != null && participationDetails.getStatus() == ParticipationDetailsStatus.JOIN)
+        if (participationDetails != null && participationDetails.getStatus() == ParticipationDetailsStatus.JOIN) {
             throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_JOIN);
+        }
         Users user = participationDetailsService.getUserByToken(accessToken);
         Long participationDetailsId = participationDetailsService.join(user.getId(), postId);
         return ResponseUtil.SUCCESS("참가 신청이 완료되었습니다.", participationDetailsId);
@@ -56,7 +59,8 @@ public class ParticipationDetailsController {
     //참가 취소 API
     @ApiOperation(value = "참가 취소", notes = "참가 취소 API(jwt토큰 필요)")
     @PostMapping("/cancellation/posts/{postId}") //유저 인증 먼저 하기
-    public ResponseDto<Long> cancel(HttpServletRequest request, @ApiParam(value = "참가내역 인덱스 번호") @PathVariable("postId") Long postId) {
+    public ResponseDto<Long> cancel(HttpServletRequest request,
+                                    @ApiParam(value = "참가내역 인덱스 번호") @PathVariable("postId") Long postId) {
         Users user = participationDetailsService.getUserByToken(request.getHeader("Authorization"));
         postsService.cancelParticipation(postId);
         participationDetailsService.cancelParticipation(postId, user);
@@ -66,28 +70,37 @@ public class ParticipationDetailsController {
     //특정 유저 이용기록 전체 조회 API
     @ApiOperation(value = "이용 기록 조회", notes = "특정 회원의 이용기록 조회 API")
     @GetMapping("/users/{userId}/all")
-    public ResponseDto<List<ParticipationDetailsResponseDto>> findAllDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
+    public ResponseDto<List<ParticipationDetailsResponseDto>> findAllDesc(
+            @ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
         return ResponseUtil.SUCCESS("이용기록 조회에 성공하였습니다.", participationDetailsService.findAllDesc(userId));
     }
 
     //내가 참가 신청한 모집글 목록 조회 API (최신순으로)
     @ApiOperation(value = "특정 회원의 참가 신청 모집글 전체 조회", notes = "특정 회원이 참가 신청한 모집글을 전체 조회하는 API")
     @GetMapping("/users/{userId}")
-    public ResponseDto<List<PostsResponseDto>> findMyParticipationDetailsDesc(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
-        return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.", participationDetailsService.findMyParticipationDetailsDesc(userId));
+    public ResponseDto<List<PostsResponseDto>> findMyParticipationDetailsDesc(
+            @ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId) {
+        return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.",
+                participationDetailsService.findMyParticipationDetailsDesc(userId));
     }
 
     @ApiOperation(value = "이용객의 이동거리 입력")
     @PostMapping("/posts/{postId}")
-    public ResponseDto<Long> saveDistance(HttpServletRequest request, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId, @ApiParam(value = "이동 거리") @RequestParam("distance") double distance) {
+    public ResponseDto<Long> saveDistance(HttpServletRequest request,
+                                          @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId,
+                                          @ApiParam(value = "이동 거리") @RequestParam("distance") double distance) {
         Users user = participationDetailsService.getUserByToken(request.getHeader("Authorization"));
-        return ResponseUtil.SUCCESS("이동거리 저장에 성공하였습니다.", participationDetailsService.saveDistance(user, postId, distance));
+        return ResponseUtil.SUCCESS("이동거리 저장에 성공하였습니다.",
+                participationDetailsService.saveDistance(user, postId, distance));
     }
 
     @ApiOperation(value = "이용객의 이동거리 및 금액 조회")
     @GetMapping("/distance-payment/users/{userId}/posts/{postId}")
-    public ResponseDto<DistancePriceDto> findDistanceAndPrice(@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId")Long userId, @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
-        return ResponseUtil.SUCCESS("이동거리 및 금액 조회에 성공하였습니다.", participationDetailsService.findDistanceAndPrice(userId, postId));
+    public ResponseDto<DistancePriceDto> findDistanceAndPrice(
+            @ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId,
+            @ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+        return ResponseUtil.SUCCESS("이동거리 및 금액 조회에 성공하였습니다.",
+                participationDetailsService.findDistanceAndPrice(userId, postId));
     }
 
 }

@@ -24,6 +24,7 @@ import java.util.*;
 @Service
 public class ParticipationDetailsService {
 
+    private final ChatRoomService chatRoomService;
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
     private final ParticipationDetailsRepository participationDetailsRepository;
@@ -37,6 +38,8 @@ public class ParticipationDetailsService {
                 -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
 
         post.addUser();
+        chatRoomService.addUser(post.getChatRoom().getId(), user.getId());
+
         if (post.getNumberOfParticipants() == post.getNumberOfRecruitment()) {
             post.postsComplete();
         }
@@ -60,10 +63,12 @@ public class ParticipationDetailsService {
 
     public ParticipationDetails checkParticipation(String accessToken, Long postId) {
         Users user = getUserByToken(accessToken);
-        if (!participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get()).isPresent()) {
+        if (!participationDetailsRepository.findParticipationDetailsByUserAndPost(user,
+                postsRepository.findById(postId).get()).isPresent()) {
             return null;
         }
-        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user, postsRepository.findById(postId).get()).get();
+        return participationDetailsRepository.findParticipationDetailsByUserAndPost(user,
+                postsRepository.findById(postId).get()).get();
     }
 
     @Transactional(readOnly = true)
@@ -115,7 +120,8 @@ public class ParticipationDetailsService {
                 -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
         ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
                 user, post).orElseThrow(
-                        () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+                () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+        chatRoomService.deleteUser(post.getChatRoom().getId(), user.getId());
         participationDetailsRepository.delete(participationDetails);
         return true;
     }
@@ -125,7 +131,7 @@ public class ParticipationDetailsService {
                 () -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
         ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
                 user, post).orElseThrow(
-                        () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+                () -> new IllegalArgumentException("해당 참가내역이 없습니다."));
         participationDetails.updateDistance(distance);
         return participationDetails.getId();
     }
@@ -135,7 +141,8 @@ public class ParticipationDetailsService {
                 () -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
         Posts post = postsRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
-        ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(user, post)
+        ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
+                        user, post)
                 .orElseThrow(()
                         -> new IllegalArgumentException("해당 참가내역이 없습니다."));
         DistancePriceDto distancePriceDto = DistancePriceDto.builder()

@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.controller.dto.postsDto;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
+import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
@@ -57,8 +58,11 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
     @ApiModelProperty(value = "이동 거리(km)", example = "0.5")
     private double distance;
 
+    @ApiModelProperty(value = "채팅방 id", example = "uuid")
+    private String roomId;
+
     @Builder
-    public PostsSaveRequestDto(String title, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, int numberOfRecruitment, int fare, int duration) {
+    public PostsSaveRequestDto(String title, String departure, String destination, LocalDateTime departureTime, String content, SameGender sameGenderStatus, int numberOfRecruitment, int fare, int duration, String roomId) {
         this.title = title;
         this.departure = departure;
         this.destination = destination;
@@ -68,9 +72,10 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
         this.numberOfRecruitment = numberOfRecruitment;
         this.fare = fare;
         this.duration = duration;
+        this.roomId = roomId;
     }
 
-    public Posts toEntity(Users user) {
+    public Posts toEntity(Users user, ChatRoom chatRoom) {
         return Posts.builder()
                 .title(title)
                 .category(category)
@@ -85,6 +90,7 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
                 .fare(fare)
                 .duration(duration)
                 .user(user)
+                .chatRoom(chatRoom)
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.domain.posts;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
+import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,6 +85,9 @@ public class Posts extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatRoomId")
+    private ChatRoom chatRoom;
 
     //연관관계 메서드
     public void setUser(Users user) {
@@ -90,10 +95,14 @@ public class Posts extends BaseTimeEntity {
         user.getPosts().add(this);
     }
 
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
+    }
+
     @Builder
     public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime,
                  String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment,
-                 int numberOfParticipants, int fare, int duration, int distance, Users user) {
+                 int numberOfParticipants, int fare, int duration, int distance, Users user, ChatRoom chatRoom) {
         this.title = title;
         this.category = category;
         this.departure = departure;
@@ -110,6 +119,7 @@ public class Posts extends BaseTimeEntity {
         this.distance = distance;
         this.view = 0;
         this.setUser(user);
+        this.setChatRoom(chatRoom);
     }
 
     public void addUser() {

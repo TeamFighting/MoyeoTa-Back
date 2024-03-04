@@ -5,6 +5,8 @@ import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsUpdateRequestDto;
+import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
+import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Category;
@@ -32,6 +34,8 @@ import java.util.Optional;
 @Slf4j
 public class PostsService {
 
+    private final ChatRoomService chatRoomService;
+    private final ChatRoomRepository chatRoomRepository;
     private final ParticipationDetailsService participationDetailsService;
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
@@ -77,9 +81,14 @@ public class PostsService {
         return responseDto;
     }
 
-    public Long save(String accessToken, PostsSaveRequestDto requestDto) {
+    public Long save(String accessToken, PostsSaveRequestDto requestDto, Long roomId) {
         Users user = getUserByToken(accessToken);
-        Posts post = requestDto.toEntity(user);
+//        chatRoomService.addUser(roomId, user.getId());
+        Optional<ChatRoom> chatRoom = chatRoomRepository.findById(roomId);
+        if (chatRoom.isEmpty()) {
+            throw new IllegalArgumentException("해당 채팅방이 없습니다. id=" + roomId);
+        }
+        Posts post = requestDto.toEntity(user, chatRoom.get());
         Long postId = postsRepository.save(post).getId();
         participationDetailsService.join(user.getId(), postId);
         return postId;
