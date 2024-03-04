@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
+import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.posts.*;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import org.junit.Assert;
@@ -21,6 +22,8 @@ public class UsersPostTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        ChatRoom chatRoom = ChatRoom.builder().name("testChatRoom")
+                .roomId("asdfghjkl").userCount(0).build();
         user = Users.builder()
                 .name("김태헌")
                 .email("tae77777@naver.com")
@@ -41,6 +44,7 @@ public class UsersPostTest {
                 .fare(10000)
                 .duration(60)
                 .user(user)
+                .chatRoom(chatRoom)
                 .build();
     }
 

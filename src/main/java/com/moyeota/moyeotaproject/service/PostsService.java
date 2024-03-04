@@ -34,7 +34,6 @@ import java.util.Optional;
 @Slf4j
 public class PostsService {
 
-    private final ChatRoomService chatRoomService;
     private final ChatRoomRepository chatRoomRepository;
     private final ParticipationDetailsService participationDetailsService;
     private final UsersRepository usersRepository;

@@ -2,6 +2,7 @@ package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
+import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.*;
@@ -29,6 +30,9 @@ import static org.mockito.Mockito.when;
 
 class PostsServiceTest {
     @Mock
+    private ChatRoomRepository chatRoomRepository;
+
+    @Mock
     private ParticipationDetailsService participationDetailsService;
 
     @Mock
@@ -55,7 +59,7 @@ class PostsServiceTest {
     @DisplayName("게시글_작성_유저_찾기")
     void findPostsMembers() {
         // Given
-        PostsService postsService = new PostsService(participationDetailsService, usersRepository, postsRepository
+        PostsService postsService = new PostsService(chatRoomRepository, participationDetailsService, usersRepository, postsRepository
                 , participationDetailsRepository, totalDetailRepository, jwtTokenProvider);
         Users users = Users.builder()
                 .loginId("tae77777")
