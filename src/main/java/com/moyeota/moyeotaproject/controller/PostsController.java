@@ -4,6 +4,7 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.controller.dto.postsDto.PostSaveResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
@@ -12,6 +13,7 @@ import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.domain.posts.Vehicle;
+import com.moyeota.moyeotaproject.service.ChatRoomService;
 import com.moyeota.moyeotaproject.service.ParticipationDetailsService;
 import com.moyeota.moyeotaproject.service.PostsService;
 import io.swagger.annotations.Api;
@@ -49,37 +51,33 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostsController {
 
     private final PostsService postsService;
+    private final ChatRoomService chatRoomService;
     private final ParticipationDetailsService participationDetailsService;
 
     //모집글 작성 API
     @ApiOperation(value = "모집글 작성", notes = "특정 회원이 모집글을 작성하는 API(jwt토큰 필요)")
     @PostMapping("")
     public ResponseDto<Long> save(HttpServletRequest request, @RequestBody PostsSaveRequestDto requestDto) {
-//        if (requestDto.getTitle() == null || requestDto.getTitle().equals("")) {
-//            throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
-//        }
-
-//        if (requestDto.getDeparture() == null || requestDto.getDeparture().equals("")) {
-//            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
-//        }
-//
-//        if (requestDto.getDestination() == null || requestDto.getDestination().equals("")) {
-//            throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
-//        }
-//
-//        if (requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals("")) {
-//            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
-//        }
-
-        if (requestDto.getVehicle() == null) {
+        if (requestDto.getTitle() == null || requestDto.getTitle().equals("")) {
+            throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
+        } else if (requestDto.getDeparture() == null || requestDto.getDeparture().equals("")) {
+            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
+        } else if (requestDto.getDestination() == null || requestDto.getDestination().equals("")) {
+            throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
+        } else if (requestDto.getDepartureTime() == null || requestDto.getDepartureTime().equals("")) {
+            throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE_TIME);
+        } else if (requestDto.getVehicle() == null) {
             requestDto.setVehicle(Vehicle.일반);
-        }
-
-        if (requestDto.getSameGenderStatus() == null) {
+        } else if (requestDto.getSameGenderStatus() == null) {
             requestDto.setSameGenderStatus(SameGender.NO);
         }
 
-        Long postId = postsService.save(request.getHeader("Authorization"), requestDto);
+        Long roomId = chatRoomService.createRoom(requestDto.getTitle(), requestDto.getRoomId());
+        Long postId = postsService.save(request.getHeader("Authorization"), requestDto, roomId);
+//        PostSaveResponseDto responseDto = PostSaveResponseDto.builder()
+//                .postId(postId)
+//                .chatRoomId(roomId)
+//                .build();
         return ResponseUtil.SUCCESS("모집글 저장에 성공하였습니다.", postId);
     }
 
@@ -92,58 +90,33 @@ public class PostsController {
         PostsResponseDto post = postsService.findById(postId);
         if (requestDto.getTitle() == null) {
             requestDto.setTitle(post.getTitle());
-        }
-        if (requestDto.getTitle().equals("")) {
+        } else if (requestDto.getTitle().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
-        }
-
-        if (requestDto.getContent() == null) {
+        } else if (requestDto.getContent() == null) {
             requestDto.setContent(post.getContent());
-        }
-
-        if (requestDto.getCategory() == null) {
+        } else if (requestDto.getCategory() == null) {
             requestDto.setCategory(post.getCategory());
-        }
-
-        if (requestDto.getDeparture() == null) {
+        } else if (requestDto.getDeparture() == null) {
             requestDto.setDeparture(post.getDeparture());
-        }
-        if (requestDto.getDeparture().equals("")) {
+        } else if (requestDto.getDeparture().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
-        }
-
-        if (requestDto.getDestination() == null) {
+        } else if (requestDto.getDestination() == null) {
             requestDto.setDestination(post.getDestination());
-        }
-        if (requestDto.getDestination().equals("")) {
+        } else if (requestDto.getDestination().equals("")) {
             throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
-        }
-
-        if (requestDto.getDepartureTime() == null) {
+        } else if (requestDto.getDepartureTime() == null) {
             requestDto.setDepartureTime(post.getDepartureTime());
-        }
-
-        if (requestDto.getSameGenderStatus() == null) {
+        } else if (requestDto.getSameGenderStatus() == null) {
             requestDto.setSameGenderStatus(post.getSameGenderStatus());
-        }
-
-        if (requestDto.getFare() == 0) {
+        } else if (requestDto.getFare() == 0) {
             requestDto.setFare(post.getFare());
-        }
-
-        if (requestDto.getDuration() == 0) {
+        } else if (requestDto.getDuration() == 0) {
             requestDto.setDuration(post.getDuration());
-        }
-
-        if (requestDto.getDistance() == 0) {
+        } else if (requestDto.getDistance() == 0) {
             requestDto.setDistance(post.getDistance());
-        }
-
-        if (requestDto.getNumberOfRecruitment() == 0) {
+        } else if (requestDto.getNumberOfRecruitment() == 0) {
             requestDto.setNumberOfRecruitment(post.getNumberOfRecruitment());
-        }
-
-        if (requestDto.getVehicle() == null) {
+        } else if (requestDto.getVehicle() == null) {
             requestDto.setVehicle(post.getVehicle());
         }
 

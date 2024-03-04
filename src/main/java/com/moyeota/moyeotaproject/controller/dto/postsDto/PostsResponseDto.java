@@ -52,6 +52,8 @@ public class PostsResponseDto {
     private String profileImage;
     @ApiModelProperty(value = "유저 성별")
     private String userGender;
+    @ApiModelProperty(value = "채팅방 인덱스")
+    private String roomId;
 
     @Builder
     public PostsResponseDto(Posts posts, String userName, String profileImage, String userGender) {
@@ -72,6 +74,7 @@ public class PostsResponseDto {
         this.view = posts.getView();
         this.createAt = posts.getCreatedDate();
         this.status = posts.getStatus();
+        this.roomId = posts.getChatRoom().getRoomId();
         this.userName = userName;
         this.profileImage = profileImage;
         this.userGender = userGender;
