@@ -72,17 +72,15 @@ public class ParticipationDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public List<ParticipationDetailsResponseDto> findAllDesc(Long userId) {
-        Users user = usersRepository.findById(userId).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(
-                user);
+    public List<ParticipationDetailsResponseDto> findAllDesc(String accessToken) {
+        Users user = getUserByToken(accessToken);
+        List<ParticipationDetails> participationList = participationDetailsRepository.findByUserOrderByIdDesc(user);
         List<ParticipationDetailsResponseDto> responseDtoList = new ArrayList<>();
-        for (int i = 0; i < participationDetailsList.size(); i++) {
-            if (participationDetailsList.get(i).getStatus().equals(ParticipationDetailsStatus.JOIN)) {
+        for (int i = 0; i < participationList.size(); i++) {
+            if (participationList.get(i).getStatus().equals(ParticipationDetailsStatus.JOIN)) {
                 ParticipationDetailsResponseDto responseDto = ParticipationDetailsResponseDto.builder()
-                        .posts(participationDetailsList.get(i).getPost())
-                        .status(participationDetailsList.get(i).getStatus())
+                        .posts(participationList.get(i).getPost())
+                        .status(participationList.get(i).getStatus())
                         .build();
                 responseDtoList.add(responseDto);
             }
@@ -92,23 +90,19 @@ public class ParticipationDetailsService {
         return responseDtoList;
     }
 
-    public List<PostsResponseDto> findMyParticipationDetailsDesc(Long userId) {
-        Users user = usersRepository.findById(userId).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-        List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findByUserOrderByIdDesc(
-                user);
+    public List<PostsResponseDto> findMyParticipationDetailsDesc(String accessToken) {
+        Users user = getUserByToken(accessToken);
+        List<ParticipationDetails> participationList = participationDetailsRepository.findByUserOrderByIdDesc(user);
         List<PostsResponseDto> list = new ArrayList<>();
-        for (int i = 0; i < participationDetailsList.size(); i++) {
-            Posts post = participationDetailsList.get(i).getPost();
+        for (int i = 0; i < participationList.size(); i++) {
+            Posts post = participationList.get(i).getPost();
             if (post.getDepartureTime().isAfter(LocalDateTime.now())) {
-                if (post.getUser().getId() != userId) {
-                    PostsResponseDto responseDto = PostsResponseDto.builder()
-                            .posts(post)
-                            .userName(post.getUser().getName())
-                            .profileImage(post.getUser().getName())
-                            .userGender(post.getUser().getGender()).build();
-                    list.add(responseDto);
-                }
+                PostsResponseDto responseDto = PostsResponseDto.builder()
+                        .posts(post)
+                        .userName(post.getUser().getName())
+                        .profileImage(post.getUser().getName())
+                        .userGender(post.getUser().getGender()).build();
+                list.add(responseDto);
             }
         }
         return list;
