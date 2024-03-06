@@ -42,7 +42,7 @@ public class ChatRoom extends BaseTimeEntity {
 //    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
 //    private List<ChatMessage> chatMessages = new ArrayList<>();
 
-    @OneToOne(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "chatRoom")
     private Posts post;
 
 //    public List<ChatMessage> getMessages() {
@@ -64,6 +64,7 @@ public class ChatRoom extends BaseTimeEntity {
         this.name = name;
         this.userCount = userCount;
         this.status = ChatRoomStatus.VALID;
+
     }
 
 }
