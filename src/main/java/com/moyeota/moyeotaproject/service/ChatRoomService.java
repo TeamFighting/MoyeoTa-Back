@@ -43,13 +43,11 @@ public class ChatRoomService {
 
     public List<ChatRoomResponseDto> findAllRoomsByUserDesc(String accessToken) {
         Users user = usersService.getUserByToken(accessToken);
-        List<ChatRoomAndUsers> chatRoomList = chatRoomAndUsersRepository.findAllByUserOrderByModifiedDateDesc(
-                user);
+        List<ChatRoomAndUsers> chatRoomList = chatRoomAndUsersRepository.findAllByUserOrderByModifiedDateDesc(user);
         List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
-
         for (int i = 0; i < chatRoomList.size(); i++) {
             ChatRoom chatRoom = chatRoomList.get(i).getChatRoom();
-            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().chatRoom(chatRoom).build();
+            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().chatRoom(chatRoom).posts(chatRoom.getPost()).build();
             chatRoomResponseDtoList.add(chatRoomResponseDto);
         }
         return chatRoomResponseDtoList;
