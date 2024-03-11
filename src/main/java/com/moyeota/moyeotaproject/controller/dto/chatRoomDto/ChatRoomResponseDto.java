@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.controller.dto.chatDto;
+package com.moyeota.moyeotaproject.controller.dto.chatRoomDto;
 
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
