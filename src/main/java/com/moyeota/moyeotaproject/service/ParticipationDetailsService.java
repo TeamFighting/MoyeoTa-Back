@@ -4,7 +4,7 @@ package com.moyeota.moyeotaproject.service;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.participationDetailsDto.DistancePriceDto;
 import com.moyeota.moyeotaproject.controller.dto.participationDetailsDto.ParticipationDetailsResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsStatus;
@@ -90,14 +90,14 @@ public class ParticipationDetailsService {
         return responseDtoList;
     }
 
-    public List<PostsResponseDto> findMyParticipationDetailsDesc(String accessToken) {
+    public List<PostsGetResponseDto> findMyParticipationDetailsDesc(String accessToken) {
         Users user = getUserByToken(accessToken);
         List<ParticipationDetails> participationList = participationDetailsRepository.findByUserOrderByIdDesc(user);
-        List<PostsResponseDto> list = new ArrayList<>();
+        List<PostsGetResponseDto> list = new ArrayList<>();
         for (int i = 0; i < participationList.size(); i++) {
             Posts post = participationList.get(i).getPost();
             if (post.getDepartureTime().isAfter(LocalDateTime.now())) {
-                PostsResponseDto responseDto = PostsResponseDto.builder()
+                PostsGetResponseDto responseDto = PostsGetResponseDto.builder()
                         .posts(post)
                         .userName(post.getUser().getName())
                         .profileImage(post.getUser().getName())

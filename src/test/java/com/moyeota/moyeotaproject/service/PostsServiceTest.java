@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsMemberDto;
+import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
@@ -9,22 +9,16 @@ import com.moyeota.moyeotaproject.domain.posts.*;
 import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
-import org.apache.catalina.User;
-import org.assertj.core.api.Assertions;
-import org.joda.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.parameters.P;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

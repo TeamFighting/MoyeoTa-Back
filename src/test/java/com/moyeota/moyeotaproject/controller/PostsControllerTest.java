@@ -1,36 +1,18 @@
 package com.moyeota.moyeotaproject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtAuthenticationFilter;
-import com.moyeota.moyeotaproject.controller.dto.UsersDto;
-import com.moyeota.moyeotaproject.controller.dto.postsDto.PostsSaveRequestDto;
-import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
-import com.moyeota.moyeotaproject.domain.posts.SameGender;
-import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
-import com.moyeota.moyeotaproject.service.ParticipationDetailsService;
 import com.moyeota.moyeotaproject.service.PostsService;
 import com.moyeota.moyeotaproject.service.UsersService;
-import org.joda.time.DateTimeUtils;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest

@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.chatDto.ChatRoomResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.chatRoomDto.ChatRoomResponseDto;
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
