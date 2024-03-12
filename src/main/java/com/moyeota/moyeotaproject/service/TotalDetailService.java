@@ -24,7 +24,7 @@ public class TotalDetailService {
     private final TotalDetailRepository totalDetailRepository;
 
     public Long save(String accessToken, TotalDetailRequestDto requestDto, Long postId) {
-        postsService.getUserByToken(accessToken);
+        // postsService.getUserByToken(accessToken);
         Posts post = postsRepository.findById(postId).orElseThrow(()
         -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
         TotalDetail totalDetail = requestDto.toEntity(post);
