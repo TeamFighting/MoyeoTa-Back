@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-public class UsersDto {
+public class UserDto {
 
     @Data
     @Builder

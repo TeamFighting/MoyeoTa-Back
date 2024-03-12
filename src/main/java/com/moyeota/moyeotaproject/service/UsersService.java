@@ -1,10 +1,9 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
-import com.moyeota.moyeotaproject.controller.dto.UsersDto;
+import com.moyeota.moyeotaproject.controller.dto.UserDto;
+import com.moyeota.moyeotaproject.controller.dto.UsersDto.UsersResponseDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
 import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmail;
@@ -13,16 +12,11 @@ import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.Random;
 
@@ -48,9 +42,9 @@ public class UsersService {
     }
 
     @Transactional
-    public UsersDto.Response getInfo(String accessToken) {
+    public UserDto.Response getInfo(String accessToken) {
         Users users = getUserByToken(accessToken);
-        UsersDto.Response usersDto = UsersDto.Response.builder()
+        UserDto.Response usersDto = UserDto.Response.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
                 .name(users.getName())
@@ -67,12 +61,12 @@ public class UsersService {
     }
 
     @Transactional
-    public UsersDto.Response addInfo(String accessToken, UsersDto.updateDto usersDto) {
+    public UsersResponseDto addInfo(String accessToken, UserDto.updateDto usersDto) {
         Users users = getUserByToken(accessToken);
         users.updateUsers(usersDto);
         Optional<OAuth> oauthEntity = oAuthRepository.findByUserId(users.getId());
         oauthEntity.ifPresent(oAuth -> oAuth.updateEmail(usersDto.getEmail()));
-        UsersDto.Response updateDto = UsersDto.Response.builder()
+        return UsersResponseDto.builder()
                 .loginId(users.getLoginId())
                 .name(users.getName())
                 .nickName(users.getNickName())
@@ -84,13 +78,12 @@ public class UsersService {
                 .school(users.getSchool())
                 .gender(users.getGender())
                 .build();
-        return updateDto;
     }
 
     @Transactional
-    public UsersDto.deleteDto deleteUser(String accessToken) {
+    public UserDto.deleteDto deleteUser(String accessToken) {
         Users users = getUserByToken(accessToken);
-        UsersDto.deleteDto deleteDto = UsersDto.deleteDto.builder()
+        UserDto.deleteDto deleteDto = UserDto.deleteDto.builder()
                 .name(users.getName())
                 .email(users.getEmail()).build();
         usersRepository.delete(users);
@@ -154,12 +147,12 @@ public class UsersService {
     }
 
     @Transactional
-    public UsersDto.Response createNickName(String tokenInfo, String nickname) {
+    public UsersResponseDto createNickName(String tokenInfo, String nickname) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         users.createNickName(nickname);
 
-        UsersDto.Response updateDto = UsersDto.Response.builder()
+        return UsersResponseDto.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
                 .name(users.getName())
@@ -172,15 +165,14 @@ public class UsersService {
                 .school(users.getSchool())
                 .gender(users.getGender())
                 .build();
-        return updateDto;
     }
 
     @Transactional
-    public UsersDto.Response updateNickName(String tokenInfo, String nickname) {
+    public UsersResponseDto updateNickName(String tokenInfo, String nickname) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
         users.updateNickName(nickname);
-        UsersDto.Response updateDto = UsersDto.Response.builder()
+        return UsersResponseDto.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
                 .name(users.getName())
@@ -193,6 +185,5 @@ public class UsersService {
                 .school(users.getSchool())
                 .gender(users.getGender())
                 .build();
-        return updateDto;
     }
 }

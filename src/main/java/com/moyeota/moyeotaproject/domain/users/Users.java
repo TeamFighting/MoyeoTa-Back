@@ -1,7 +1,7 @@
 package com.moyeota.moyeotaproject.domain.users;
 
 
-import com.moyeota.moyeotaproject.controller.dto.UsersDto;
+import com.moyeota.moyeotaproject.controller.dto.UserDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
@@ -82,7 +82,7 @@ public class Users extends BaseTimeEntity {
     }
 
     // 프로필 정보 전체 업데이트
-    public void updateUsers(UsersDto.updateDto usersDto) {
+    public void updateUsers(UserDto.updateDto usersDto) {
         this.name = Optional.ofNullable(usersDto.getName()).orElse(this.name);
         this.profileImage = Optional.ofNullable(usersDto.getProfileImage()).orElse(this.profileImage);
         this.phoneNumber = Optional.ofNullable(usersDto.getPhoneNumber()).orElse(this.phoneNumber);
