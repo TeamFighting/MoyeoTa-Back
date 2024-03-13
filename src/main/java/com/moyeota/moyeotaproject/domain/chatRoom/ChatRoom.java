@@ -67,7 +67,6 @@ public class ChatRoom extends BaseTimeEntity {
 		this.name = name;
 		this.userCount = userCount;
 		this.status = ChatRoomStatus.VALID;
-
 	}
 
 }

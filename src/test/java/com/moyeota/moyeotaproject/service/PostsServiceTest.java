@@ -1,14 +1,9 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
-import com.moyeota.moyeotaproject.domain.posts.*;
-import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetailRepository;
-import com.moyeota.moyeotaproject.domain.users.Users;
-import com.moyeota.moyeotaproject.domain.users.UsersRepository;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,13 +11,25 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
+import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
+import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
+import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
+import com.moyeota.moyeotaproject.domain.posts.Category;
+import com.moyeota.moyeotaproject.domain.posts.Posts;
+import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
+import com.moyeota.moyeotaproject.domain.posts.SameGender;
+import com.moyeota.moyeotaproject.domain.posts.Vehicle;
+import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetailRepository;
+import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 
 class PostsServiceTest {
+
+    @Mock
+    private UsersService usersService;
+
     @Mock
     private ChatRoomRepository chatRoomRepository;
 
@@ -53,8 +60,9 @@ class PostsServiceTest {
     @DisplayName("게시글_작성_유저_찾기")
     void findPostsMembers() {
         // Given
-        PostsService postsService = new PostsService(chatRoomRepository, participationDetailsService, usersRepository, postsRepository
-                , participationDetailsRepository, totalDetailRepository, jwtTokenProvider);
+
+        PostsService postsService = new PostsService(usersService, chatRoomRepository, participationDetailsService, usersRepository, postsRepository
+                , participationDetailsRepository, totalDetailRepository);
         Users users = Users.builder()
                 .loginId("tae77777")
                 .password("rlaxogjs8312")
