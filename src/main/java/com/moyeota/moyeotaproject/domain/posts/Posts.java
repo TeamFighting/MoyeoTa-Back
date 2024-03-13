@@ -88,7 +88,7 @@ public class Posts extends BaseTimeEntity {
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "chatRoomId")
 	private ChatRoom chatRoom;
 
