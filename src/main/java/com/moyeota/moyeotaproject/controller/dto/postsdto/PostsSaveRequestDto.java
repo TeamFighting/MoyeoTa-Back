@@ -40,7 +40,6 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
 	private String destination;
 
 	@ApiModelProperty(value = "출발 시각", example = "2023-09-04 19:57:13.000000", required = true)
-	@NotBlank(message = "출발 시각을 입력하세요.")
 	private LocalDateTime departureTime;
 
 	@ApiModelProperty(value = "내용", example = "같이 갈 사람 참가 신청 ㄱㄱ", required = true)
@@ -56,15 +55,12 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
 	private int numberOfRecruitment;
 
 	@ApiModelProperty(value = "택시 요금", example = "5200")
-	@NotBlank(message = "택시 요금을 입력하세요.")
 	private int fare;
 
 	@ApiModelProperty(value = "이동 시간(초)", example = "313")
-	@NotBlank(message = "이동 시간(초)을 입력하세요.")
 	private int duration;
 
 	@ApiModelProperty(value = "이동 거리(km)", example = "0.5")
-	@NotBlank(message = "이동 거리(km)를 입력하세요.")
 	private double distance;
 
 	@ApiModelProperty(value = "채팅방 id", example = "uuid")
