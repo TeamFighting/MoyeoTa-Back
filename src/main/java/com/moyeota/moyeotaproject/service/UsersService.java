@@ -107,7 +107,6 @@ public class UsersService {
     public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) {
         usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        // SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         MimeMessage message = javaMailSender.createMimeMessage();
         String email = schoolDto.getEmail();
         try {
@@ -125,7 +124,6 @@ public class UsersService {
             sb.append("</h3>");
             sb.append("</body></html>");
             String str=sb.toString();
-            // messageHelper.setText(String.format("code : %s", verificationCode));
             messageHelper.setText(str, true);
             if (schoolEmailRepository.findByEmail(email).isPresent()) {
                 schoolEmailRepository.delete(schoolEmailRepository.findByEmail(email).get());
