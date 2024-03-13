@@ -14,9 +14,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.internet.MimeMessage;
 import java.util.Optional;
 import java.util.Random;
 
@@ -100,22 +103,36 @@ public class UsersService {
     }
 
     @Transactional
+    @Async
     public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) {
         usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        // SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        MimeMessage message = javaMailSender.createMimeMessage();
         String email = schoolDto.getEmail();
         try {
-            simpleMailMessage.setTo(email);
-            simpleMailMessage.setSubject("학교 인증 코드 번호입니다.");
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+            messageHelper.setTo(email);
+            messageHelper.setSubject("모여타 인증 번호");
+            messageHelper.setFrom("moyeota6340@gmail.com", "모여타 팀 메일");
             String verificationCode = generateVerificationCode();
-            simpleMailMessage.setText(String.format("code : %s", verificationCode));
+            StringBuffer sb = new StringBuffer();
+            sb.append("<html><body>");
+            sb.append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>");
+            sb.append("<h1>"+"[모여타 어플리케이션]"+"</h1><br>");
+            sb.append("아래 코드 이용하여 인증하세요<br><br>");
+            sb.append("<h3>인증코드 : ").append(verificationCode);
+            sb.append("</h3>");
+            sb.append("</body></html>");
+            String str=sb.toString();
+            // messageHelper.setText(String.format("code : %s", verificationCode));
+            messageHelper.setText(str, true);
             if (schoolEmailRepository.findByEmail(email).isPresent()) {
                 schoolEmailRepository.delete(schoolEmailRepository.findByEmail(email).get());
             }
             SchoolEmail schoolEmail = SchoolEmail.builder().email(email).code(verificationCode).build();
             schoolEmailRepository.save(schoolEmail);
-            javaMailSender.send(simpleMailMessage);
+            javaMailSender.send(message);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
