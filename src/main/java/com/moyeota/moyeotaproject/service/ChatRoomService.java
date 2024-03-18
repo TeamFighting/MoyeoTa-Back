@@ -1,24 +1,23 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.chatRoomDto.ChatRoomResponseDto;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
-import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
-import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsersRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.moyeota.moyeotaproject.controller.dto.chatroomdto.ChatRoomResponseDto;
+import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
+import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
+import com.moyeota.moyeotaproject.domain.chatroomandusers.ChatRoomAndUsers;
+import com.moyeota.moyeotaproject.domain.chatroomandusers.ChatRoomAndUsersRepository;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +29,6 @@ public class ChatRoomService {
 	private final ChatRoomAndUsersRepository chatRoomAndUsersRepository;
 	private final PostsRepository postsRepository;
 	private final UsersService usersService;
-	private JwtTokenProvider jwtTokenProvider;
-	//    private final ChatMessageRepository chatMessageRepository;
 
 	public Long createRoom(String roomName, String roomId) {
 		ChatRoom chatRoom = ChatRoom.builder()
@@ -39,12 +36,10 @@ public class ChatRoomService {
 			.name(roomName)
 			.userCount(0)
 			.build();
-
 		return chatRoomRepository.save(chatRoom).getId();
 	}
 
 	public List<ChatRoomResponseDto> findAllRoomsByUserDesc(String accessToken) {
-        System.out.println("11111111111111111111111111");
 		Users user = usersService.getUserByToken(accessToken);
 		List<ChatRoomAndUsers> chatRoomList = chatRoomAndUsersRepository.findAllByUserOrderByModifiedDateDesc(user);
 		List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();

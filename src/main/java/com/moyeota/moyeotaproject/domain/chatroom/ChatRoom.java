@@ -1,8 +1,4 @@
-package com.moyeota.moyeotaproject.domain.chatRoom;
-
-import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
-import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
-import com.moyeota.moyeotaproject.domain.posts.Posts;
+package com.moyeota.moyeotaproject.domain.chatroom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
+import com.moyeota.moyeotaproject.domain.chatroomandusers.ChatRoomAndUsers;
+import com.moyeota.moyeotaproject.domain.posts.Posts;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -42,20 +42,8 @@ public class ChatRoom extends BaseTimeEntity {
 	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
 	private List<ChatRoomAndUsers> chatRoomAndUsersList = new ArrayList<>();
 
-	//    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-	//    private List<ChatMessage> chatMessages = new ArrayList<>();
-
 	@OneToOne(mappedBy = "chatRoom", cascade = CascadeType.ALL)
 	private Posts post;
-
-	//    public List<ChatMessage> getMessages() {
-	//        return this.chatMessages;
-	//    }
-
-	//    public void addMessage(ChatMessage message) {
-	//        chatMessages.add(message);
-	//        message.setChatRoom(this);
-	//    }
 
 	public void setUserCount(int userCount) {
 		this.userCount = userCount;

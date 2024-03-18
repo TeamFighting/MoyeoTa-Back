@@ -7,6 +7,7 @@ import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.domain.posts.Vehicle;
+import com.moyeota.moyeotaproject.domain.users.Users;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -61,7 +62,7 @@ public class PostsGetResponseDto {
 	private String roomId;
 
 	@Builder
-	public PostsGetResponseDto(Posts posts, String userName, String profileImage, String userGender) {
+	public PostsGetResponseDto(Posts posts, Users users) {
 		this.postId = posts.getId();
 		this.title = posts.getTitle();
 		this.category = posts.getCategory();
@@ -80,9 +81,9 @@ public class PostsGetResponseDto {
 		this.createAt = posts.getCreatedDate();
 		this.status = posts.getStatus();
 		this.roomId = posts.getChatRoom().getRoomId();
-		this.userName = userName;
-		this.profileImage = profileImage;
-		this.userGender = userGender;
+		this.userName = users.getName();
+		this.profileImage = users.getProfileImage();
+		this.userGender = users.getGender();
 	}
 
 }

@@ -1,11 +1,10 @@
 package com.moyeota.moyeotaproject.member;
 
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenGenerator;
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
 import org.junit.jupiter.api.Test;
 
-import java.security.Key;
 import java.util.Date;
 
 @SuppressWarnings("NonAsciiCharacters")

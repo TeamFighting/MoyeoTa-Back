@@ -1,6 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.reviewDto.ReviewResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.reviewDto.ReviewSaveRequestDto;
 import com.moyeota.moyeotaproject.domain.review.Review;
@@ -13,8 +13,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor

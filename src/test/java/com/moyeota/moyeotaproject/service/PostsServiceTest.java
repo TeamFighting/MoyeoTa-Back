@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
+import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Category;

@@ -1,6 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
 import com.moyeota.moyeotaproject.controller.dto.UserDto;
 import com.moyeota.moyeotaproject.controller.dto.UsersDto.UsersResponseDto;
@@ -12,7 +12,7 @@ import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;

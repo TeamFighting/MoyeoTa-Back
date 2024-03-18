@@ -3,7 +3,7 @@ package com.moyeota.moyeotaproject.domain.users;
 
 import com.moyeota.moyeotaproject.controller.dto.UserDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
-import com.moyeota.moyeotaproject.domain.chatRoomAndUsers.ChatRoomAndUsers;
+import com.moyeota.moyeotaproject.domain.chatroomandusers.ChatRoomAndUsers;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
