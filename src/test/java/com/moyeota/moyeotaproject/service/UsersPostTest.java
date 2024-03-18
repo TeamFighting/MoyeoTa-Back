@@ -1,6 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
+import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.posts.*;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import org.junit.Assert;

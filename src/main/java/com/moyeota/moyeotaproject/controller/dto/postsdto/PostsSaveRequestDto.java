@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
+import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;

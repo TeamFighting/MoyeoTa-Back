@@ -1,43 +1,43 @@
-package com.moyeota.moyeotaproject.controller;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
-import com.moyeota.moyeotaproject.domain.users.UsersRepository;
-import com.moyeota.moyeotaproject.service.PostsService;
-import com.moyeota.moyeotaproject.service.UsersService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-@SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest
-@AutoConfigureMockMvc
-public class PostsControllerTest {
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
-    PostsService postsService;
-
-    @Autowired
-    PostsRepository postsRepository;
-
-    @Autowired
-    UsersService usersService;
-
-    @Autowired
-    UsersRepository usersRepository;
-
-    @Autowired
-    MockMvc mvc;
-
-    private static final String BASE_URL = "/api/posts";
-    private static final String testAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwMzE4MjIwfQ.ZOuV7sb4nH2QjWVyH8zyzqMdneb7yLn64slbiWcIofA";
+// package com.moyeota.moyeotaproject.controller;
+//
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
+// import com.moyeota.moyeotaproject.domain.users.UsersRepository;
+// import com.moyeota.moyeotaproject.service.PostsService;
+// import com.moyeota.moyeotaproject.service.UsersService;
+//
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.test.web.servlet.MockMvc;
+//
+// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+//
+// @SuppressWarnings("NonAsciiCharacters")
+// @SpringBootTest
+// @AutoConfigureMockMvc
+// public class PostsControllerTest {
+//     @Autowired
+//     ObjectMapper objectMapper;
+//
+//     @Autowired
+//     PostsService postsService;
+//
+//     @Autowired
+//     PostsRepository postsRepository;
+//
+//     @Autowired
+//     UsersService usersService;
+//
+//     @Autowired
+//     UsersRepository usersRepository;
+//
+//     @Autowired
+//     MockMvc mvc;
+//
+//     private static final String BASE_URL = "/api/posts";
+//     private static final String testAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwMzE4MjIwfQ.ZOuV7sb4nH2QjWVyH8zyzqMdneb7yLn64slbiWcIofA";
 
 //    @Test
 //    void 게시글_저장_컨트롤러_테스트() throws Exception {
@@ -120,4 +120,4 @@ public class PostsControllerTest {
 //    @Test
 //    void calcPrice() {
 //    }
-}
+// }

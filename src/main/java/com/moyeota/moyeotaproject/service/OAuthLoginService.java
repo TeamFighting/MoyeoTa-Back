@@ -2,7 +2,7 @@ package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenGenerator;
 import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;

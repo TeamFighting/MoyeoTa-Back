@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ResponseDto<T> {
-    private final ResponseStatus status;
-    private final String message;
-    private final T data;
+	private final ResponseStatus status;
+	private final String message;
+	private final T data;
 }

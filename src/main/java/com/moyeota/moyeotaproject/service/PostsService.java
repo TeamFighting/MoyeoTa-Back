@@ -9,13 +9,12 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsUpdateRequestDto;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoom;
-import com.moyeota.moyeotaproject.domain.chatRoom.ChatRoomRepository;
+import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
+import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Category;
@@ -61,8 +60,7 @@ public class PostsService {
 		List<PostsGetResponseDto> responseDtoList = new ArrayList<>();
 		for (int i = 0; i < postsList.size(); i++) {
 			Posts post = postsList.get(i);
-			PostsGetResponseDto postsResponseDto = new PostsGetResponseDto(post, post.getUser().getName(),
-				post.getUser().getProfileImage(), post.getUser().getGender());
+			PostsGetResponseDto postsResponseDto = new PostsGetResponseDto(post, post.getUser());
 			responseDtoList.add(postsResponseDto);
 		}
 		return responseDtoList;
@@ -76,9 +74,8 @@ public class PostsService {
 
 		PostsGetResponseDto responseDto = PostsGetResponseDto.builder()
 			.posts(posts)
-			.userName(posts.getUser().getName())
-			.profileImage(posts.getUser().getProfileImage())
-			.userGender(posts.getUser().getGender()).build();
+			.users(posts.getUser())
+			.build();
 		return responseDto;
 	}
 
@@ -123,10 +120,9 @@ public class PostsService {
 		Users user = usersRepository.findById(userId).orElseThrow(()
 			-> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 		Slice<Posts> postsSlice = postsRepository.findByUser(user, pageable);
-		Slice<PostsGetResponseDto> postsResponseDtos = postsSlice.map(
-			p -> new PostsGetResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(),
-				p.getUser().getGender()));
-		return postsResponseDtos;
+		Slice<PostsGetResponseDto> postsResponseDtoList = postsSlice.map(
+			p -> new PostsGetResponseDto(p, p.getUser()));
+		return postsResponseDtoList;
 	}
 
 	public void cancelParticipation(Long postId) {
@@ -137,10 +133,9 @@ public class PostsService {
 
 	public Slice<PostsGetResponseDto> findAllByCategory(Category category, Pageable pageable) {
 		Slice<Posts> postsSlice = postsRepository.findByCategory(category, PostsStatus.RECRUITING, pageable);
-		Slice<PostsGetResponseDto> postsResponseDtos = postsSlice.map(
-			p -> new PostsGetResponseDto(p, p.getUser().getName(), p.getUser().getProfileImage(),
-				p.getUser().getGender()));
-		return postsResponseDtos;
+		Slice<PostsGetResponseDto> postsResponseDtoList = postsSlice.map(
+			p -> new PostsGetResponseDto(p, p.getUser()));
+		return postsResponseDtoList;
 	}
 
 	@Transactional
