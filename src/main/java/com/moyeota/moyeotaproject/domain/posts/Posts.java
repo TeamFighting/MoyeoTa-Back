@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
 
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.users.Users;
 
 import lombok.Builder;

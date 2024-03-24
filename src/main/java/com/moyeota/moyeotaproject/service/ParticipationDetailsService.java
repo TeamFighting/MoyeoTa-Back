@@ -5,18 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.participationDetailsDto.DistancePriceDto;
-import com.moyeota.moyeotaproject.controller.dto.participationDetailsDto.ParticipationDetailsResponseDto;
+import com.moyeota.moyeotaproject.controller.dto.participationdetailsdto.DistancePriceDto;
+import com.moyeota.moyeotaproject.controller.dto.participationdetailsdto.ParticipationDetailsResponseDto;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsGetResponseDto;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsStatus;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsRepository;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsStatus;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
@@ -29,19 +27,16 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ParticipationDetailsService {
 
+	private final UsersService usersService;
 	private final ChatRoomService chatRoomService;
 	private final UsersRepository usersRepository;
 	private final PostsRepository postsRepository;
 	private final ParticipationDetailsRepository participationDetailsRepository;
-	private final JwtTokenProvider jwtTokenProvider;
 
-	public Long join(Long userId, Long postId) {
-		Users user = usersRepository.findById(userId).orElseThrow(()
-			-> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-
+	public Long join(String accessToken, Long postId) {
+		Users user = usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
-
 		post.addUser();
 		chatRoomService.addUser(post.getChatRoom().getId(), user.getId());
 
@@ -53,21 +48,18 @@ public class ParticipationDetailsService {
 			.user(user)
 			.post(post)
 			.build();
-
 		return participationDetailsRepository.save(participationDetails).getId();
 	}
 
 	@Transactional(readOnly = true)
 	public ParticipationDetails findById(Long participationDetailsId) {
 		ParticipationDetails participationDetails = participationDetailsRepository.findById(participationDetailsId)
-			.orElseThrow(()
-				-> new IllegalArgumentException("해당 게시글이 없습니다. id=" + participationDetailsId));
-
+			.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + participationDetailsId));
 		return participationDetails;
 	}
 
 	public ParticipationDetails checkParticipation(String accessToken, Long postId) {
-		Users user = getUserByToken(accessToken);
+		Users user = usersService.getUserByToken(accessToken);
 		if (!participationDetailsRepository.findParticipationDetailsByUserAndPost(user,
 			postsRepository.findById(postId).get()).isPresent()) {
 			return null;
@@ -78,7 +70,7 @@ public class ParticipationDetailsService {
 
 	@Transactional(readOnly = true)
 	public List<ParticipationDetailsResponseDto> findAllDesc(String accessToken) {
-		Users user = getUserByToken(accessToken);
+		Users user = usersService.getUserByToken(accessToken);
 		List<ParticipationDetails> participationList = participationDetailsRepository.findByUserOrderByIdDesc(user);
 		List<ParticipationDetailsResponseDto> responseDtoList = new ArrayList<>();
 		for (int i = 0; i < participationList.size(); i++) {
@@ -96,7 +88,7 @@ public class ParticipationDetailsService {
 	}
 
 	public List<PostsGetResponseDto> findMyParticipationDetailsDesc(String accessToken) {
-		Users user = getUserByToken(accessToken);
+		Users user = usersService.getUserByToken(accessToken);
 		List<ParticipationDetails> participationList = participationDetailsRepository.findByUserOrderByIdDesc(user);
 		List<PostsGetResponseDto> list = new ArrayList<>();
 		for (int i = 0; i < participationList.size(); i++) {
@@ -113,23 +105,27 @@ public class ParticipationDetailsService {
 
 	}
 
-	public boolean cancelParticipation(Long postId, Users user) {
+	public boolean cancelParticipation(Long postId, String accessToken) {
+		Users user = usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
-		ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
-			user, post).orElseThrow(
-			() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+		ParticipationDetails participationDetails =
+			participationDetailsRepository.findParticipationDetailsByUserAndPost(user, post)
+				.orElseThrow(() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+
 		chatRoomService.deleteUser(post.getChatRoom().getId(), user.getId());
 		participationDetailsRepository.delete(participationDetails);
 		return true;
 	}
 
-	public Long saveDistance(Users user, Long postId, double distance) {
+	public Long saveDistance(String accessToken, Long postId, double distance) {
+		Users user = usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(
 			() -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
-		ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
-			user, post).orElseThrow(
-			() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+		ParticipationDetails participationDetails =
+			participationDetailsRepository.findParticipationDetailsByUserAndPost(user, post)
+				.orElseThrow(() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+
 		participationDetails.updateDistance(distance);
 		return participationDetails.getId();
 	}
@@ -139,10 +135,10 @@ public class ParticipationDetailsService {
 			() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 		Posts post = postsRepository.findById(postId).orElseThrow(
 			() -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
-		ParticipationDetails participationDetails = participationDetailsRepository.findParticipationDetailsByUserAndPost(
-				user, post)
-			.orElseThrow(()
-				-> new IllegalArgumentException("해당 참가내역이 없습니다."));
+		ParticipationDetails participationDetails =
+			participationDetailsRepository.findParticipationDetailsByUserAndPost(user, post)
+				.orElseThrow(() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+
 		DistancePriceDto distancePriceDto = DistancePriceDto.builder()
 			.distance(participationDetails.getDistance())
 			.price(participationDetails.getPrice())
@@ -156,15 +152,6 @@ public class ParticipationDetailsService {
 		public int compare(ParticipationDetailsResponseDto p1, ParticipationDetailsResponseDto p2) {
 			int result = p2.getDepartureTime().compareTo(p1.getDepartureTime());
 			return result;
-		}
-	}
-
-	public Users getUserByToken(String accessToken) {
-		Optional<Users> users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken));
-		if (users.isPresent()) {
-			return users.get();
-		} else {
-			throw new RuntimeException("토큰에 해당하는 멤버가 없습니다.");
 		}
 	}
 

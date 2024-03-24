@@ -31,9 +31,7 @@ public class ChatRoom extends BaseTimeEntity {
 	private Long id;
 
 	private String roomId;
-
 	private String name;
-
 	private int userCount;
 
 	@Enumerated(EnumType.STRING)

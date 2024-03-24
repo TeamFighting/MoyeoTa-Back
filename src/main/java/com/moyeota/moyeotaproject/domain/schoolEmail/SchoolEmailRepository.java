@@ -1,9 +1,9 @@
 package com.moyeota.moyeotaproject.domain.schoolEmail;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 public interface SchoolEmailRepository extends JpaRepository<SchoolEmail, Long> {
-    Optional<SchoolEmail> findByEmail(String schoolEmail);
+	Optional<SchoolEmail> findByEmail(String schoolEmail);
 }
