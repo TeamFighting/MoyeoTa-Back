@@ -14,14 +14,14 @@ import org.mockito.MockitoAnnotations;
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.posts.SameGender;
 import com.moyeota.moyeotaproject.domain.posts.Vehicle;
-import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetailRepository;
+import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 
