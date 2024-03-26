@@ -13,4 +13,7 @@ public interface ChatRoomAndUsersRepository extends JpaRepository<ChatRoomAndUse
 	Optional<ChatRoomAndUsers> findByChatRoomAndUser(ChatRoom chatRoom, Users user);
 
 	List<ChatRoomAndUsers> findAllByUserOrderByModifiedDateDesc(Users user);
+
+	List<ChatRoomAndUsers> findAllByChatRoom(ChatRoom chatRoom);
+
 }

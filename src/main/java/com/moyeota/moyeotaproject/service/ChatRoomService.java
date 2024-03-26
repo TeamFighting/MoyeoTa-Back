@@ -45,9 +45,12 @@ public class ChatRoomService {
 		List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
 		for (int i = 0; i < chatRoomList.size(); i++) {
 			ChatRoom chatRoom = chatRoomList.get(i).getChatRoom();
+			List<ChatRoomAndUsers> chatRoomAndUsersList = chatRoomAndUsersRepository.findAllByChatRoom(chatRoom);
+			List<String> profileImageList = getProfileImages(chatRoomAndUsersList);
 			ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder()
 				.chatRoom(chatRoom)
 				.posts(chatRoom.getPost())
+				.profileImageList(profileImageList)
 				.build();
 			chatRoomResponseDtoList.add(chatRoomResponseDto);
 		}
@@ -99,6 +102,14 @@ public class ChatRoomService {
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(
 			() -> new IllegalArgumentException("해당 채팅방이 없습니다. id= " + chatRoomId));
 		chatRoom.setUserCount(chatRoom.getUserCount() - 1);
+	}
+
+	public List<String> getProfileImages(List<ChatRoomAndUsers> chatRoomAndUsersList) {
+		List<String> profileImageList = new ArrayList<>();
+		for (int i = 0; i < chatRoomAndUsersList.size(); i++) {
+			profileImageList.add(chatRoomAndUsersList.get(i).getUser().getProfileImage());
+		}
+		return profileImageList;
 	}
 
 }

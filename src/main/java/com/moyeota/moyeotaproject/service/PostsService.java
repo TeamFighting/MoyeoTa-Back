@@ -15,14 +15,14 @@ import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsUpdateRequestDto;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetails;
-import com.moyeota.moyeotaproject.domain.participationDetails.ParticipationDetailsRepository;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
-import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetail;
-import com.moyeota.moyeotaproject.domain.totalDetail.TotalDetailRepository;
+import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetail;
+import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 
@@ -87,7 +87,7 @@ public class PostsService {
 		}
 		Posts post = requestDto.toEntity(user, chatRoom.get());
 		Long postId = postsRepository.save(post).getId();
-		participationDetailsService.join(user.getId(), postId);
+		participationDetailsService.join(accessToken, postId);
 		return postId;
 	}
 

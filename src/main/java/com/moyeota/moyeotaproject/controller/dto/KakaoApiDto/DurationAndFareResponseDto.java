@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @ApiModel(value = "택시 요금 및 이동 시간 응답")
 public class DurationAndFareResponseDto {
 
-    @ApiModelProperty(value = "택시 요금", example = "5200")
-    private int fare;
+	@ApiModelProperty(value = "택시 요금", example = "5200")
+	private int fare;
 
-    @ApiModelProperty(value = "이동 시간(초)", example = "313")
-    private int duration;
+	@ApiModelProperty(value = "이동 시간(초)", example = "313")
+	private int duration;
 
 }
