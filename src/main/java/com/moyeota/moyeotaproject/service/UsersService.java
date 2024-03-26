@@ -34,6 +34,7 @@ public class UsersService {
     private final JwtTokenProvider jwtTokenProvider;
     private final JavaMailSender javaMailSender;
     private final SchoolEmailRepository schoolEmailRepository;
+    private final RedisUtil redisUtil;
 
     public Users autoRegister() {
         Users users = Users.builder()
@@ -110,6 +111,7 @@ public class UsersService {
         MimeMessage message = javaMailSender.createMimeMessage();
         String email = schoolDto.getEmail();
         try {
+            // 메시지 전송
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
             messageHelper.setTo(email);
             messageHelper.setSubject("모여타 인증 번호");
@@ -118,19 +120,22 @@ public class UsersService {
             StringBuffer sb = new StringBuffer();
             sb.append("<html><body>");
             sb.append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>");
-            sb.append("<h1>"+"[모여타 어플리케이션]"+"</h1><br>");
+            sb.append("<h1>" + "[모여타 어플리케이션]" + "</h1><br>");
             sb.append("아래 코드 이용하여 인증하세요<br><br>");
             sb.append("<h3>인증코드 : ").append(verificationCode);
             sb.append("</h3>");
             sb.append("</body></html>");
-            String str=sb.toString();
+            String str = sb.toString();
             messageHelper.setText(str, true);
+            // 메시지 인증 코드 DB 저장
             if (schoolEmailRepository.findByEmail(email).isPresent()) {
                 schoolEmailRepository.delete(schoolEmailRepository.findByEmail(email).get());
             }
             SchoolEmail schoolEmail = SchoolEmail.builder().email(email).code(verificationCode).build();
             schoolEmailRepository.save(schoolEmail);
             javaMailSender.send(message);
+            // redis 전송
+            redisUtil.setDataExpire(verificationCode, email, 60 * 5L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
