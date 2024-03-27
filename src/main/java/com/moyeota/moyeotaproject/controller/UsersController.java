@@ -76,7 +76,7 @@ public class UsersController {
 	@PostMapping("/school-email/verification")
 	public ResponseDto<SchoolDto.ResponseSuccess> schoolEmailCheck(
 		@RequestHeader(value = "Authorization") String tokenInfo,
-		@RequestBody SchoolDto.RequestForUnivCodeCheck schoolRequestDto) throws IOException {
+		@RequestBody SchoolDto.RequestForUnivCodeCheck schoolRequestDto) {
 		return ResponseUtil.SUCCESS("학교 인증이 완료되었습니다.", usersService.schoolEmailCheck(tokenInfo, schoolRequestDto));
 	}
 

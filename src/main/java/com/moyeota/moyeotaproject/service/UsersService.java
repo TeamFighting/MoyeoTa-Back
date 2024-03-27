@@ -8,6 +8,8 @@ import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
 import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmail;
 import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmailRepository;
+import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedis;
+import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedisRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,7 @@ public class UsersService {
     private final JwtTokenProvider jwtTokenProvider;
     private final JavaMailSender javaMailSender;
     private final SchoolEmailRepository schoolEmailRepository;
-    private final RedisUtil redisUtil;
+    private final SchoolEmailRedisRepository redisRepository;
 
     public Users autoRegister() {
         Users users = Users.builder()
@@ -128,14 +130,23 @@ public class UsersService {
             String str = sb.toString();
             messageHelper.setText(str, true);
             // 메시지 인증 코드 DB 저장
-            if (schoolEmailRepository.findByEmail(email).isPresent()) {
-                schoolEmailRepository.delete(schoolEmailRepository.findByEmail(email).get());
+//            if (schoolEmailRepository.findByEmail(email).isPresent()) {
+//                schoolEmailRepository.delete(schoolEmailRepository.findByEmail(email).get());
+//            }
+            // 메시지 인증 코드 Redis 저장
+            if (redisRepository.findByEmail(email).isPresent()) {
+                redisRepository.delete(redisRepository.findByEmail(email).get());
             }
-            SchoolEmail schoolEmail = SchoolEmail.builder().email(email).code(verificationCode).build();
-            schoolEmailRepository.save(schoolEmail);
+            // SchoolEmail schoolEmail = SchoolEmail.builder().email(email).code(verificationCode).build();
+            SchoolEmailRedis schoolEmailRedis = SchoolEmailRedis.builder()
+                    .email(email)
+                    .code(verificationCode)
+                    .build();
+            // schoolEmailRepository.save(schoolEmail);
+            redisRepository.save(schoolEmailRedis);
             javaMailSender.send(message);
             // redis 전송
-            redisUtil.setDataExpire(verificationCode, email, 60 * 5L);
+            // redisUtil.setDataExpire(verificationCode, email, 60 * 5L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -146,8 +157,19 @@ public class UsersService {
     public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        SchoolEmail bySchoolEmail = schoolEmailRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
-        if (bySchoolEmail.getCode().equals(schoolDto.getCode())) {
+        log.info("user 찾음");
+//        SchoolEmail bySchoolEmail = schoolEmailRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
+        log.info("school Email = {}", redisRepository.findByEmail(schoolDto.getEmail()));
+        SchoolEmailRedis schoolEmailRedis = redisRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
+
+//        if (bySchoolEmail.getCode().equals(schoolDto.getCode())) {
+//            users.updateSchoolAuthenticate(schoolDto.getUnivName());
+//            return SchoolDto.ResponseSuccess.builder()
+//                    .univName(schoolDto.getUnivName())
+//                    .certified_email(schoolDto.getEmail())
+//                    .build();
+//        }
+        if (schoolEmailRedis.getCode().equals(schoolDto.getCode())) {
             users.updateSchoolAuthenticate(schoolDto.getUnivName());
             return SchoolDto.ResponseSuccess.builder()
                     .univName(schoolDto.getUnivName())
