@@ -50,7 +50,7 @@ spring:
             required: true
           auth: true
   redis:
-    host: localhost
+    host: moyeota.shop
     port: 6379
     password: redis
 
