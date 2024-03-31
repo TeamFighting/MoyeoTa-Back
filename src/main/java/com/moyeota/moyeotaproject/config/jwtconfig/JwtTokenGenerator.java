@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.context.annotation.Configuration;
 
-import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 
 import lombok.RequiredArgsConstructor;
 

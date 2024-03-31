@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.AddressDto;
-import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DocumentDto;
-import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DurationAndFareResponseDto;
+import com.moyeota.moyeotaproject.dto.KakaoApiDto.AddressDto;
+import com.moyeota.moyeotaproject.dto.KakaoApiDto.DocumentDto;
+import com.moyeota.moyeotaproject.dto.KakaoApiDto.DurationAndFareResponseDto;
 import com.moyeota.moyeotaproject.service.AddressSearchService;
 
 import io.swagger.annotations.Api;

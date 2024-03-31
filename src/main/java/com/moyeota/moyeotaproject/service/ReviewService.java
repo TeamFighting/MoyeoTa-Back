@@ -5,8 +5,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.controller.dto.reviewdto.ReviewResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.reviewdto.ReviewSaveRequestDto;
+import com.moyeota.moyeotaproject.dto.reviewdto.ReviewResponseDto;
+import com.moyeota.moyeotaproject.dto.reviewdto.ReviewSaveRequestDto;
 import com.moyeota.moyeotaproject.domain.review.Review;
 import com.moyeota.moyeotaproject.domain.review.ReviewRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;

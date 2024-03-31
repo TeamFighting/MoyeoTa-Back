@@ -17,10 +17,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.AddressDto;
-import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DocumentDto;
-import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.DurationAndFareResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.KakaoApiDto.KakaoApiResponseDto;
+import com.moyeota.moyeotaproject.dto.KakaoApiDto.AddressDto;
+import com.moyeota.moyeotaproject.dto.KakaoApiDto.DocumentDto;
+import com.moyeota.moyeotaproject.dto.KakaoApiDto.DurationAndFareResponseDto;
+import com.moyeota.moyeotaproject.dto.KakaoApiDto.KakaoApiResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

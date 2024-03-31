@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.reviewdto.ReviewResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.reviewdto.ReviewSaveRequestDto;
+import com.moyeota.moyeotaproject.dto.reviewdto.ReviewResponseDto;
+import com.moyeota.moyeotaproject.dto.reviewdto.ReviewSaveRequestDto;
 import com.moyeota.moyeotaproject.service.ReviewService;
 
 import io.swagger.annotations.Api;

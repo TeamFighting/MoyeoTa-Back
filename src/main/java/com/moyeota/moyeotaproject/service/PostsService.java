@@ -9,10 +9,10 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsGetResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
-import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsSaveRequestDto;
-import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsUpdateRequestDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsUpdateRequestDto;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;

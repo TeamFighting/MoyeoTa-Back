@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.moyeota.moyeotaproject.controller.dto.UserDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatroomandusers.ChatRoomAndUsers;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;

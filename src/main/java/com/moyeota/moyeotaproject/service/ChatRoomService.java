@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.controller.dto.chatroomdto.ChatRoomResponseDto;
+import com.moyeota.moyeotaproject.dto.chatroomdto.ChatRoomResponseDto;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.chatroomandusers.ChatRoomAndUsers;

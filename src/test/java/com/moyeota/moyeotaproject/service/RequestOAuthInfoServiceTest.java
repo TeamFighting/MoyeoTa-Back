@@ -1,21 +1,9 @@
 package com.moyeota.moyeotaproject.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.moyeota.moyeotaproject.component.OAuth.OAuthApiClient.OAuthApiClient;
-import com.moyeota.moyeotaproject.component.OAuth.OAuthInfoResponse.OAuthInfoResponse;
-import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.OAuthLoginParams;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthInfoResponse.OAuthInfoResponse;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.util.MultiValueMap;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.mockito.Mockito.when;
 
 public class RequestOAuthInfoServiceTest {
 

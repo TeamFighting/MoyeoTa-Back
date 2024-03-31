@@ -1,12 +1,11 @@
 package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
-import com.moyeota.moyeotaproject.controller.dto.UserDto;
-import com.moyeota.moyeotaproject.controller.dto.UsersDto.UsersResponseDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
-import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmail;
 import com.moyeota.moyeotaproject.domain.schoolEmail.SchoolEmailRepository;
 import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedis;
 import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedisRepository;

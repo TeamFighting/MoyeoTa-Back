@@ -6,12 +6,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.component.OAuth.OAuthInfoResponse.OAuthInfoResponse;
-import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.OAuthLoginParams;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthInfoResponse.OAuthInfoResponse;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenGenerator;
-import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;

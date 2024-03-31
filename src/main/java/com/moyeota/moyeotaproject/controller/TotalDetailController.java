@@ -13,8 +13,8 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.totaldetaildto.TotalDetailRequestDto;
-import com.moyeota.moyeotaproject.controller.dto.totaldetaildto.TotalDetailResponseDto;
+import com.moyeota.moyeotaproject.dto.totaldetaildto.TotalDetailRequestDto;
+import com.moyeota.moyeotaproject.dto.totaldetaildto.TotalDetailResponseDto;
 import com.moyeota.moyeotaproject.service.TotalDetailService;
 
 import io.swagger.annotations.Api;

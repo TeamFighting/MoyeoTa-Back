@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsMemberDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsRepository;

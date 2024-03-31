@@ -2,7 +2,7 @@ package com.moyeota.moyeotaproject.member;
 
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenGenerator;
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
-import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;

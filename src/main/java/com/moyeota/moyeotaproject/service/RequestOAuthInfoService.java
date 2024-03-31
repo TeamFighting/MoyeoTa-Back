@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.moyeota.moyeotaproject.component.OAuth.OAuthApiClient.OAuthApiClient;
-import com.moyeota.moyeotaproject.component.OAuth.OAuthInfoResponse.OAuthInfoResponse;
-import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.OAuthLoginParams;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthApiClient.OAuthApiClient;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthInfoResponse.OAuthInfoResponse;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthProvider;
 
 import lombok.extern.slf4j.Slf4j;

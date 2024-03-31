@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.GoogleLoginParams;
-import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.KakaoLoginParams;
-import com.moyeota.moyeotaproject.component.OAuth.OAuthLoginParams.NaverLoginParams;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.GoogleLoginParams;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.KakaoLoginParams;
+import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.NaverLoginParams;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.service.OAuthLoginService;

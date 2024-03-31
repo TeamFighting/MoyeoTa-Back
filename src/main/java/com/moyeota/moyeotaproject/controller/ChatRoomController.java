@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.chatroomdto.ChatRoomResponseDto;
+import com.moyeota.moyeotaproject.dto.chatroomdto.ChatRoomResponseDto;
 import com.moyeota.moyeotaproject.service.ChatRoomService;
 
 import io.swagger.annotations.Api;

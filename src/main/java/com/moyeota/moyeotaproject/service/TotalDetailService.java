@@ -3,8 +3,8 @@ package com.moyeota.moyeotaproject.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.controller.dto.totaldetaildto.TotalDetailRequestDto;
-import com.moyeota.moyeotaproject.controller.dto.totaldetaildto.TotalDetailResponseDto;
+import com.moyeota.moyeotaproject.dto.totaldetaildto.TotalDetailRequestDto;
+import com.moyeota.moyeotaproject.dto.totaldetaildto.TotalDetailResponseDto;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetail;

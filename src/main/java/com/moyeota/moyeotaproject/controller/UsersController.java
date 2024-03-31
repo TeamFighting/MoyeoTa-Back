@@ -15,11 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.controller.dto.RefreshTokenRequest;
-import com.moyeota.moyeotaproject.controller.dto.SchoolDto;
-import com.moyeota.moyeotaproject.controller.dto.TokenInfoDto;
-import com.moyeota.moyeotaproject.controller.dto.UserDto;
-import com.moyeota.moyeotaproject.controller.dto.UsersDto.UsersResponseDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.RefreshTokenRequest;
+import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
 import com.moyeota.moyeotaproject.service.ImageService;
 import com.moyeota.moyeotaproject.service.TokenService;
 import com.moyeota.moyeotaproject.service.UsersService;

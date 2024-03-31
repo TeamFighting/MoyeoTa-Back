@@ -9,9 +9,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.controller.dto.participationdetailsdto.DistancePriceDto;
-import com.moyeota.moyeotaproject.controller.dto.participationdetailsdto.ParticipationDetailsResponseDto;
-import com.moyeota.moyeotaproject.controller.dto.postsdto.PostsGetResponseDto;
+import com.moyeota.moyeotaproject.dto.participationdetailsdto.DistancePriceDto;
+import com.moyeota.moyeotaproject.dto.participationdetailsdto.ParticipationDetailsResponseDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsStatus;
