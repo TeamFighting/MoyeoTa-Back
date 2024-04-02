@@ -82,7 +82,7 @@ public class ParticipationDetailsController {
 			participationDetailsService.findAllDesc(request.getHeader("Authorization")));
 	}
 
-	@ApiOperation(value = "특정 회원의 참가 신청 모집글 전체 조회", notes = "특정 회원이 참가 신청한 모집글을 전체 조회하는 API")
+	@ApiOperation(value = "내가 신청한 팟 목록 조회", notes = "특정 회원이 참가 신청한 모집글을 전체 조회하는 API")
 	@GetMapping("/")
 	public ResponseDto<List<PostsGetResponseDto>> findMyParticipationDetailsDesc(HttpServletRequest request) {
 		return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.",

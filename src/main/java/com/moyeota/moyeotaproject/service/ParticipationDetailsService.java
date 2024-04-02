@@ -89,7 +89,7 @@ public class ParticipationDetailsService {
 
 	public List<PostsGetResponseDto> findMyParticipationDetailsDesc(String accessToken) {
 		Users user = usersService.getUserByToken(accessToken);
-		List<ParticipationDetails> participationList = participationDetailsRepository.findByUserOrderByIdDesc(user);
+		List<ParticipationDetails> participationList = participationDetailsRepository.findMyParticipationDetails(user);
 		List<PostsGetResponseDto> list = new ArrayList<>();
 		for (int i = 0; i < participationList.size(); i++) {
 			Posts post = participationList.get(i).getPost();
