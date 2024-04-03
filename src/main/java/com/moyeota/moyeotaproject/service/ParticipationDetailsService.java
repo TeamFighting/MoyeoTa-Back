@@ -69,27 +69,26 @@ public class ParticipationDetailsService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<ParticipationDetailsResponseDto> findAllDesc(String accessToken) {
+	public List<PostsGetResponseDto> findAllDesc(String accessToken) {
 		Users user = usersService.getUserByToken(accessToken);
-		List<ParticipationDetails> participationList = participationDetailsRepository.findByUserOrderByIdDesc(user);
-		List<ParticipationDetailsResponseDto> responseDtoList = new ArrayList<>();
+		List<ParticipationDetails> participationList = participationDetailsRepository.findMyParticipationDetails(user);
+		List<PostsGetResponseDto> responseDtoList = new ArrayList<>();
 		for (int i = 0; i < participationList.size(); i++) {
-			if (participationList.get(i).getStatus().equals(ParticipationDetailsStatus.JOIN)) {
-				ParticipationDetailsResponseDto responseDto = ParticipationDetailsResponseDto.builder()
-					.posts(participationList.get(i).getPost())
-					.status(participationList.get(i).getStatus())
-					.build();
-				responseDtoList.add(responseDto);
-			}
+			Posts post = participationList.get(i).getPost();
+			PostsGetResponseDto responseDto = PostsGetResponseDto.builder()
+				.posts(post)
+				.users(post.getUser())
+				.build();
+			responseDtoList.add(responseDto);
 		}
 
-		Collections.sort(responseDtoList, new DateComparator());
 		return responseDtoList;
 	}
 
 	public List<PostsGetResponseDto> findMyParticipationDetailsDesc(String accessToken) {
 		Users user = usersService.getUserByToken(accessToken);
 		List<ParticipationDetails> participationList = participationDetailsRepository.findMyParticipationDetails(user);
+		System.out.println(participationList.size());
 		List<PostsGetResponseDto> list = new ArrayList<>();
 		for (int i = 0; i < participationList.size(); i++) {
 			Posts post = participationList.get(i).getPost();

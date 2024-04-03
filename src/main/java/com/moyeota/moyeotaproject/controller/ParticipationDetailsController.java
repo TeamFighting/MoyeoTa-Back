@@ -77,7 +77,7 @@ public class ParticipationDetailsController {
 
 	@ApiOperation(value = "이용 기록 조회", notes = "특정 회원의 이용기록 조회 API")
 	@GetMapping("/all")
-	public ResponseDto<List<ParticipationDetailsResponseDto>> findAllDesc(HttpServletRequest request) {
+	public ResponseDto<List<PostsGetResponseDto>> findAllDesc(HttpServletRequest request) {
 		return ResponseUtil.SUCCESS("이용기록 조회에 성공하였습니다.",
 			participationDetailsService.findAllDesc(request.getHeader("Authorization")));
 	}

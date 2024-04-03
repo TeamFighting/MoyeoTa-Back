@@ -14,7 +14,7 @@ public interface ParticipationDetailsRepository extends JpaRepository<Participat
 
 	List<ParticipationDetails> findByUserOrderByIdDesc(Users user);
 
-	@Query("select p from ParticipationDetails p where p.user = :user and p.status = 'JOIN' order by p.createdDate" )
+	@Query("select p from ParticipationDetails p where p.user = :user and p.status = 'JOIN' order by p.post.createdDate desc" )
 	List<ParticipationDetails> findMyParticipationDetails(@Param("user") Users users);
 
 	@Query("select p from ParticipationDetails p where p.post.id = :postId and p.status = 'JOIN' order by p.createdDate")
