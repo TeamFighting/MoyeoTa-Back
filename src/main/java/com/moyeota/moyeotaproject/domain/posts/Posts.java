@@ -105,7 +105,7 @@ public class Posts extends BaseTimeEntity {
 	@Builder
 	public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime,
 		String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment,
-		int numberOfParticipants, int fare, int duration, int distance, Users user, ChatRoom chatRoom) {
+		int numberOfParticipants, int fare, int duration, double distance, Users user, ChatRoom chatRoom) {
 		this.title = title;
 		this.category = category;
 		this.departure = departure;
