@@ -81,6 +81,7 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
 			.numberOfParticipants(0)
 			.fare(fare)
 			.duration(duration)
+			.distance(distance)
 			.user(user)
 			.chatRoom(chatRoom)
 			.build();

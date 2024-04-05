@@ -47,9 +47,31 @@ public class PostsService {
 	public List<PostsMemberDto> findPostsMembers(Long postId) {
 		List<ParticipationDetails> participationDetailsList =
 			participationDetailsRepository.findParticipationDetailsByPostsId(postId);
+
 		List<PostsMemberDto> postsMemberDtoList = new ArrayList<>();
 		for (int i = 0; i < participationDetailsList.size(); i++) {
-			postsMemberDtoList.add(PostsMemberDto.builder().user(participationDetailsList.get(i).getUser()).build());
+			Users user = participationDetailsList.get(i).getUser();
+			boolean isPotOwner = false;
+			if (participationDetailsList.get(i).getPost().getUser().getId() == user.getId()) {
+				isPotOwner = true;
+			}
+			//닉네임 생성여부 체크 후, 닉네임이 없으면 실명으로 표시
+			if (participationDetailsList.get(i).getUser().getNickName() == null ||
+				participationDetailsList.get(i).getUser().getNickName().equals("")) {
+				postsMemberDtoList
+					.add(PostsMemberDto.builder()
+						.user(user)
+						.nickname(user.getName())
+						.isPotOwner(isPotOwner)
+						.build());
+			} else {
+				postsMemberDtoList
+					.add(PostsMemberDto.builder()
+						.user(user)
+						.nickname(user.getNickName())
+						.isPotOwner(isPotOwner)
+						.build());
+			}
 		}
 		return postsMemberDtoList;
 	}
@@ -81,11 +103,14 @@ public class PostsService {
 
 	public Long save(String accessToken, PostsSaveRequestDto requestDto, Long roomId) {
 		Users user = usersService.getUserByToken(accessToken);
+		System.out.println("-------------------------------------");
 		Optional<ChatRoom> chatRoom = chatRoomRepository.findById(roomId);
 		if (chatRoom.isEmpty()) {
 			throw new IllegalArgumentException("해당 채팅방이 없습니다. id=" + roomId);
 		}
 		Posts post = requestDto.toEntity(user, chatRoom.get());
+		System.out.println(post.getDistance());
+		System.out.println("------------------------");
 		Long postId = postsRepository.save(post).getId();
 		participationDetailsService.join(accessToken, postId);
 		return postId;

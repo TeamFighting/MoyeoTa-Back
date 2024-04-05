@@ -33,6 +33,7 @@ public class Users extends BaseTimeEntity {
 	private Long id;
 
 	private String name;
+
 	private String profileImage;
 
 	private String nickName;

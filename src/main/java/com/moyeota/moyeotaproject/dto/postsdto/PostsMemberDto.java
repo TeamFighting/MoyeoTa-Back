@@ -12,17 +12,20 @@ import lombok.Getter;
 public class PostsMemberDto {
 
 	@ApiModelProperty(value = "유저 이름")
-	private String userName;
+	private String nickname;
 	@ApiModelProperty(value = "프로필 이미지")
 	private String profileImage;
 	@ApiModelProperty(value = "유저 성별")
 	private String userGender;
+	@ApiModelProperty(value = "팟장 여부")
+	private boolean isPotOwner;
 
 	@Builder
-	public PostsMemberDto(Users user) {
-		this.userName = user.getName();
+	public PostsMemberDto(Users user, String nickname, boolean isPotOwner) {
+		this.nickname = nickname;
 		this.profileImage = user.getProfileImage();
 		this.userGender = user.getGender();
+		this.isPotOwner = isPotOwner;
 	}
 
 }
