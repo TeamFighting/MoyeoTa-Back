@@ -103,14 +103,12 @@ public class PostsService {
 
 	public Long save(String accessToken, PostsSaveRequestDto requestDto, Long roomId) {
 		Users user = usersService.getUserByToken(accessToken);
-		System.out.println("-------------------------------------");
 		Optional<ChatRoom> chatRoom = chatRoomRepository.findById(roomId);
 		if (chatRoom.isEmpty()) {
 			throw new IllegalArgumentException("해당 채팅방이 없습니다. id=" + roomId);
 		}
 		Posts post = requestDto.toEntity(user, chatRoom.get());
 		System.out.println(post.getDistance());
-		System.out.println("------------------------");
 		Long postId = postsRepository.save(post).getId();
 		participationDetailsService.join(accessToken, postId);
 		return postId;
@@ -175,13 +173,15 @@ public class PostsService {
 
 		double sum = 0;
 		double totalPayment = totalDetail.getTotalPayment();
+		double basicFare = 4500;
 		for (int i = 0; i < list.size(); i++) {
-			sum += list.get(i).getDistance();
+			sum += list.get(i).getPrice() - basicFare;
 		}
 
 		for (int i = 0; i < list.size(); i++) {
 			ParticipationDetails participationDetails = list.get(i);
-			participationDetails.updatePrice((participationDetails.getDistance() / sum) * totalPayment);
+			participationDetails.updatePrice(
+				basicFare / list.size() + (totalPayment - basicFare) * ((list.get(i).getPrice() - basicFare) / sum));
 		}
 		return postId;
 	}

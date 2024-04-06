@@ -89,17 +89,17 @@ public class ParticipationDetailsController {
 			participationDetailsService.findMyParticipationDetailsDesc(request.getHeader("Authorization")));
 	}
 
-	@ApiOperation(value = "이용객의 이동거리 입력")
+	@ApiOperation(value = "이용객의 하차 요금 입력")
 	@PostMapping("/posts/{postId}")
 	public ResponseDto<Long> saveDistance(HttpServletRequest request,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId,
-		@ApiParam(value = "이동 거리") @RequestParam("distance") double distance) {
-		return ResponseUtil.SUCCESS("이동거리 저장에 성공하였습니다.",
-			participationDetailsService.saveDistance(request.getHeader("Authorization"), postId, distance));
+		@ApiParam(value = "하차 요금") @RequestParam("fare") double fare) {
+		return ResponseUtil.SUCCESS("하차 요금 저장에 성공하였습니다.",
+			participationDetailsService.savePrice(request.getHeader("Authorization"), postId, fare));
 	}
 
-	@ApiOperation(value = "이용객의 이동거리 및 금액 조회")
-	@GetMapping("/distance-payment/users/{userId}/posts/{postId}")
+	@ApiOperation(value = "이용객의 금액 조회")
+	@GetMapping("/payment/users/{userId}/posts/{postId}")
 	public ResponseDto<DistancePriceDto> findDistanceAndPrice(
 		@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {

@@ -117,7 +117,7 @@ public class ParticipationDetailsService {
 		return true;
 	}
 
-	public Long saveDistance(String accessToken, Long postId, double distance) {
+	public Long savePrice(String accessToken, Long postId, double fare) {
 		Users user = usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(
 			() -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
@@ -125,7 +125,7 @@ public class ParticipationDetailsService {
 			participationDetailsRepository.findParticipationDetailsByUserAndPost(user, post)
 				.orElseThrow(() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
 
-		participationDetails.updateDistance(distance);
+		participationDetails.updatePrice(fare);
 		return participationDetails.getId();
 	}
 
