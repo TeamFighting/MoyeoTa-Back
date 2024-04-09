@@ -75,7 +75,7 @@ public class UserDto {
 
     @Data
     @Builder
-    public class AccountResponse {
+    public static class AccountResponse {
         private String name;
         private String nickName;
         private String email;
