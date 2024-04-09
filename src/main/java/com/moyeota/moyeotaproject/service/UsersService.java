@@ -34,17 +34,7 @@ public class UsersService {
     private final OAuthRepository oAuthRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final JavaMailSender javaMailSender;
-    private final SchoolEmailRepository schoolEmailRepository;
     private final SchoolEmailRedisRepository redisRepository;
-
-    public Users autoRegister() {
-        Users users = Users.builder()
-                .loginId("5000")
-                .password("1234")
-                .email("example@naver.com")
-                .build();
-        return usersRepository.save(users);
-    }
 
     @Transactional
     public UserDto.Response getInfo(String accessToken) {
@@ -127,29 +117,34 @@ public class UsersService {
             sb.append("</h3>");
             sb.append("</body></html>");
             String str = sb.toString();
-            messageHelper.setText(str, true);
-            // 메시지 인증 코드 DB 저장
-//            if (schoolEmailRepository.findByEmail(email).isPresent()) {
-//                schoolEmailRepository.delete(schoolEmailRepository.findByEmail(email).get());
-//            }
-            // 메시지 인증 코드 Redis 저장
+            getMailMessageContent result = new getMailMessageContent(messageHelper, verificationCode, str);
+            result.messageHelper.setText(result.str, true);
             if (redisRepository.findByEmail(email).isPresent()) {
                 redisRepository.delete(redisRepository.findByEmail(email).get());
             }
-            // SchoolEmail schoolEmail = SchoolEmail.builder().email(email).code(verificationCode).build();
             SchoolEmailRedis schoolEmailRedis = SchoolEmailRedis.builder()
                     .email(email)
-                    .code(verificationCode)
+                    .code(result.verificationCode)
                     .build();
             // schoolEmailRepository.save(schoolEmail);
             redisRepository.save(schoolEmailRedis);
             javaMailSender.send(message);
-            // redis 전송
-            // redisUtil.setDataExpire(verificationCode, email, 60 * 5L);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return schoolDto.getEmail();
+    }
+
+    private static class getMailMessageContent {
+        public final MimeMessageHelper messageHelper;
+        public final String verificationCode;
+        public final String str;
+
+        public getMailMessageContent(MimeMessageHelper messageHelper, String verificationCode, String str) {
+            this.messageHelper = messageHelper;
+            this.verificationCode = verificationCode;
+            this.str = str;
+        }
     }
 
     @Transactional
