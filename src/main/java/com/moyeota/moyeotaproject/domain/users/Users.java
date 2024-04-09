@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatroomandusers.ChatRoomAndUsers;
@@ -70,6 +71,9 @@ public class Users extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "user")
 	private List<ChatRoomAndUsers> chatRoomAndUsersList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+	private List<Account> accountList = new ArrayList<>();
 
 	public List<Posts> getPosts() {
 		return this.posts;
