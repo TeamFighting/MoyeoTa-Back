@@ -143,4 +143,9 @@ public class Users extends BaseTimeEntity {
 		this.school = univName;
 		this.isAuthenticated = Boolean.TRUE;
 	}
+
+	public void addAccount(Account account) {
+		accountList.add(account);
+		account.setUser(this);
+	}
 }

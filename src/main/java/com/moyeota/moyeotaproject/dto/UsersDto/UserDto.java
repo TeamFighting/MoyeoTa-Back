@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 public class UserDto {
@@ -41,6 +43,7 @@ public class UserDto {
         private String school;
         private String age;
         private String gender;
+        private List<AccountDto> accountDtoList;
     }
 
     @Data
@@ -70,4 +73,12 @@ public class UserDto {
     }
 
 
+    @Data
+    @Builder
+    public class AccountResponse {
+        private String name;
+        private String nickName;
+        private String email;
+        private List<AccountDto> accountDtoList;
+    }
 }

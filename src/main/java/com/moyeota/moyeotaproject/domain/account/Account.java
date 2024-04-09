@@ -30,4 +30,9 @@ public class Account {
         this.bankName = bankName;
         this.accountNumber = accountNumber;
     }
+
+    public void setUser(Users user) {
+        this.user = user;
+        user.getAccountList().add(this);
+    }
 }

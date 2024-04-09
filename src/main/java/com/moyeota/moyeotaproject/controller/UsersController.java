@@ -2,6 +2,7 @@ package com.moyeota.moyeotaproject.controller;
 
 import java.io.IOException;
 
+import com.moyeota.moyeotaproject.dto.UsersDto.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
-import com.moyeota.moyeotaproject.dto.UsersDto.RefreshTokenRequest;
-import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
 import com.moyeota.moyeotaproject.service.ImageService;
 import com.moyeota.moyeotaproject.service.TokenService;
 import com.moyeota.moyeotaproject.service.UsersService;
@@ -112,5 +108,11 @@ public class UsersController {
 	@DeleteMapping()
 	public ResponseDto<UserDto.deleteDto> deleteUser(@RequestHeader(value = "Authorization") String tokenInfo) {
 		return ResponseUtil.SUCCESS("사용자 탈퇴 및 데이터를 삭제하였습니다.", usersService.deleteUser(tokenInfo));
+	}
+
+	@ApiOperation(value = "사용자 계좌 추가", notes = "사용자 계좌 추가를 위한 API")
+	@PostMapping("/account")
+	public ResponseDto<UserDto.AccountResponse> addAccount(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody AccountDto accountDto) {
+		return ResponseUtil.SUCCESS("사용자 계좌가 추가되었습니다.", usersService.addAccount(tokenInfo, accountDto));
 	}
 }

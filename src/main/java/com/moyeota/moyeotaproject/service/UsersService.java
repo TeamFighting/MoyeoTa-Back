@@ -1,6 +1,8 @@
 package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.domain.account.Account;
+import com.moyeota.moyeotaproject.dto.UsersDto.AccountDto;
 import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
 import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
 import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
@@ -21,8 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,12 @@ public class UsersService {
     @Transactional
     public UserDto.Response getInfo(String accessToken) {
         Users users = getUserByToken(accessToken);
+        List<AccountDto> accountList = users.getAccountList().stream()
+                .map(account ->
+                        AccountDto.builder()
+                                .bankName(account.getBankName())
+                                .accountNumber(account.getAccountNumber())
+                                .build()).collect(Collectors.toList());
         UserDto.Response usersDto = UserDto.Response.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
@@ -51,6 +61,7 @@ public class UsersService {
                 .averageStarRate(users.getAverageStarRate())
                 .school(users.getSchool())
                 .gender(users.getGender())
+                .accountDtoList(accountList)
                 .build();
         return usersDto;
     }
@@ -135,6 +146,27 @@ public class UsersService {
         return schoolDto.getEmail();
     }
 
+    @Transactional
+    public UserDto.AccountResponse addAccount(String accessToken, AccountDto accountDto) {
+        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
+                -> new RuntimeException("해당하는 유저가 없습니다."));
+
+        Account account = new Account(accountDto.getBankName(), accountDto.getAccountNumber());
+        users.addAccount(account);
+        List<AccountDto> accountDtoList = users.getAccountList().stream()
+                .map(acc ->
+                        AccountDto.builder()
+                                .bankName(acc.getBankName())
+                                .accountNumber(acc.getAccountNumber())
+                                .build()).collect(Collectors.toList());
+        return UserDto.AccountResponse.builder()
+                .name(users.getName())
+                .nickName(users.getNickName())
+                .email(users.getEmail())
+                .accountDtoList(accountDtoList)
+                .build();
+    }
+
     private static class getMailMessageContent {
         public final MimeMessageHelper messageHelper;
         public final String verificationCode;
@@ -151,18 +183,9 @@ public class UsersService {
     public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        log.info("user 찾음");
-//        SchoolEmail bySchoolEmail = schoolEmailRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
-        log.info("school Email = {}", redisRepository.findByEmail(schoolDto.getEmail()));
+
         SchoolEmailRedis schoolEmailRedis = redisRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
 
-//        if (bySchoolEmail.getCode().equals(schoolDto.getCode())) {
-//            users.updateSchoolAuthenticate(schoolDto.getUnivName());
-//            return SchoolDto.ResponseSuccess.builder()
-//                    .univName(schoolDto.getUnivName())
-//                    .certified_email(schoolDto.getEmail())
-//                    .build();
-//        }
         if (schoolEmailRedis.getCode().equals(schoolDto.getCode())) {
             users.updateSchoolAuthenticate(schoolDto.getUnivName());
             return SchoolDto.ResponseSuccess.builder()
