@@ -11,6 +11,8 @@ import lombok.Getter;
 @ApiModel(value = "모집글 멤버 목록 조회 응답")
 public class PostsMemberDto {
 
+	@ApiModelProperty(value = "유저 인덱스")
+	private Long userId;
 	@ApiModelProperty(value = "유저 이름")
 	private String nickname;
 	@ApiModelProperty(value = "프로필 이미지")
@@ -22,6 +24,7 @@ public class PostsMemberDto {
 
 	@Builder
 	public PostsMemberDto(Users user, String nickname, boolean isPotOwner) {
+		this.userId = user.getId();
 		this.nickname = nickname;
 		this.profileImage = user.getProfileImage();
 		this.userGender = user.getGender();
