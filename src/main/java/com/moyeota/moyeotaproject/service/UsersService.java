@@ -2,6 +2,7 @@ package com.moyeota.moyeotaproject.service;
 
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.domain.account.Account;
+import com.moyeota.moyeotaproject.domain.account.AccountRepository;
 import com.moyeota.moyeotaproject.dto.UsersDto.AccountDto;
 import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
 import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
@@ -39,6 +40,7 @@ public class UsersService {
     private final JwtTokenProvider jwtTokenProvider;
     private final JavaMailSender javaMailSender;
     private final SchoolEmailRedisRepository redisRepository;
+    private final AccountRepository accountRepository;
 
     @Transactional
     public UserDto.Response getInfo(String accessToken) {
@@ -152,6 +154,7 @@ public class UsersService {
                 -> new RuntimeException("해당하는 유저가 없습니다."));
 
         Account account = new Account(accountDto.getBankName(), accountDto.getAccountNumber());
+        accountRepository.save(account);
         users.addAccount(account);
         List<AccountDto> accountDtoList = users.getAccountList().stream()
                 .map(acc ->
