@@ -9,6 +9,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.moyeota.moyeotaproject.domain.account.Account;
+import com.moyeota.moyeotaproject.domain.account.AccountRepository;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
@@ -42,6 +44,7 @@ public class PostsService {
 	private final PostsRepository postsRepository;
 	private final ParticipationDetailsRepository participationDetailsRepository;
 	private final TotalDetailRepository totalDetailRepository;
+	private final AccountRepository accountRepository;
 
 	@Transactional(readOnly = true)
 	public List<PostsMemberDto> findPostsMembers(Long postId) {
@@ -52,8 +55,18 @@ public class PostsService {
 		for (int i = 0; i < participationDetailsList.size(); i++) {
 			Users user = participationDetailsList.get(i).getUser();
 			boolean isPotOwner = false;
+			Optional<Account> account = accountRepository.findByUser(user);;
 			if (participationDetailsList.get(i).getPost().getUser().getId() == user.getId()) {
 				isPotOwner = true;
+			}
+			String bankName;
+			String accountNumber;
+			if (account.isPresent()) {
+				bankName = account.get().getBankName();
+				accountNumber = account.get().getAccountNumber();
+			} else {
+				bankName = "";
+				accountNumber = "";
 			}
 			//닉네임 생성여부 체크 후, 닉네임이 없으면 실명으로 표시
 			if (participationDetailsList.get(i).getUser().getNickName() == null ||
@@ -63,6 +76,8 @@ public class PostsService {
 						.user(user)
 						.nickname(user.getName())
 						.isPotOwner(isPotOwner)
+						.bankName(bankName)
+						.accountNumber(accountNumber)
 						.build());
 			} else {
 				postsMemberDtoList
@@ -70,6 +85,8 @@ public class PostsService {
 						.user(user)
 						.nickname(user.getNickName())
 						.isPotOwner(isPotOwner)
+						.bankName(bankName)
+						.accountNumber(accountNumber)
 						.build());
 			}
 		}
