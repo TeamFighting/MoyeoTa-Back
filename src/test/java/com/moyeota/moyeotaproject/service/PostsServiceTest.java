@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.domain.account.AccountRepository;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
@@ -49,6 +50,9 @@ class PostsServiceTest {
     private TotalDetailRepository totalDetailRepository;
 
     @Mock
+    private AccountRepository accountRepository;
+
+    @Mock
     private JwtTokenProvider jwtTokenProvider;
 
     @BeforeEach
@@ -62,7 +66,7 @@ class PostsServiceTest {
         // Given
 
         PostsService postsService = new PostsService(usersService, chatRoomRepository, participationDetailsService, usersRepository, postsRepository
-                , participationDetailsRepository, totalDetailRepository);
+                , participationDetailsRepository, totalDetailRepository, accountRepository);
         Users users = Users.builder()
                 .loginId("tae77777")
                 .password("rlaxogjs8312")
