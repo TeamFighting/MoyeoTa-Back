@@ -41,6 +41,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			.position(message.getPayload())
 			.build();
 		locationRepository.save(location);
+
+		String responseMessage = "메시지 잘 받았소, sessionId: " + id;
+		session.sendMessage(new TextMessage(responseMessage));
 	}
 
 }
