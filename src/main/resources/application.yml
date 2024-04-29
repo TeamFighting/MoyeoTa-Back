@@ -20,7 +20,7 @@ spring:
   profiles:
     include: secure
   datasource:
-    url: jdbc:mariadb://moyeotadb.c90886ee8fdi.ap-northeast-2.rds.amazonaws.com:3306/moyeotaDB
+    url: jdbc:mariadb://moyeotadb.c90886ee8fdi.ap-northeast-2.rds.amazonaws.com:3306/moyeota_database
     username: admin
     password: moyeota!
     driver-class-name: org.mariadb.jdbc.Driver
