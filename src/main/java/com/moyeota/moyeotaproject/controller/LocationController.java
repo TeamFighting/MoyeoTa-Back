@@ -1,10 +1,8 @@
 package com.moyeota.moyeotaproject.controller;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +28,9 @@ public class LocationController {
 	private final LocationRepository locationRepository;
 
 	@ApiOperation(value = "경로 찾기")
-	@GetMapping("/{sessionId}")
-	public ResponseDto<List<LocationGetResponseDto>> findAllBySessionIdDesc(@ApiParam(value = "세션 id") @PathVariable("sessionId") String sessionId) {
-		List<Location> positionList = locationRepository.findAllBySessionId(sessionId);
+	@GetMapping("/users/{userId}")
+	public ResponseDto<List<LocationGetResponseDto>> findAllBySessionIdDesc(@ApiParam(value = "유저 인덱스") @PathVariable("userId") Long userId) {
+		List<Location> positionList = locationRepository.findAllByUserId(String.valueOf(userId));
 		List<LocationGetResponseDto> locationGetResponseDtoList = new ArrayList<>();
 		for (int i=0; i<positionList.size(); i++) {
 			locationGetResponseDtoList.add(LocationGetResponseDto.builder().position(positionList.get(i).getPosition()).build());
