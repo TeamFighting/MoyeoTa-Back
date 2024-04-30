@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.account.AccountRepository;
+import com.moyeota.moyeotaproject.domain.location.Location;
+import com.moyeota.moyeotaproject.domain.location.LocationRepository;
+import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
@@ -45,6 +48,7 @@ public class PostsService {
 	private final ParticipationDetailsRepository participationDetailsRepository;
 	private final TotalDetailRepository totalDetailRepository;
 	private final AccountRepository accountRepository;
+	private final LocationRepository locationRepository;
 
 	@Transactional(readOnly = true)
 	public List<PostsMemberDto> findPostsMembers(Long postId) {
@@ -178,6 +182,33 @@ public class PostsService {
 		return postsResponseDtoList;
 	}
 
+	public List<MembersLocationResponseDto> findMembersLocation(Long postId) {
+		Posts post = postsRepository.findById(postId).orElseThrow(()
+			-> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+
+		List<ParticipationDetails> participationDetailsList = participationDetailsRepository.findParticipationDetailsByPostsId(
+			postId);
+
+		List<MembersLocationResponseDto> membersLocationList = new ArrayList<>();
+		for (int i=0; i<participationDetailsList.size(); i++) {
+			Long userId = participationDetailsList.get(i).getUser().getId();
+			boolean isOwner = false;
+			if (userId == post.getUser().getId()) {
+				isOwner = true;
+			}
+			Optional<Location> location = locationRepository.findTopByUserIdAndPostIdOrderByIdDesc(
+				String.valueOf(userId), String.valueOf(postId));
+			MembersLocationResponseDto membersLocationResponseDto = MembersLocationResponseDto.builder()
+				.isOwner(isOwner)
+				.position(location.get().getPosition())
+				.userId(userId)
+				.build();
+			membersLocationList.add(membersLocationResponseDto);
+		}
+
+		return membersLocationList;
+	}
+
 	@Transactional
 	public int updateView(Long id) {
 		return postsRepository.updateView(id);
@@ -202,4 +233,5 @@ public class PostsService {
 		}
 		return postId;
 	}
+
 }

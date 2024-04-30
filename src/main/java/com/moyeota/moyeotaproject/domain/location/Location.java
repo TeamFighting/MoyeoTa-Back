@@ -22,10 +22,16 @@ public class Location {
 
 	private String position;
 
+	private String userId;
+
+	private String postId;
+
 	@Builder
-	public Location(String sessionId, String position) {
+	public Location(String sessionId, String position, String userId, String postId) {
 		this.sessionId = sessionId;
 		this.position = position;
+		this.userId = userId;
+		this.postId = postId;
 	}
 
 }

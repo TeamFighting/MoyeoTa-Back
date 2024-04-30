@@ -23,6 +23,7 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
@@ -175,5 +176,12 @@ public class PostsController {
 	public ResponseDto<Long> calcPrice(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
 		return ResponseUtil.SUCCESS("더치페이 금액 계산에 성공하였습니다.", postsService.calcPrice(postId));
 	}
+
+	@ApiOperation(value = "파티원 내린 지점(이동경로 데이터 중 가장 마지막 좌표)")
+	@GetMapping("/{postId}/members/location")
+	public ResponseDto<List<MembersLocationResponseDto>> findMembersLocation(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
+		return ResponseUtil.SUCCESS("파티원 내린 지점 조회에 성공하였습니다.", postsService.findMembersLocation(postId));
+	}
+
 
 }

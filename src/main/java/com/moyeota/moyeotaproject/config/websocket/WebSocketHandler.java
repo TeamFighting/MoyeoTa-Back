@@ -3,6 +3,8 @@ package com.moyeota.moyeotaproject.config.websocket;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -36,9 +38,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String id = session.getId();  //메시지를 보낸 아이디
+		JSONParser jsonParser = new JSONParser();
+
+		Object obj = jsonParser.parse(message.getPayload());
+
+		JSONObject jsonObject = (JSONObject) obj;
+
 		Location location = Location.builder()
 			.sessionId(id)
 			.position(message.getPayload())
+			.userId(jsonObject.get("userId").toString())
+			.postId(jsonObject.get("postId").toString())
 			.build();
 		locationRepository.save(location);
 
