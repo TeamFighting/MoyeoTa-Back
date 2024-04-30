@@ -38,7 +38,7 @@
 //
 //     private static final String BASE_URL = "/api/posts";
 //     private static final String testAccessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwMzE4MjIwfQ.ZOuV7sb4nH2QjWVyH8zyzqMdneb7yLn64slbiWcIofA";
-
+//
 //    @Test
 //    void 게시글_저장_컨트롤러_테스트() throws Exception {
 //        //given
@@ -79,7 +79,7 @@
 //                .andExpect(jsonPath("$.status").value("SUCCESS"));
 //                //.andExpect(jsonPath("$.data").value(1));
 //    }
-
+//
 //    @Test
 //    void update() {
 //    }
@@ -95,7 +95,7 @@
 //    @Test
 //    void findById() {
 //    }
-
+//
 //    @Test
 //    @DisplayName("게시글 내림차순으로 모두 조회")
 //    void findAllDesc() throws Exception {
@@ -104,7 +104,7 @@
 //                        .header("Authorization", "Bearer " + jwtToken))
 //                .andExpect(status().is2xxSuccessful());
 //    }
-
+//
 //    @Test
 //    void findMyPostsByIdDesc() {
 //    }
