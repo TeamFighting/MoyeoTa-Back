@@ -8,6 +8,12 @@ public class SchoolDto {
 
     @Data
     @Builder
+    public static class schoolInfo {
+        private String name;
+    }
+
+    @Data
+    @Builder
     public static class Request{
         private String key;
         private String email;
