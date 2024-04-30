@@ -1,8 +1,11 @@
 package com.moyeota.moyeotaproject.controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.moyeota.moyeotaproject.dto.UsersDto.*;
+import com.moyeota.moyeotaproject.service.SchoolService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +44,7 @@ public class UsersController {
 	private final UsersService usersService;
 	private final TokenService tokenService;
 	private final ImageService imageService;
+	private final SchoolService schoolService;
 
 	@ApiOperation(value = "사용자 정보 받기", notes = "사용자 정보 API")
 	@GetMapping("")
@@ -114,5 +118,10 @@ public class UsersController {
 	@PostMapping("/account")
 	public ResponseDto<UserDto.AccountResponse> addAccount(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody AccountDto accountDto) {
 		return ResponseUtil.SUCCESS("사용자 계좌가 추가되었습니다.", usersService.addAccount(tokenInfo, accountDto));
+	}
+
+	@GetMapping("/school/search")
+	public ResponseDto<List<SchoolDto.schoolInfo>> searchSchool() throws JsonProcessingException {
+		return ResponseUtil.SUCCESS("학교 검색 완료", schoolService.searchSchool());
 	}
 }
