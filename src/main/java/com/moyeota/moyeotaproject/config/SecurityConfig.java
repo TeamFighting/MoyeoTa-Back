@@ -29,6 +29,7 @@ public class SecurityConfig {
 			.httpBasic().disable()
 			.formLogin().disable()
 			.authorizeRequests()
+			.antMatchers("/api/users/school/search").permitAll() // 학교 검색 코드
 			.anyRequest().permitAll(); // 이후에 JWT 토큰 인증 필요한 URL 추가
 		//                .and()
 		//.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
