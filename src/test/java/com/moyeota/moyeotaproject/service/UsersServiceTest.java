@@ -44,7 +44,6 @@ class UsersServiceTest {
 
     private String accessToken;
 
-    @Order(1)
     @BeforeEach
     void beforeEach() {
         // 트랜잭션 시작
@@ -58,14 +57,13 @@ class UsersServiceTest {
         accessToken = "Bearer " + generate.getAccessToken();
     }
 
-//    @AfterEach
-//    void afterEach() {
-//        // 트랜잭션 롤백
-//        transactionManager.rollback(status);
-//    }
+    @AfterEach
+    void afterEach() {
+        // 트랜잭션 롤백
+        transactionManager.rollback(status);
+    }
 
-    @Test
-    @Order(2)
+    @BeforeEach
     public void 유저_저장() {
         Users users = Users.builder()
                 .name("테스트사용자")
@@ -82,6 +80,7 @@ class UsersServiceTest {
                 .age("24")
                 .build();
         usersRepository.save(users);
+        System.out.println("users.getId() = " + users.getId());
     }
 
     @Test
@@ -125,7 +124,6 @@ class UsersServiceTest {
     public void 유저_닉네임_수정() {
         // given
         String newNickName = "모여타중독자";
-        UserDto.Response oldUser = usersService.getInfo(accessToken);
 
         // when
         UsersResponseDto usersResponseDto = usersService.updateNickName(accessToken, newNickName);
