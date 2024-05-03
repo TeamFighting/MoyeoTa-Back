@@ -1,65 +1,85 @@
 package com.moyeota.moyeotaproject.domain.users;
 
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenGenerator;
+import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
+import com.moyeota.moyeotaproject.service.UsersService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Date;
 
-@DataJpaTest
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Slf4j
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
+@AutoConfigureMockMvc
+@SpringBootTest
 class UsersRepositoryTest {
+
+    @Autowired
+    PlatformTransactionManager transactionManager;
+
+    TransactionStatus status;
+
+    String salt = "RlaXoVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa";
 
     @Autowired
     private UsersRepository usersRepository;
 
-    private Users users;
+    @Autowired
+    private UsersService usersService;
+
+    public JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(salt);
+    public JwtTokenGenerator jwtTokenGenerator = new JwtTokenGenerator(jwtTokenProvider);
+
+    private String accessToken;
 
     @BeforeEach
-    public void setUp() {
-        users = Users.builder()
-                .loginId("tae77777")
-                .password("rlaxogjs8312")
-                .email("tae77777@naver.com")
-                .build();
+    void beforeEach() {
+        // 트랜잭션 시작
+        status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        Long userId = 100L;
+        jwtTokenProvider.generateToken(userId.toString(),
+                new Date(1000 * 60 * 60 * 24 * 21));
+        TokenInfoDto generate = jwtTokenGenerator.generate(1L);
+        System.out.println(generate);
+        System.out.println(generate.getAccessToken());
+        accessToken = generate.getAccessToken();
     }
 
-    @DisplayName("유저 저장 테스트")
+    @AfterEach
+    void afterEach() {
+        // 트랜잭션 롤백
+        transactionManager.rollback(status);
+    }
+
     @Test
     @Order(1)
-    public void userSave() {
-        System.out.println(">>> SetUp Users: " + users.toString());
-
+    public void 유저_저장_테스트() {
         // given
-        users = Users.builder()
-                .name("김태헌")
-                .loginId("tae77777")
-                .password("rlaxogjs8312")
+        Users users = Users.builder()
+                .name("테스트사용자")
+                .loginId("moyeota")
+                .password("moyeota")
                 .email("tae77777@naver.com")
                 .build();
-
-        System.out.println(">>> Origin Users: " + users.toString());
 
         // when
         Users savedUsers = usersRepository.save(users);
         System.out.println(">>> Saved Users: " + savedUsers);
 
         // then
-        assertNotNull(savedUsers.getId());
-        assertEquals(savedUsers.getName(), "김태헌");
-        assertEquals(savedUsers.getLoginId(), "tae77777");
-        assertTrue(savedUsers.getId() > 0);
+        assertThat(savedUsers.getId()).isEqualTo(1L);
+        assertThat(savedUsers.getName()).isEqualTo("테스트 사용자");
+        assertThat(savedUsers.getLoginId()).isEqualTo("moyeota");
+        assertThat(savedUsers.getEmail()).isEqualTo("tae77777@naver.com");
     }
 
-    @Test
-    void existsByLoginId() {
-    }
-
-    @Test
-    void findByEmail() {
-    }
-
-    @Test
-    void findNameByUserId() {
-    }
 }
