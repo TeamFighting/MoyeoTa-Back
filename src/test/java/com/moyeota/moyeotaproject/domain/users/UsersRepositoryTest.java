@@ -7,17 +7,15 @@ import com.moyeota.moyeotaproject.service.UsersService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
@@ -78,11 +76,10 @@ class UsersRepositoryTest {
         System.out.println(">>> Saved Users: " + savedUsers);
 
         // then
-        assertEquals(savedUsers.getId(), 1L);
-        assertEquals(savedUsers.getName(), "테스트사용자");
-        assertEquals(savedUsers.getLoginId(), "moyeota");
-        assertEquals(savedUsers.getEmail(), "tae77777@naver.com");
-        assertTrue(savedUsers.getId() > 0);
+        assertThat(savedUsers.getId()).isEqualTo(1L);
+        assertThat(savedUsers.getName()).isEqualTo("테스트 사용자");
+        assertThat(savedUsers.getLoginId()).isEqualTo("moyeota");
+        assertThat(savedUsers.getEmail()).isEqualTo("tae77777@naver.com");
     }
 
 }
