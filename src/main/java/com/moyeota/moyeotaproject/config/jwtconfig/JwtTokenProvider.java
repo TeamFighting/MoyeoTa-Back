@@ -62,10 +62,8 @@ public class JwtTokenProvider {
 	public Long extractSubjectFromJwt(String accessToken) {
 		try {
 			String token = getToken(accessToken);
-			Claims claims = Jwts.parser()
-				.setSigningKey(key)
-				.parseClaimsJws(token)
-				.getBody();
+			Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+
 			String subject = claims.getSubject();
 			return Long.parseLong(subject);
 		} catch (IllegalArgumentException e) {
