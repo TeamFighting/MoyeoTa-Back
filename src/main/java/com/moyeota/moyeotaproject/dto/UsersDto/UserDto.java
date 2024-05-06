@@ -30,6 +30,8 @@ public class UserDto {
 
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
         private Long id;
         private String loginId;
@@ -49,7 +51,6 @@ public class UserDto {
     @Data
     @Builder
     public static class updateDto {
-        private String name;
         private String profileImage;
         private String phoneNumber;
         private String age;

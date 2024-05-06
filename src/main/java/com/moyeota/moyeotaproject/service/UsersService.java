@@ -76,17 +76,19 @@ public class UsersService {
 		Optional<OAuth> oauthEntity = oAuthRepository.findByUserId(users.getId());
 		oauthEntity.ifPresent(oAuth -> oAuth.updateEmail(usersDto.getEmail()));
 		return UsersResponseDto.builder()
-			.loginId(users.getLoginId())
-			.name(users.getName())
-			.nickName(users.getNickName())
-			.profileImage(users.getProfileImage())
-			.email(users.getEmail())
-			.status(users.getStatus())
-			.age(users.getAge())
-			.averageStarRate(users.getAverageStarRate())
-			.school(users.getSchool())
-			.gender(users.getGender())
-			.build();
+				.id(users.getId())
+				.loginId(users.getLoginId())
+				.name(users.getName())
+				.nickName(users.getNickName())
+				.profileImage(users.getProfileImage())
+				.age(users.getAge())
+				.email(users.getEmail())
+				.phoneNumber(users.getPhoneNumber())
+				.status(users.getStatus())
+				.averageStarRate(users.getAverageStarRate())
+				.school(users.getSchool())
+				.gender(users.getGender())
+				.build();
 	}
 
 	@Transactional

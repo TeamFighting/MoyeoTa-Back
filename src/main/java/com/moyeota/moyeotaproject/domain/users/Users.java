@@ -90,11 +90,30 @@ public class Users extends BaseTimeEntity {
 
 	// 프로필 정보 전체 업데이트
 	public void updateUsers(UserDto.updateDto usersDto) {
-		this.name = Optional.ofNullable(usersDto.getName()).orElse(this.name);
 		this.profileImage = Optional.ofNullable(usersDto.getProfileImage()).orElse(this.profileImage);
 		this.phoneNumber = Optional.ofNullable(usersDto.getPhoneNumber()).orElse(this.phoneNumber);
 		this.email = Optional.ofNullable(usersDto.getEmail()).orElse(this.email);
 		this.gender = Optional.ofNullable(usersDto.getGender()).orElse(this.gender);
+	}
+
+	@Builder
+	public Users(Long id, String name, String nickName, String profileImage, String phoneNumber, String email, String loginId,
+				 String password, String status, String gender, Float averageStarRate, String school, Boolean isAuthenticated,
+				 String age) {
+		this.id = id;
+		this.name = name;
+		this.nickName = nickName;
+		this.profileImage = profileImage;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.loginId = loginId;
+		this.password = password;
+		this.status = status;
+		this.gender = gender;
+		this.averageStarRate = averageStarRate;
+		this.school = school;
+		this.isAuthenticated = isAuthenticated;
+		this.age = age;
 	}
 
 	@Builder
