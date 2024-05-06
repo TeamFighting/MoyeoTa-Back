@@ -84,6 +84,11 @@ KAKAO:
   REST:
     API-KEY: 6df7210843b7ca9a56d32af1fa86995c
 server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
   port: 443
   ssl:
     key-store: classpath:ssl/keystore.p12
