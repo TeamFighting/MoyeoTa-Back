@@ -203,10 +203,6 @@ public class UsersService {
         throw new RuntimeException("코드가 일치하지 않습니다. 코드를 다시 확인하세요");
     }
 
-    public String findNameByUserId(Long userId) {
-        return usersRepository.findNameByUserId(userId);
-    }
-
     private String generateVerificationCode() {
         Random random = new Random();
         return String.format("%04d", random.nextInt(10000));
