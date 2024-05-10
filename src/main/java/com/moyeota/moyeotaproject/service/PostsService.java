@@ -13,6 +13,7 @@ import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.account.AccountRepository;
 import com.moyeota.moyeotaproject.domain.location.Location;
 import com.moyeota.moyeotaproject.domain.location.LocationRepository;
+import com.moyeota.moyeotaproject.dto.accountdto.AccountDto;
 import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
@@ -59,18 +60,18 @@ public class PostsService {
 		for (int i = 0; i < participationDetailsList.size(); i++) {
 			Users user = participationDetailsList.get(i).getUser();
 			boolean isPotOwner = false;
-			Optional<Account> account = accountRepository.findByUser(user);;
+			List<Account> accounts = accountRepository.findAllByUser(user);
+			List<AccountDto> accountDtos = new ArrayList<>();
+			for (int j=0; j<accounts.size(); j++) {
+				Account account = accounts.get(j);
+				AccountDto accountDto = AccountDto.builder()
+					.bankName(account.getBankName())
+					.accountNumber(account.getAccountNumber())
+					.build();
+				accountDtos.add(accountDto);
+			}
 			if (participationDetailsList.get(i).getPost().getUser().getId() == user.getId()) {
 				isPotOwner = true;
-			}
-			String bankName;
-			String accountNumber;
-			if (account.isPresent()) {
-				bankName = account.get().getBankName();
-				accountNumber = account.get().getAccountNumber();
-			} else {
-				bankName = "";
-				accountNumber = "";
 			}
 			//닉네임 생성여부 체크 후, 닉네임이 없으면 실명으로 표시
 			if (participationDetailsList.get(i).getUser().getNickName() == null ||
@@ -80,8 +81,7 @@ public class PostsService {
 						.user(user)
 						.nickname(user.getName())
 						.isPotOwner(isPotOwner)
-						.bankName(bankName)
-						.accountNumber(accountNumber)
+						.accounts(accountDtos)
 						.build());
 			} else {
 				postsMemberDtoList
@@ -89,8 +89,7 @@ public class PostsService {
 						.user(user)
 						.nickname(user.getNickName())
 						.isPotOwner(isPotOwner)
-						.bankName(bankName)
-						.accountNumber(accountNumber)
+						.accounts(accountDtos)
 						.build());
 			}
 		}

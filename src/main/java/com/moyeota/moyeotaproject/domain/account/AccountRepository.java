@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.domain.account;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
 	@Query("select a from Account a where a.user = :user")
 	Optional<Account> findByUser(@Param("user")Users user);
+
+	List<Account> findAllByUser(Users users);
 
 }

@@ -17,13 +17,9 @@ public class Location {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String sessionId;
-
 	private String position;
-
 	private String userId;
-
 	private String postId;
 
 	@Builder

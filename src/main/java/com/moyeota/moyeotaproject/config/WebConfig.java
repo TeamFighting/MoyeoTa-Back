@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.config.websocket;
+package com.moyeota.moyeotaproject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
