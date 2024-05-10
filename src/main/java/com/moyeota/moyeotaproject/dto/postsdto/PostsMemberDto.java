@@ -1,7 +1,10 @@
 package com.moyeota.moyeotaproject.dto.postsdto;
 
+import java.util.List;
+
 import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.dto.accountdto.AccountDto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,20 +25,19 @@ public class PostsMemberDto {
 	private String userGender;
 	@ApiModelProperty(value = "팟장 여부")
 	private boolean isPotOwner;
-	@ApiModelProperty(value = "은행명")
-	private String bankName;
-	@ApiModelProperty(value = "계좌번호")
-	private String accountNumber;
+	@ApiModelProperty(value = "계좌 목록")
+	List<AccountDto> accounts;
 
 	@Builder
-	public PostsMemberDto(Users user, String nickname, boolean isPotOwner, String bankName, String accountNumber) {
+	public PostsMemberDto(Users user, String nickname, boolean isPotOwner, List<AccountDto> accounts) {
 		this.userId = user.getId();
 		this.nickname = nickname;
 		this.profileImage = user.getProfileImage();
 		this.userGender = user.getGender();
 		this.isPotOwner = isPotOwner;
-		this.bankName = bankName;
-		this.accountNumber = accountNumber;
+		this.accounts = accounts;
+		// this.bankName = bankName;
+		// this.accountNumber = accountNumber;
 	}
 
 }
