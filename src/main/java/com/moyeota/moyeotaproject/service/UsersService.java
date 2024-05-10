@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.mail.internet.MimeMessage;
 
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -103,19 +105,13 @@ public class UsersService {
     }
 
     public Users getUserByToken(String accessToken) {
-        Optional<Users> users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken));
-        if (users.isPresent()) {
-            return users.get();
-        } else {
-            throw new RuntimeException("토큰에 해당하는 멤버가 없습니다.");
-        }
+        return usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(() -> new ApiException(ErrorCode.NO_INFO));
     }
 
     @Transactional
     @Async
     public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) {
-        usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
-                -> new RuntimeException("해당하는 유저가 없습니다."));
+        Users users = getUserByToken(accessToken);
         MimeMessage message = javaMailSender.createMimeMessage();
         String email = schoolDto.getEmail();
         try {
@@ -143,11 +139,10 @@ public class UsersService {
                     .email(email)
                     .code(result.verificationCode)
                     .build();
-            // schoolEmailRepository.save(schoolEmail);
             redisRepository.save(schoolEmailRedis);
             javaMailSender.send(message);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ApiException(ErrorCode.MAIL_SEND_ERROR);
         }
         return schoolDto.getEmail();
     }

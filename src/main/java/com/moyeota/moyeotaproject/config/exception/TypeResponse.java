@@ -28,5 +28,4 @@ public class TypeResponse<T> implements Response<T> {
 	public LocalDateTime getTimestamp() {
 		return timestamp = LocalDateTime.now();
 	}
-
 }

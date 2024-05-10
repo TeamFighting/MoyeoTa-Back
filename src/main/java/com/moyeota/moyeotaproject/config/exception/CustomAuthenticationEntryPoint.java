@@ -31,7 +31,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
 	private void setResponse(HttpServletResponse response, ErrorCode exceptionCode) throws IOException {
 		response.setContentType("application/json;charset=UTF-8");
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setStatus(exceptionCode.getStatus());
 
 		JSONObject responseJson = new JSONObject();
 		responseJson.put("message", exceptionCode.getMessage());
@@ -39,4 +39,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
 		response.getWriter().print(responseJson);
 	}
+
+//	@Override
+//	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+//		response.setContentType("application/json");
+//		response.setStatus(ErrorCode.INVALID_TOKEN.getStatus().value());
+//		response.getWriter().write(Response.error(ErrorCode.INVALID_TOKEN.name()).toStream());
+//	}
 }
