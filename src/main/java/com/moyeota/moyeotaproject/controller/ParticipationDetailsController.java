@@ -90,12 +90,13 @@ public class ParticipationDetailsController {
 	}
 
 	@ApiOperation(value = "이용객의 하차 요금 입력")
-	@PostMapping("/posts/{postId}")
+	@PostMapping("/users/{userId}/posts/{postId}")
 	public ResponseDto<Long> saveDistance(HttpServletRequest request,
+		@ApiParam(value = "유저 인덱스 번호") @PathVariable("userId") Long userId,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId,
 		@ApiParam(value = "하차 요금") @RequestParam("fare") double fare) {
 		return ResponseUtil.SUCCESS("하차 요금 저장에 성공하였습니다.",
-			participationDetailsService.savePrice(request.getHeader("Authorization"), postId, fare));
+			participationDetailsService.savePrice(request.getHeader("Authorization"), userId, postId, fare));
 	}
 
 	@ApiOperation(value = "이용객의 금액 조회")
