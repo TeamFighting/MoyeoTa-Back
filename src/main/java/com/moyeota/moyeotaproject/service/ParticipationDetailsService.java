@@ -117,8 +117,10 @@ public class ParticipationDetailsService {
 		return true;
 	}
 
-	public Long savePrice(String accessToken, Long postId, double fare) {
-		Users user = usersService.getUserByToken(accessToken);
+	public Long savePrice(String accessToken, Long userId, Long postId, double fare) {
+		usersService.getUserByToken(accessToken);
+		Users user = usersRepository.findById(userId).orElseThrow(
+			() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 		Posts post = postsRepository.findById(postId).orElseThrow(
 			() -> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
 		ParticipationDetails participationDetails =
