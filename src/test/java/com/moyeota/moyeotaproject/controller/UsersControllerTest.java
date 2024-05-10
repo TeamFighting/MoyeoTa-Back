@@ -51,10 +51,8 @@ class UsersControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    String salt = "RlaXoVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa";
-
-    public JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(salt);
-    public JwtTokenGenerator jwtTokenGenerator = new JwtTokenGenerator(jwtTokenProvider);
+    @Autowired
+    private JwtTokenGenerator jwtTokenGenerator;
 
     private String accessToken;
 

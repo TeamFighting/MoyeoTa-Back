@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.moyeota.moyeotaproject.dto.UsersDto.*;
 import com.moyeota.moyeotaproject.service.SchoolService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class UsersController {
 
 	private final UsersService usersService;
