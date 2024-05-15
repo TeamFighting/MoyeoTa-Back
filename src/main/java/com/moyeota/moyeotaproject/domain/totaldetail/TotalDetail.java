@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.moyeota.moyeotaproject.domain.posts.Posts;
+import com.moyeota.moyeotaproject.dto.totaldetaildto.TotalDetailRequestDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +34,11 @@ public class TotalDetail {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "postId")
 	private Posts post;
+
+	public void update(TotalDetailRequestDto requestDto) {
+		this.totalDistance = requestDto.getTotalDistance();
+		this.totalPayment = requestDto.getTotalPayment();
+	}
 
 	@Builder
 	public TotalDetail(double totalDistance, double totalPayment, Posts post) {
