@@ -28,7 +28,13 @@ public class TotalDetailService {
 		Posts post = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
 		TotalDetail totalDetail = requestDto.toEntity(post);
-		Long totalDetailId = totalDetailRepository.save(totalDetail).getId();
+		Long totalDetailId;
+		if (totalDetailRepository.findByPostId(post.getId()).isPresent()) {
+			totalDetail.update(requestDto);
+			totalDetailId = totalDetail.getId();
+		} else {
+			totalDetailId = totalDetailRepository.save(totalDetail).getId();
+		}
 		return totalDetailId;
 	}
 

@@ -41,11 +41,14 @@ public class TotalDetailController {
 	@PostMapping("/{postId}")
 	public ResponseDto<Long> save(HttpServletRequest request, @RequestBody TotalDetailRequestDto requestDto,
 		@PathVariable("postId") Long postId) {
-		if (requestDto.getTotalDistance() == 0) {
-			throw new ApiException(ErrorCode.TOTAL_DETAIL_EMPTY_DISTANCE);
-		} else if (requestDto.getTotalPayment() == 0) {
+		if (requestDto.getTotalPayment() == 0) {
 			throw new ApiException(ErrorCode.TOTAL_DETAIL_EMPTY_PAYMENT);
 		}
+		// if (requestDto.getTotalDistance() == 0) {
+		// 	throw new ApiException(ErrorCode.TOTAL_DETAIL_EMPTY_DISTANCE);
+		// } else if (requestDto.getTotalPayment() == 0) {
+		// 	throw new ApiException(ErrorCode.TOTAL_DETAIL_EMPTY_PAYMENT);
+		// }
 		Long totalDetailId = totalDetailService.save(request.getHeader("Authorization"), requestDto, postId);
 		return ResponseUtil.SUCCESS("최종 도착 정보 입력에 성공하였습니다.", totalDetailId);
 	}
