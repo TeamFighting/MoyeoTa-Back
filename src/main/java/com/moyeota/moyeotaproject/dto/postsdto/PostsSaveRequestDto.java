@@ -63,6 +63,12 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
 	@ApiModelProperty(value = "이동 거리(km)", example = "0.5")
 	private double distance;
 
+	@ApiModelProperty(value = "위도")
+	private String latitude;
+
+	@ApiModelProperty(value = "경도")
+	private String longitude;
+
 	@ApiModelProperty(value = "채팅방 id", example = "uuid")
 	@NotBlank(message = "채팅방 id를 입력하세요.")
 	private String roomId;
@@ -82,6 +88,8 @@ public class PostsSaveRequestDto extends BaseTimeEntity {
 			.fare(fare)
 			.duration(duration)
 			.distance(distance)
+			.latitude(latitude)
+			.longitude(longitude)
 			.user(user)
 			.chatRoom(chatRoom)
 			.build();

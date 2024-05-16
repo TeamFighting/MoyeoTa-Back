@@ -81,6 +81,12 @@ public class Posts extends BaseTimeEntity {
 	@Column(nullable = false)
 	private int view;
 
+	@Column(nullable = false)
+	private String latitude;
+
+	@Column(nullable = false)
+	private String longitude;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId") //FK
 	private Users user;
@@ -105,7 +111,7 @@ public class Posts extends BaseTimeEntity {
 	@Builder
 	public Posts(String title, Category category, String departure, String destination, LocalDateTime departureTime,
 		String content, SameGender sameGenderStatus, Vehicle vehicle, int numberOfRecruitment,
-		int numberOfParticipants, int fare, int duration, double distance, Users user, ChatRoom chatRoom) {
+		int numberOfParticipants, int fare, int duration, double distance, Users user, ChatRoom chatRoom, String latitude, String longitude) {
 		this.title = title;
 		this.category = category;
 		this.departure = departure;
@@ -121,6 +127,8 @@ public class Posts extends BaseTimeEntity {
 		this.duration = duration;
 		this.distance = distance;
 		this.view = 0;
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.setUser(user);
 		this.setChatRoom(chatRoom);
 	}
@@ -136,7 +144,7 @@ public class Posts extends BaseTimeEntity {
 
 	public void update(String title, String content, Category category, String departure, String destination,
 		LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle,
-		int numberOfRecruitment, int fare, int duration, double distance) {
+		int numberOfRecruitment, int fare, int duration, double distance, String latitude, String longitude) {
 		this.title = title;
 		this.content = content;
 		this.category = category;
@@ -149,6 +157,8 @@ public class Posts extends BaseTimeEntity {
 		this.fare = fare;
 		this.duration = duration;
 		this.distance = distance;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 	public void postsComplete() {
