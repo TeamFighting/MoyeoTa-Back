@@ -108,6 +108,10 @@ public class PostsController {
 			requestDto.setNumberOfRecruitment(post.getNumberOfRecruitment());
 		} else if (requestDto.getVehicle() == null) {
 			requestDto.setVehicle(post.getVehicle());
+		} else if (requestDto.getLatitude() == null) {
+			requestDto.setLatitude(post.getLatitude());
+		} else if (requestDto.getLongitude() == null) {
+			requestDto.setLongitude(post.getLongitude());
 		}
 
 		return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.",

@@ -62,7 +62,7 @@ public class PostsService {
 			boolean isPotOwner = false;
 			List<Account> accounts = accountRepository.findAllByUser(user);
 			List<AccountDto> accountDtos = new ArrayList<>();
-			for (int j=0; j<accounts.size(); j++) {
+			for (int j = 0; j < accounts.size(); j++) {
 				Account account = accounts.get(j);
 				AccountDto accountDto = AccountDto.builder()
 					.bankName(account.getBankName())
@@ -128,7 +128,6 @@ public class PostsService {
 			throw new IllegalArgumentException("해당 채팅방이 없습니다. id=" + roomId);
 		}
 		Posts post = requestDto.toEntity(user, chatRoom.get());
-		System.out.println(post.getDistance());
 		Long postId = postsRepository.save(post).getId();
 		participationDetailsService.join(accessToken, postId);
 		return postId;
@@ -142,7 +141,8 @@ public class PostsService {
 		posts.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getCategory(),
 			requestDto.getDeparture(), requestDto.getDestination(), requestDto.getDepartureTime(),
 			requestDto.getSameGenderStatus(), requestDto.getVehicle(), requestDto.getNumberOfRecruitment(),
-			requestDto.getFare(), requestDto.getDuration(), requestDto.getDistance());
+			requestDto.getFare(), requestDto.getDuration(), requestDto.getDistance(), requestDto.getLatitude(),
+			requestDto.getLongitude());
 		return postId;
 	}
 
@@ -189,7 +189,7 @@ public class PostsService {
 			postId);
 
 		List<MembersLocationResponseDto> membersLocationList = new ArrayList<>();
-		for (int i=0; i<participationDetailsList.size(); i++) {
+		for (int i = 0; i < participationDetailsList.size(); i++) {
 			Long userId = participationDetailsList.get(i).getUser().getId();
 			boolean isOwner = false;
 			if (userId == post.getUser().getId()) {

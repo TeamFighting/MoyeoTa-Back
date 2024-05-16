@@ -42,5 +42,9 @@ public class PostsUpdateRequestDto {
 	private int duration;
 	@ApiModelProperty(value = "이동 거리(km)")
 	private double distance;
+	@ApiModelProperty(value = "위도")
+	private String latitude;
+	@ApiModelProperty(value = "경도")
+	private String longitude;
 
 }
