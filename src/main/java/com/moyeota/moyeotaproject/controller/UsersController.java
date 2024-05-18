@@ -49,7 +49,7 @@ public class UsersController {
 	private final SchoolService schoolService;
 
 	@ApiOperation(value = "사용자 정보 조회", notes = "사용자 정보 API")
-	@GetMapping("")
+	@GetMapping
 	public ResponseDto<UserDto.Response> getUserInfo(@RequestHeader(value = "Authorization") String tokenInfo) {
 		return ResponseUtil.SUCCESS("사용자 정보를 받아왔습니다.", usersService.getInfo(tokenInfo));
 	}

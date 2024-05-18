@@ -100,7 +100,7 @@ public class OAuthLoginService {
 
 	private Users getUserById(Long userId) {
 		return usersRepository.findById(userId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+			.orElseThrow(() -> new ApiException(ErrorCode.INVALID_USER));
 	}
 
 }
