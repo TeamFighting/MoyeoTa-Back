@@ -121,15 +121,13 @@ public class UsersService {
             messageHelper.setSubject("모여타 인증 번호");
             messageHelper.setFrom("moyeota6340@gmail.com", "모여타 팀 메일");
             String verificationCode = generateVerificationCode();
-            StringBuffer sb = new StringBuffer();
-            sb.append("<html><body>");
-            sb.append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>");
-            sb.append("<h1>" + "[모여타 어플리케이션]" + "</h1><br>");
-            sb.append("아래 코드 이용하여 인증하세요<br><br>");
-            sb.append("<h3>인증코드 : ").append(verificationCode);
-            sb.append("</h3>");
-            sb.append("</body></html>");
-            String str = sb.toString();
+            String str = "<html><body>" +
+                    "<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>" +
+                    "<h1>" + "[모여타 어플리케이션]" + "</h1><br>" +
+                    "아래 코드 이용하여 인증하세요<br><br>" +
+                    "<h3>인증코드 : " + verificationCode +
+                    "</h3>" +
+                    "</body></html>";
             getMailMessageContent result = new getMailMessageContent(messageHelper, verificationCode, str);
             result.messageHelper.setText(result.str, true);
             if (redisRepository.findByEmail(email).isPresent()) {
@@ -207,7 +205,7 @@ public class UsersService {
     public UsersResponseDto createNickName(String tokenInfo, String nickname) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        users.createNickName(nickname);
+        users.setNickName(nickname);
 
         return UsersResponseDto.builder()
                 .id(users.getId())
@@ -228,7 +226,7 @@ public class UsersService {
     public UsersResponseDto updateNickName(String tokenInfo, String nickname) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
                 -> new RuntimeException("해당하는 유저가 없습니다."));
-        users.updateNickName(nickname);
+        users.setNickName(nickname);
         return UsersResponseDto.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())

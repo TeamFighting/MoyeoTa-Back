@@ -30,7 +30,9 @@ public enum ErrorCode {
 	NO_EMAIL_ERROR(422, "소셜 로그인으로부터 이메일을 받아올 수 없습니다", 1007),
 	MAIL_SEND_ERROR(400, "학교 인증 메일 전송에 실패하였습니다."),
 
-	INVALID_USER(400, "해당하는 사용자가 없습니다");
+	INVALID_USER(400, "해당하는 사용자가 없습니다"),
+
+	INPUT_ERROR(400, "입력값에 오류가 있습니다.");
 
 	private final int status;
 	private final String message;
