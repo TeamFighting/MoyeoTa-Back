@@ -96,4 +96,5 @@ server:
     key-store-password: moyeota
 school:
   api:
+    url: "http://www.career.go.kr/cnet/openapi/getOpenApi.xml"
     key: 15495ecea92f26bae8712b88f11e02e3

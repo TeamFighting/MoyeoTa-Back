@@ -122,8 +122,9 @@ public class UsersController {
 		return ResponseUtil.SUCCESS("사용자 계좌가 추가되었습니다.", usersService.addAccount(tokenInfo, accountDto));
 	}
 
+	@ApiOperation(value = "학교 조회", notes = "대학교 조회를 위한 API")
 	@GetMapping("/school/search")
-	public ResponseDto<List<SchoolDto.schoolInfo>> searchSchool() throws JsonProcessingException {
+	public ResponseDto<List<SchoolDto.SchoolInfo>> searchSchool() throws JsonProcessingException {
 		return ResponseUtil.SUCCESS("학교 검색 완료", schoolService.searchSchool());
 	}
 }
