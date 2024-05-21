@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
 
-import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 

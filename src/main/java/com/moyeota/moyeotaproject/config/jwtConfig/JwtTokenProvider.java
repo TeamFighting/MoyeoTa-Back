@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.config.jwtconfig;
+package com.moyeota.moyeotaproject.config.jwtConfig;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;

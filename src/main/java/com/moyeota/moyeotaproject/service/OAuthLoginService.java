@@ -10,7 +10,7 @@ import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthInfoResponse.OAuthInfoRespon
 import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
-import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenGenerator;
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
 import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;

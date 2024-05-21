@@ -32,7 +32,8 @@ public enum ErrorCode {
 
 	INVALID_USER(400, "해당하는 사용자가 없습니다"),
 
-	INPUT_ERROR(400, "입력값에 오류가 있습니다.");
+	INPUT_ERROR(400, "입력값에 오류가 있습니다."),
+	INVALID_SCHOOL_EMAIL_CODE(400, "학교 인증 코드가 정확하지 않습니다."), INVALID_EMAIL(400,"해당하는 이메일이 존재하지 않습니다." );
 
 	private final int status;
 	private final String message;

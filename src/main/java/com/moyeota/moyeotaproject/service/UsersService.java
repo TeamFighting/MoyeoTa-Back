@@ -3,7 +3,6 @@ package com.moyeota.moyeotaproject.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import javax.mail.internet.MimeMessage;
 
@@ -15,7 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.account.AccountRepository;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
@@ -31,6 +30,8 @@ import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +54,8 @@ public class UsersService {
                         AccountDto.builder()
                                 .bankName(account.getBankName())
                                 .accountNumber(account.getAccountNumber())
-                                .build()).collect(Collectors.toList());
-        UserDto.Response usersDto = UserDto.Response.builder()
+                                .build()).collect(toList());
+        return UserDto.Response.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
                 .name(users.getName())
@@ -69,7 +70,6 @@ public class UsersService {
                 .gender(users.getGender())
                 .accountDtoList(accountList)
                 .build();
-        return usersDto;
     }
 
     @Transactional
@@ -148,7 +148,7 @@ public class UsersService {
     @Transactional
     public UserDto.AccountResponse addAccount(String accessToken, AccountDto accountDto) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
-                -> new RuntimeException("해당하는 유저가 없습니다."));
+                -> new ApiException(ErrorCode.INVALID_USER));
 
         Account account = new Account(accountDto.getBankName(), accountDto.getAccountNumber());
         accountRepository.save(account);
@@ -158,7 +158,7 @@ public class UsersService {
                         AccountDto.builder()
                                 .bankName(acc.getBankName())
                                 .accountNumber(acc.getAccountNumber())
-                                .build()).collect(Collectors.toList());
+                                .build()).collect(toList());
         return UserDto.AccountResponse.builder()
                 .name(users.getName())
                 .nickName(users.getNickName())
@@ -182,9 +182,9 @@ public class UsersService {
     @Transactional
     public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
-                -> new RuntimeException("해당하는 유저가 없습니다."));
+                -> new ApiException(ErrorCode.INVALID_USER));
 
-        SchoolEmailRedis schoolEmailRedis = redisRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
+        SchoolEmailRedis schoolEmailRedis = redisRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new ApiException(ErrorCode.INVALID_EMAIL));
 
         if (schoolEmailRedis.getCode().equals(schoolDto.getCode())) {
             users.updateSchoolAuthenticate(schoolDto.getUnivName());
@@ -193,7 +193,7 @@ public class UsersService {
                     .certified_email(schoolDto.getEmail())
                     .build();
         }
-        throw new RuntimeException("코드가 일치하지 않습니다. 코드를 다시 확인하세요");
+        throw new ApiException(ErrorCode.INVALID_SCHOOL_EMAIL_CODE);
     }
 
     private String generateVerificationCode() {
@@ -204,7 +204,7 @@ public class UsersService {
     @Transactional
     public UsersResponseDto createNickName(String tokenInfo, String nickname) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
-                -> new RuntimeException("해당하는 유저가 없습니다."));
+                -> new ApiException(ErrorCode.INVALID_USER));
         users.setNickName(nickname);
 
         return UsersResponseDto.builder()
@@ -225,7 +225,7 @@ public class UsersService {
     @Transactional
     public UsersResponseDto updateNickName(String tokenInfo, String nickname) {
         Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
-                -> new RuntimeException("해당하는 유저가 없습니다."));
+                -> new ApiException(ErrorCode.INVALID_USER));
         users.setNickName(nickname);
         return UsersResponseDto.builder()
                 .id(users.getId())
