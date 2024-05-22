@@ -135,4 +135,8 @@ public class Users extends BaseTimeEntity {
 		accountList.add(account);
 		account.setUser(this);
 	}
+
+	public void updatePhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 }

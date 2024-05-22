@@ -124,7 +124,14 @@ public class UsersController {
 
 	@ApiOperation(value = "학교 조회", notes = "대학교 조회를 위한 API")
 	@GetMapping("/school/search")
-	public ResponseDto<List<SchoolDto.SchoolInfo>> searchSchool() throws JsonProcessingException {
+	public ResponseDto<List<SchoolDto.SchoolInfo>> searchSchool() {
 		return ResponseUtil.SUCCESS("학교 검색 완료", schoolService.searchSchool());
 	}
+
+	@ApiOperation(value = "본인 인증", notes = "본인 인증을 위한 API")
+	@GetMapping("/verify")
+	public ResponseDto<Void> verify(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UserVerifyRequest userVerifyRequest) {
+		return ResponseUtil.SUCCESS("본인 인증 완료", usersService.userVerifyOnEmail(tokenInfo, userVerifyRequest));
+	}
+
 }

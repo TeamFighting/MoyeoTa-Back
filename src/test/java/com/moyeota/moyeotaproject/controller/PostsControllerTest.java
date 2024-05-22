@@ -41,23 +41,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 public class PostsControllerTest {
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @MockBean
-    PostsService postsService;
-
-    @MockBean
-    UsersRepository usersRepository;
-
-    @MockBean
-    PostsRepository postsRepository;
 
     @Autowired
-    SchoolService schoolService;
+    private ObjectMapper objectMapper;
+
+    @MockBean
+    private PostsService postsService;
+
+    @MockBean
+    private UsersRepository usersRepository;
+
+    @MockBean
+    private PostsRepository postsRepository;
 
     @Autowired
-    MockMvc mockMvc;
+    private SchoolService schoolService;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeEach
     void beforeEach() {
@@ -100,6 +101,25 @@ public class PostsControllerTest {
         when(postsRepository.findById(1L)).thenReturn(Optional.of(postsEntity));
     }
 
+    @Test
+    void 모집글_작성() {
+
+    }
+
+    @Test
+    void 모집글_수정() {
+
+    }
+
+    @Test
+    void 모집글_삭제() {
+
+    }
+
+    @Test
+    void 모집글_마감() {
+
+    }
 
     @Test
     void 특정_모집글_조회() throws Exception {

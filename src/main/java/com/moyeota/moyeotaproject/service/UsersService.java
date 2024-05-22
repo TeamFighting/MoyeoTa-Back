@@ -2,12 +2,17 @@ package com.moyeota.moyeotaproject.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Random;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.search.BodyTerm;
 
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
+import com.moyeota.moyeotaproject.dto.UsersDto.*;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -23,10 +28,6 @@ import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedis;
 import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedisRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
-import com.moyeota.moyeotaproject.dto.UsersDto.AccountDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -241,4 +242,16 @@ public class UsersService {
                 .gender(users.getGender())
                 .build();
     }
+
+    @Transactional
+    public Void userVerifyOnEmail(String tokenInfo, UserVerifyRequest userVerifyRequest) {
+        // TODO : userVerifyRequest에 있는 인증코드랑 메일에서 받은 인증코드랑 일치하는지 확인
+        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
+                -> new ApiException(ErrorCode.INVALID_USER));
+        // 소셜 로그인 때 저장했던 번호랑 다르면..?
+        // TODO : 인증 코드 인증
+
+        return null;
+    }
+
 }
