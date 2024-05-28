@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
@@ -20,6 +17,7 @@ import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetai
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.review.Review;
 
+import io.swagger.annotations.Api;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,30 +52,27 @@ public class Users extends BaseTimeEntity {
 	private String school;
 	private Boolean isAuthenticated;
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true)
+	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<OAuth> oAuths = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true)
+	@Getter
+	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Posts> posts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true)
+	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Review> reviews = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true)
+	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
 	//    @OneToMany(mappedBy = "user", orphanRemoval = true)
 	//    private List<ChatMessage> chatMessages = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<ChatRoomAndUsers> chatRoomAndUsersList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Account> accountList = new ArrayList<>();
-
-	public List<Posts> getPosts() {
-		return this.posts;
-	}
 
 	public void addPost(Posts post) {
 		posts.add(post);
@@ -116,33 +111,7 @@ public class Users extends BaseTimeEntity {
 		this.age = age;
 	}
 
-	@Builder
-	public Users(String name, String nickName, String profileImage, String phoneNumber, String email, String loginId,
-		String password, String status, String gender, Float averageStarRate, String school, Boolean isAuthenticated,
-		String age) {
-		this.name = name;
-		this.nickName = nickName;
-		this.profileImage = profileImage;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.loginId = loginId;
-		this.password = password;
-		this.status = status;
-		this.gender = gender;
-		this.averageStarRate = averageStarRate;
-		this.school = school;
-		this.isAuthenticated = isAuthenticated;
-		this.age = age;
-	}
-
-	@Builder
-	public Users(String loginId, String password, String email) {
-		this.loginId = loginId;
-		this.password = password;
-		this.email = email;
-	}
-
-	public void defaultProfileImage(String profileImage) {
+	public void setDefaultProfileImage(String profileImage) {
 		this.profileImage = profileImage;
 	}
 
@@ -150,11 +119,10 @@ public class Users extends BaseTimeEntity {
 		this.profileImage = profileImage;
 	}
 
-	public void createNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public void updateNickName(String nickName) {
+	public void setNickName(String nickName) {
+		if (nickName == null || nickName.isEmpty()) {
+			throw new ApiException(ErrorCode.INPUT_ERROR);
+		}
 		this.nickName = nickName;
 	}
 
@@ -166,5 +134,9 @@ public class Users extends BaseTimeEntity {
 	public void addAccount(Account account) {
 		accountList.add(account);
 		account.setUser(this);
+	}
+
+	public void updatePhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 }

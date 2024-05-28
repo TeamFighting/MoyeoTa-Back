@@ -12,30 +12,48 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-@Slf4j
+import static java.util.stream.Collectors.*;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SchoolService {
+
+    private static final int MAX_PAGES = 25;
+
+    @Value("${school.api.url}")
+    private String schoolApiUrl;
 
     @Value("${school.api.key}")
     private String apiKey;
 
-    private final String schoolApiUrl = "http://www.career.go.kr/cnet/openapi/getOpenApi.xml";
     private final RestTemplate restTemplate;
 
-    public List<SchoolDto.schoolInfo> searchSchool() {
-        List<SchoolDto.schoolInfo> result = new ArrayList<>();
-        for (int page = 1; page < 25; page++) {
-            String requestUrl = String.format("%s?apiKey=%s&svcType=api&svcCode=SCHOOL&contentType=json&gubun=univ_list&thisPage=%s", schoolApiUrl, apiKey, page);
-            log.info("requestUrl = {}", requestUrl);
-            SchoolJson schoolJson = restTemplate.getForObject(requestUrl, SchoolJson.class);
-            schoolJson.getDataSearch().getContent().forEach(school -> {
-                result.add(SchoolDto.schoolInfo.builder()
+    public List<SchoolDto.SchoolInfo> searchSchool() {
+        return IntStream.range(1, MAX_PAGES)
+                .mapToObj(this::fetchSchoolData)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .flatMap(schoolJson -> schoolJson.getDataSearch().getContent().stream())
+                .map(school -> SchoolDto.SchoolInfo.builder()
                         .name(school.getSchoolName())
-                        .build());
-            });
+                        .build())
+                .collect(toList());
+    }
+
+    private Optional<SchoolJson> fetchSchoolData(int page) {
+        try {
+            String requestUrl = String.format("%s?apiKey=%s&svcType=api&svcCode=SCHOOL&contentType=json&gubun=univ_list&thisPage=%d",
+                    schoolApiUrl, apiKey, page);
+            log.info("Fetching data from URL: {}", requestUrl);
+            return Optional.ofNullable(restTemplate.getForObject(requestUrl, SchoolJson.class));
+        } catch (Exception e) {
+            log.error("Error fetching data for page {}: {}", page, e.getMessage());
+            return Optional.empty();
         }
-        return result;
     }
 }

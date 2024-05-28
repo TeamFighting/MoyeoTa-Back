@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.config.jwtconfig;
+package com.moyeota.moyeotaproject.config.jwtConfig;
 
 import java.util.Date;
 

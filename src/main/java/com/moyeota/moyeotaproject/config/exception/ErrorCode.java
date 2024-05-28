@@ -28,7 +28,12 @@ public enum ErrorCode {
 	NO_INFO(500, "토큰에 해당하는 정보가 없습니다.", 1006),
 
 	NO_EMAIL_ERROR(422, "소셜 로그인으로부터 이메일을 받아올 수 없습니다", 1007),
-	MAIL_SEND_ERROR(400, "학교 인증 메일 전송에 실패하였습니다.");
+	MAIL_SEND_ERROR(400, "학교 인증 메일 전송에 실패하였습니다."),
+
+	INVALID_USER(400, "해당하는 사용자가 없습니다"),
+
+	INPUT_ERROR(400, "입력값에 오류가 있습니다."),
+	INVALID_SCHOOL_EMAIL_CODE(400, "학교 인증 코드가 정확하지 않습니다."), INVALID_EMAIL(400,"해당하는 이메일이 존재하지 않습니다." );
 
 	private final int status;
 	private final String message;

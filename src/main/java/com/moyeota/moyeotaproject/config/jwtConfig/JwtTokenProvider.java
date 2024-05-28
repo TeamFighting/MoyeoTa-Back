@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.config.jwtconfig;
+package com.moyeota.moyeotaproject.config.jwtConfig;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -80,7 +80,7 @@ public class JwtTokenProvider {
 
 	public String getToken(String token) {
 		if (token.length() < 7) {
-			throw new RuntimeException("토큰에 오류가 있습니다.");
+			throw new ApiException(ErrorCode.INVALID_TOKEN);
 		}
 		token = token.substring(7).trim();
 		return token;

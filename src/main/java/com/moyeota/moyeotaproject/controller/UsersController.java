@@ -49,7 +49,7 @@ public class UsersController {
 	private final SchoolService schoolService;
 
 	@ApiOperation(value = "사용자 정보 조회", notes = "사용자 정보 API")
-	@GetMapping("")
+	@GetMapping
 	public ResponseDto<UserDto.Response> getUserInfo(@RequestHeader(value = "Authorization") String tokenInfo) {
 		return ResponseUtil.SUCCESS("사용자 정보를 받아왔습니다.", usersService.getInfo(tokenInfo));
 	}
@@ -122,8 +122,16 @@ public class UsersController {
 		return ResponseUtil.SUCCESS("사용자 계좌가 추가되었습니다.", usersService.addAccount(tokenInfo, accountDto));
 	}
 
+	@ApiOperation(value = "학교 조회", notes = "대학교 조회를 위한 API")
 	@GetMapping("/school/search")
-	public ResponseDto<List<SchoolDto.schoolInfo>> searchSchool() throws JsonProcessingException {
+	public ResponseDto<List<SchoolDto.SchoolInfo>> searchSchool() {
 		return ResponseUtil.SUCCESS("학교 검색 완료", schoolService.searchSchool());
 	}
+
+	@ApiOperation(value = "본인 인증", notes = "본인 인증을 위한 API")
+	@GetMapping("/verify")
+	public ResponseDto<Void> verify(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UserVerifyRequest userVerifyRequest) {
+		return ResponseUtil.SUCCESS("본인 인증 완료", usersService.userVerifyOnEmail(tokenInfo, userVerifyRequest));
+	}
+
 }

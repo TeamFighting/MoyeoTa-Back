@@ -8,7 +8,7 @@ public class SchoolDto {
 
     @Data
     @Builder
-    public static class schoolInfo {
+    public static class SchoolInfo {
         private String name;
     }
 
