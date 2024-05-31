@@ -33,6 +33,8 @@ public class OAuthLoginService {
 	private final PasswordEncoder passwordEncoder;
 	private final ImageService imageService;
 
+	private static final String KAKAO_DEFAULT_IMAGE = "https://ssl.pstatic.net/static/pwe/address/img_profile.png";
+
 	public TokenInfoDto login(OAuthLoginParams params) {
 		OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
 		Long userId = findOrCreateUserAndOAuth(oAuthInfoResponse);
@@ -75,10 +77,12 @@ public class OAuthLoginService {
 
 	private String getProfileImage(OAuthInfoResponse oAuthInfoResponse) {
 		log.error("userProfileImageURL={}", oAuthInfoResponse.getProfileImage());
+		// 프로필 이미지를 못 가져올 경우 기본이미지 설정
 		if (oAuthInfoResponse.getProfileImage() == null) {
 			return imageService.defaultProfileImage();
 		}
-		if (oAuthInfoResponse.getProfileImage().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png")) {
+		// 카카오 기본 이미지일 경우 모여타 기본이미지로 변경해줌
+		if (oAuthInfoResponse.getProfileImage().equals(KAKAO_DEFAULT_IMAGE)) {
 			return imageService.defaultProfileImage();
 		}
 

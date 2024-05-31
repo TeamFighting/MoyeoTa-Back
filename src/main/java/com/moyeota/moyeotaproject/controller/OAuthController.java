@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.controller;
 
+import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,20 +37,19 @@ public class OAuthController {
 
 	@ApiOperation(value = "구글 소셜 로그인", notes = "구글 소셜 로그인 회원가입 API")
 	@PostMapping("/google")
-	public ResponseDto loginGoogle(@RequestBody GoogleLoginParams params) {
+	public ResponseDto<TokenInfoDto> loginGoogle(@RequestBody GoogleLoginParams params) {
 		return ResponseUtil.SUCCESS("구글에 로그인 성공하였습니다. ", oAuthLoginService.login(params));
 	}
 
 	@ApiOperation(value = "카카오 소셜 로그인", notes = "카카오 소셜 로그인 회원가입 API")
 	@PostMapping("/kakao")
-	public ResponseDto loginKakao(@RequestBody KakaoLoginParams params) {
-		log.info("params", params.oAuthProvider().name());
+	public ResponseDto<TokenInfoDto> loginKakao(@RequestBody KakaoLoginParams params) {
 		return ResponseUtil.SUCCESS("카카오 로그인 성공하였습니다. ", oAuthLoginService.login(params));
 	}
 
 	@ApiOperation(value = "네이버 소셜 로그인", notes = "네이버 소셜 로그인 회원가입 API")
 	@PostMapping("/naver")
-	public ResponseDto loginNaver(@RequestBody NaverLoginParams params) {
+	public ResponseDto<TokenInfoDto> loginNaver(@RequestBody NaverLoginParams params) {
 		return ResponseUtil.SUCCESS("네이버 로그인 성공하였습니다. ", oAuthLoginService.login(params));
 	}
 }
