@@ -1,5 +1,7 @@
 package com.moyeota.moyeotaproject.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +29,13 @@ public class TotalDetailService {
 		usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
-		TotalDetail totalDetail = requestDto.toEntity(post);
 		Long totalDetailId;
 		if (totalDetailRepository.findByPostId(post.getId()).isPresent()) {
+			TotalDetail totalDetail = totalDetailRepository.findByPostId(postId).get();
 			totalDetail.update(requestDto);
 			totalDetailId = totalDetail.getId();
 		} else {
+			TotalDetail totalDetail = requestDto.toEntity(post);
 			totalDetailId = totalDetailRepository.save(totalDetail).getId();
 		}
 		return totalDetailId;
