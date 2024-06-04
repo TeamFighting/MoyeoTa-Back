@@ -128,10 +128,4 @@ public class UsersController {
 		return ResponseUtil.SUCCESS("학교 검색 완료", schoolService.searchSchool());
 	}
 
-	@ApiOperation(value = "본인 인증", notes = "본인 인증을 위한 API")
-	@GetMapping("/verify")
-	public ResponseDto<Void> verify(@RequestHeader(value = "Authorization") String tokenInfo, @RequestBody UserVerifyRequest userVerifyRequest) {
-		return ResponseUtil.SUCCESS("본인 인증 완료", usersService.userVerifyOnEmail(tokenInfo, userVerifyRequest));
-	}
-
 }

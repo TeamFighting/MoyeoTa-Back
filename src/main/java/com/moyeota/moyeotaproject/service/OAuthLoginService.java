@@ -47,15 +47,13 @@ public class OAuthLoginService {
 	private Long findOrCreateUserAndOAuth(OAuthInfoResponse oAuthInfoResponse) {
 		// 소셜 로그인 이름 가져오기
 		String oAuthProvider = oAuthInfoResponse.getOAuthProvider().name();
-		log.info("oAuthProvider = {}", oAuthProvider);
 		String userEmail = oAuthInfoResponse.getEmail();
-		log.info("userEmail = {}", userEmail);
 		if (userEmail.isEmpty()) {
 			throw new ApiException(ErrorCode.NO_EMAIL_ERROR);
 		}
 
+		// OAuth 데이터베이스에서 소셜 provider와 Email로 해당 사용자 정보 찾음
 		Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(userEmail, oAuthProvider);
-		// log.info("oAuthEntity 정보 = {} {} {}", oAuthEntity.get().getEmail(), oAuthEntity.get().getName(), oAuthEntity.get().getId());
 		return oAuthEntity.map(oAuth -> oAuth.getUser().getId())
 			.orElseGet(() -> createUserAndOAuth(oAuthInfoResponse));
 	}

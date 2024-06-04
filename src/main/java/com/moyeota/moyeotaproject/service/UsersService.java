@@ -244,15 +244,4 @@ public class UsersService {
                 .build();
     }
 
-    @Transactional
-    public Void userVerifyOnEmail(String tokenInfo, UserVerifyRequest userVerifyRequest) {
-        // TODO : userVerifyRequest에 있는 인증코드랑 메일에서 받은 인증코드랑 일치하는지 확인
-        Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
-                -> new ApiException(ErrorCode.INVALID_USER));
-        // 소셜 로그인 때 저장했던 번호랑 다르면..?
-        // TODO : 인증 코드 인증
-
-        return null;
-    }
-
 }
