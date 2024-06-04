@@ -76,9 +76,10 @@ public class UsersService {
     @Transactional
     public UsersResponseDto addInfo(String accessToken, UserDto.updateDto usersDto) {
         Users users = getUserByToken(accessToken);
+        log.info("User 정보으로 알아낸 UserId = {}", users.getId());
         users.updateUsers(usersDto);
         Optional<OAuth> oauthEntity = oAuthRepository.findByUserId(users.getId());
-        oauthEntity.ifPresent(oAuth -> oAuth.updateEmail(usersDto.getEmail()));
+        oauthEntity.ifPresent(oAuth -> oAuth.updateEmail(users.getEmail()));
         return UsersResponseDto.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())

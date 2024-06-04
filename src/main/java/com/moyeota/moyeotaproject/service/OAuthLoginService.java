@@ -36,22 +36,26 @@ public class OAuthLoginService {
 	private static final String KAKAO_DEFAULT_IMAGE = "https://ssl.pstatic.net/static/pwe/address/img_profile.png";
 
 	public TokenInfoDto login(OAuthLoginParams params) {
+		// authorizeToken을 이용해서 소셜 리소스 서버에서 정보를 가져옴.
 		OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
-		log.info("oAuthInfoResponse = {}", oAuthInfoResponse);
+		// 새로 생성 or 기존 사용자 userId 가져오기
 		Long userId = findOrCreateUserAndOAuth(oAuthInfoResponse);
 		Users user = getUserById(userId);
 		return jwtTokenGenerator.generate(user.getId());
 	}
 
 	private Long findOrCreateUserAndOAuth(OAuthInfoResponse oAuthInfoResponse) {
+		// 소셜 로그인 이름 가져오기
 		String oAuthProvider = oAuthInfoResponse.getOAuthProvider().name();
+		log.info("oAuthProvider = {}", oAuthProvider);
 		String userEmail = oAuthInfoResponse.getEmail();
-		if (userEmail == null) {
+		log.info("userEmail = {}", userEmail);
+		if (userEmail.isEmpty()) {
 			throw new ApiException(ErrorCode.NO_EMAIL_ERROR);
 		}
 
 		Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(userEmail, oAuthProvider);
-
+		// log.info("oAuthEntity 정보 = {} {} {}", oAuthEntity.get().getEmail(), oAuthEntity.get().getName(), oAuthEntity.get().getId());
 		return oAuthEntity.map(oAuth -> oAuth.getUser().getId())
 			.orElseGet(() -> createUserAndOAuth(oAuthInfoResponse));
 	}

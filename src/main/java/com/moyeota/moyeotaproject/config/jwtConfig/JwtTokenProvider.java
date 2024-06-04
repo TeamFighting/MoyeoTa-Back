@@ -5,6 +5,7 @@ import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
 
@@ -65,6 +67,7 @@ public class JwtTokenProvider {
 			Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
 			String subject = claims.getSubject();
+			log.info("AccessToken으로 알아낸 UserId = {}", subject);
 			return Long.parseLong(subject);
 		} catch (IllegalArgumentException e) {
 			throw new ApiException(ErrorCode.WRONG_TYPE_TOKEN);
