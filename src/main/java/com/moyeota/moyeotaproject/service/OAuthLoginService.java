@@ -37,6 +37,7 @@ public class OAuthLoginService {
 
 	public TokenInfoDto login(OAuthLoginParams params) {
 		OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
+		log.info("oAuthInfoResponse = {}", oAuthInfoResponse);
 		Long userId = findOrCreateUserAndOAuth(oAuthInfoResponse);
 		Users user = getUserById(userId);
 		return jwtTokenGenerator.generate(user.getId());

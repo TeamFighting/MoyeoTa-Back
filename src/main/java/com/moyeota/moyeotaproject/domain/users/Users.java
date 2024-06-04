@@ -87,6 +87,7 @@ public class Users extends BaseTimeEntity {
 	public void updateUsers(UserDto.updateDto usersDto) {
 		this.profileImage = Optional.ofNullable(usersDto.getProfileImage()).orElse(this.profileImage);
 		this.phoneNumber = Optional.ofNullable(usersDto.getPhoneNumber()).orElse(this.phoneNumber);
+		this.age = Optional.ofNullable(usersDto.getAge()).orElse(this.age);
 		this.email = Optional.ofNullable(usersDto.getEmail()).orElse(this.email);
 		this.gender = Optional.ofNullable(usersDto.getGender()).orElse(this.gender);
 	}
