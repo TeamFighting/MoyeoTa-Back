@@ -25,16 +25,19 @@ public class PostsMemberDto {
 	private String userGender;
 	@ApiModelProperty(value = "팟장 여부")
 	private boolean isPotOwner;
+	@ApiModelProperty(value = "정산 여부")
+	private boolean payment;
 	@ApiModelProperty(value = "계좌 목록")
 	List<AccountDto> accounts;
 
 	@Builder
-	public PostsMemberDto(Users user, String nickname, boolean isPotOwner, List<AccountDto> accounts) {
+	public PostsMemberDto(Users user, String nickname, boolean isPotOwner, boolean payment, List<AccountDto> accounts) {
 		this.userId = user.getId();
 		this.nickname = nickname;
 		this.profileImage = user.getProfileImage();
 		this.userGender = user.getGender();
 		this.isPotOwner = isPotOwner;
+		this.payment = payment;
 		this.accounts = accounts;
 		// this.bankName = bankName;
 		// this.accountNumber = accountNumber;

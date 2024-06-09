@@ -36,6 +36,8 @@ public class ParticipationDetails extends BaseTimeEntity {
 
 	private double price;
 
+	private boolean payment;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
 	private Users user;
@@ -63,19 +65,16 @@ public class ParticipationDetails extends BaseTimeEntity {
 		this.price = price;
 	}
 
+	public void updatePayment(boolean payment) {
+		this.payment = payment;
+	}
+
 	@Builder
 	public ParticipationDetails(Users user, Posts post) {
 		this.status = ParticipationDetailsStatus.JOIN;
+		this.payment = false;
 		this.setUser(user);
 		this.setPost(post);
 	}
-	/**
-	 public boolean cancel() {
-	 if (this.status == ParticipationDetailsStatus.CANCEL) {
-	 return true;
-	 }
-	 this.status = ParticipationDetailsStatus.CANCEL;
-	 return false;
-	 }
-	 */
+
 }

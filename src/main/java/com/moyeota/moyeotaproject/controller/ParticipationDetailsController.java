@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,6 +107,12 @@ public class ParticipationDetailsController {
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
 		return ResponseUtil.SUCCESS("이동거리 및 금액 조회에 성공하였습니다.",
 			participationDetailsService.findDistanceAndPrice(userId, postId));
+	}
+
+	@ApiOperation(value = "정산 완료")
+	@PatchMapping("/payment")
+	public ResponseDto<Long> payment(HttpServletRequest request) {
+		return ResponseUtil.SUCCESS("정산 완료로 변경", participationDetailsService.payment(request.getHeader("Authorization")));
 	}
 
 }
