@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,6 +146,14 @@ public class ParticipationDetailsService {
 			.price(participationDetails.getPrice())
 			.build();
 		return distancePriceDto;
+	}
+
+	public Long payment(String accessToken) {
+		Users user = usersService.getUserByToken(accessToken);
+		ParticipationDetails participationDetails = participationDetailsRepository.findByUser(user)
+			.orElseThrow(() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
+		participationDetails.updatePayment(true);
+		return participationDetails.getId();
 	}
 
 	//모집글의 출발 날짜 비교 로직

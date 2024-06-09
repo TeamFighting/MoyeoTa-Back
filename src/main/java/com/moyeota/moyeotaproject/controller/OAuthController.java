@@ -34,6 +34,7 @@ public class OAuthController {
 
 	private final OAuthLoginService oAuthLoginService;
 
+	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "구글 소셜 로그인", notes = "구글 소셜 로그인 회원가입 API")
 	@PostMapping("/google")
 	public ResponseDto loginGoogle(@RequestBody GoogleLoginParams params) {

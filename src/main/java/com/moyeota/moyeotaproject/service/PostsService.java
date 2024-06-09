@@ -11,16 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.account.AccountRepository;
-import com.moyeota.moyeotaproject.domain.location.Location;
-import com.moyeota.moyeotaproject.domain.location.LocationRepository;
-import com.moyeota.moyeotaproject.dto.accountdto.AccountDto;
-import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsUpdateRequestDto;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
+import com.moyeota.moyeotaproject.domain.location.Location;
+import com.moyeota.moyeotaproject.domain.location.LocationRepository;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsRepository;
 import com.moyeota.moyeotaproject.domain.posts.Category;
@@ -31,6 +25,12 @@ import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetail;
 import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
+import com.moyeota.moyeotaproject.dto.accountdto.AccountDto;
+import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsUpdateRequestDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +81,7 @@ public class PostsService {
 						.user(user)
 						.nickname(user.getName())
 						.isPotOwner(isPotOwner)
+						.payment(participationDetailsList.get(i).isPayment())
 						.accounts(accountDtos)
 						.build());
 			} else {
@@ -89,6 +90,7 @@ public class PostsService {
 						.user(user)
 						.nickname(user.getNickName())
 						.isPotOwner(isPotOwner)
+						.payment(participationDetailsList.get(i).isPayment())
 						.accounts(accountDtos)
 						.build());
 			}
