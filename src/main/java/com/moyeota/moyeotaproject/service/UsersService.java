@@ -2,18 +2,24 @@ package com.moyeota.moyeotaproject.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Random;
-import java.util.stream.Collectors;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.search.BodyTerm;
 
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
+import com.moyeota.moyeotaproject.dto.UsersDto.*;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenProvider;
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.account.AccountRepository;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
@@ -22,13 +28,11 @@ import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedis;
 import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedisRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
-import com.moyeota.moyeotaproject.dto.UsersDto.AccountDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
-import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +55,8 @@ public class UsersService {
 				AccountDto.builder()
 					.bankName(account.getBankName())
 					.accountNumber(account.getAccountNumber())
-					.build()).collect(Collectors.toList());
-		UserDto.Response usersDto = UserDto.Response.builder()
+					.build()).collect(toList());
+		return UserDto.Response.builder()
 			.id(users.getId())
 			.loginId(users.getLoginId())
 			.name(users.getName())
@@ -67,15 +71,15 @@ public class UsersService {
 			.gender(users.getGender())
 			.accountDtoList(accountList)
 			.build();
-		return usersDto;
 	}
 
 	@Transactional
 	public UsersResponseDto addInfo(String accessToken, UserDto.updateDto usersDto) {
 		Users users = getUserByToken(accessToken);
+		log.info("User 정보으로 알아낸 UserId = {}", users.getId());
 		users.updateUsers(usersDto);
 		Optional<OAuth> oauthEntity = oAuthRepository.findByUserId(users.getId());
-		oauthEntity.ifPresent(oAuth -> oAuth.updateEmail(usersDto.getEmail()));
+		oauthEntity.ifPresent(oAuth -> oAuth.updateEmail(users.getEmail()));
 		return UsersResponseDto.builder()
 			.id(users.getId())
 			.loginId(users.getLoginId())
@@ -103,19 +107,13 @@ public class UsersService {
 	}
 
 	public Users getUserByToken(String accessToken) {
-		Optional<Users> users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken));
-		if (users.isPresent()) {
-			return users.get();
-		} else {
-			throw new RuntimeException("토큰에 해당하는 멤버가 없습니다.");
-		}
+		return usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(() -> new ApiException(ErrorCode.NO_INFO));
 	}
 
 	@Transactional
 	@Async
 	public String schoolEmail(String accessToken, SchoolDto.RequestForUnivCode schoolDto) {
-		usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
-			-> new RuntimeException("해당하는 유저가 없습니다."));
+		Users users = getUserByToken(accessToken);
 		MimeMessage message = javaMailSender.createMimeMessage();
 		String email = schoolDto.getEmail();
 		try {
@@ -125,15 +123,13 @@ public class UsersService {
 			messageHelper.setSubject("모여타 인증 번호");
 			messageHelper.setFrom("moyeota6340@gmail.com", "모여타 팀 메일");
 			String verificationCode = generateVerificationCode();
-			StringBuffer sb = new StringBuffer();
-			sb.append("<html><body>");
-			sb.append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>");
-			sb.append("<h1>" + "[모여타 어플리케이션]" + "</h1><br>");
-			sb.append("아래 코드 이용하여 인증하세요<br><br>");
-			sb.append("<h3>인증코드 : ").append(verificationCode);
-			sb.append("</h3>");
-			sb.append("</body></html>");
-			String str = sb.toString();
+			String str = "<html><body>" +
+				"<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>" +
+				"<h1>" + "[모여타 어플리케이션]" + "</h1><br>" +
+				"아래 코드 이용하여 인증하세요<br><br>" +
+				"<h3>인증코드 : " + verificationCode +
+				"</h3>" +
+				"</body></html>";
 			getMailMessageContent result = new getMailMessageContent(messageHelper, verificationCode, str);
 			result.messageHelper.setText(result.str, true);
 			if (redisRepository.findByEmail(email).isPresent()) {
@@ -143,11 +139,10 @@ public class UsersService {
 				.email(email)
 				.code(result.verificationCode)
 				.build();
-			// schoolEmailRepository.save(schoolEmail);
 			redisRepository.save(schoolEmailRedis);
 			javaMailSender.send(message);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ApiException(ErrorCode.MAIL_SEND_ERROR);
 		}
 		return schoolDto.getEmail();
 	}
@@ -155,7 +150,7 @@ public class UsersService {
 	@Transactional
 	public UserDto.AccountResponse addAccount(String accessToken, AccountDto accountDto) {
 		Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
-			-> new RuntimeException("해당하는 유저가 없습니다."));
+			-> new ApiException(ErrorCode.INVALID_USER));
 
 		Account account = new Account(accountDto.getBankName(), accountDto.getAccountNumber());
 		accountRepository.save(account);
@@ -165,7 +160,7 @@ public class UsersService {
 				AccountDto.builder()
 					.bankName(acc.getBankName())
 					.accountNumber(acc.getAccountNumber())
-					.build()).collect(Collectors.toList());
+					.build()).collect(toList());
 		return UserDto.AccountResponse.builder()
 			.name(users.getName())
 			.nickName(users.getNickName())
@@ -189,10 +184,9 @@ public class UsersService {
 	@Transactional
 	public SchoolDto.ResponseSuccess schoolEmailCheck(String accessToken, SchoolDto.RequestForUnivCodeCheck schoolDto) {
 		Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
-			-> new RuntimeException("해당하는 유저가 없습니다."));
+			-> new ApiException(ErrorCode.INVALID_USER));
 
-		SchoolEmailRedis schoolEmailRedis = redisRepository.findByEmail(schoolDto.getEmail())
-			.orElseThrow(() -> new RuntimeException("해당하는 이메일이 존재하지 않습니다."));
+		SchoolEmailRedis schoolEmailRedis = redisRepository.findByEmail(schoolDto.getEmail()).orElseThrow(() -> new ApiException(ErrorCode.INVALID_EMAIL));
 
 		if (schoolEmailRedis.getCode().equals(schoolDto.getCode())) {
 			users.updateSchoolAuthenticate(schoolDto.getUnivName());
@@ -201,7 +195,7 @@ public class UsersService {
 				.certified_email(schoolDto.getEmail())
 				.build();
 		}
-		throw new RuntimeException("코드가 일치하지 않습니다. 코드를 다시 확인하세요");
+		throw new ApiException(ErrorCode.INVALID_SCHOOL_EMAIL_CODE);
 	}
 
 	private String generateVerificationCode() {
@@ -212,8 +206,8 @@ public class UsersService {
 	@Transactional
 	public UsersResponseDto createNickName(String tokenInfo, String nickname) {
 		Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
-			-> new RuntimeException("해당하는 유저가 없습니다."));
-		users.createNickName(nickname);
+			-> new ApiException(ErrorCode.INVALID_USER));
+		users.setNickName(nickname);
 
 		return UsersResponseDto.builder()
 			.id(users.getId())
@@ -233,8 +227,8 @@ public class UsersService {
 	@Transactional
 	public UsersResponseDto updateNickName(String tokenInfo, String nickname) {
 		Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(tokenInfo)).orElseThrow(()
-			-> new RuntimeException("해당하는 유저가 없습니다."));
-		users.updateNickName(nickname);
+			-> new ApiException(ErrorCode.INVALID_USER));
+		users.setNickName(nickname);
 		return UsersResponseDto.builder()
 			.id(users.getId())
 			.loginId(users.getLoginId())
@@ -249,4 +243,5 @@ public class UsersService {
 			.gender(users.getGender())
 			.build();
 	}
+
 }

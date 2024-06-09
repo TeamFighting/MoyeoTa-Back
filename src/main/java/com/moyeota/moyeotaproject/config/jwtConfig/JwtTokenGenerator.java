@@ -1,4 +1,4 @@
-package com.moyeota.moyeotaproject.config.jwtconfig;
+package com.moyeota.moyeotaproject.config.jwtConfig;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenGenerator {
 
 	private static final String BEARER_TYPE = "Bearer";
-	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 21;   // 21일
+	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 21;   // TODO : 30분으로 변경
 	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 21;  // 21일
 
 	private final JwtTokenProvider jwtTokenProvider;

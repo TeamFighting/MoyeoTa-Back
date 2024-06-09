@@ -57,6 +57,9 @@ dependencies {
 
     // 스프링 시큐리티
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    // 스프링 시큐리티 테스트
+    testImplementation 'org.springframework.security:spring-security-test:5.7.3'
+
 
     // jwt 설정
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

@@ -10,7 +10,7 @@ import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthInfoResponse.OAuthInfoRespon
 import com.moyeota.moyeotaproject.dto.OAuthDto.OAuthLoginParams.OAuthLoginParams;
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
-import com.moyeota.moyeotaproject.config.jwtconfig.JwtTokenGenerator;
+import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
 import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuth;
 import com.moyeota.moyeotaproject.domain.oAuth.OAuthRepository;
@@ -33,22 +33,27 @@ public class OAuthLoginService {
 	private final PasswordEncoder passwordEncoder;
 	private final ImageService imageService;
 
+	private static final String KAKAO_DEFAULT_IMAGE = "https://ssl.pstatic.net/static/pwe/address/img_profile.png";
+
 	public TokenInfoDto login(OAuthLoginParams params) {
+		// authorizeToken을 이용해서 소셜 리소스 서버에서 정보를 가져옴.
 		OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
+		// 새로 생성 or 기존 사용자 userId 가져오기
 		Long userId = findOrCreateUserAndOAuth(oAuthInfoResponse);
 		Users user = getUserById(userId);
 		return jwtTokenGenerator.generate(user.getId());
 	}
 
 	private Long findOrCreateUserAndOAuth(OAuthInfoResponse oAuthInfoResponse) {
+		// 소셜 로그인 이름 가져오기
 		String oAuthProvider = oAuthInfoResponse.getOAuthProvider().name();
 		String userEmail = oAuthInfoResponse.getEmail();
-		if (userEmail == null) {
+		if (userEmail.isEmpty()) {
 			throw new ApiException(ErrorCode.NO_EMAIL_ERROR);
 		}
 
+		// OAuth 데이터베이스에서 소셜 provider와 Email로 해당 사용자 정보 찾음
 		Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(userEmail, oAuthProvider);
-
 		return oAuthEntity.map(oAuth -> oAuth.getUser().getId())
 			.orElseGet(() -> createUserAndOAuth(oAuthInfoResponse));
 	}
@@ -75,10 +80,12 @@ public class OAuthLoginService {
 
 	private String getProfileImage(OAuthInfoResponse oAuthInfoResponse) {
 		log.error("userProfileImageURL={}", oAuthInfoResponse.getProfileImage());
+		// 프로필 이미지를 못 가져올 경우 기본이미지 설정
 		if (oAuthInfoResponse.getProfileImage() == null) {
 			return imageService.defaultProfileImage();
 		}
-		if (oAuthInfoResponse.getProfileImage().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png")) {
+		// 카카오 기본 이미지일 경우 모여타 기본이미지로 변경해줌
+		if (oAuthInfoResponse.getProfileImage().equals(KAKAO_DEFAULT_IMAGE)) {
 			return imageService.defaultProfileImage();
 		}
 
@@ -100,7 +107,7 @@ public class OAuthLoginService {
 
 	private Users getUserById(Long userId) {
 		return usersRepository.findById(userId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
+			.orElseThrow(() -> new ApiException(ErrorCode.INVALID_USER));
 	}
 
 }
