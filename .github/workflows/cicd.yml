@@ -75,6 +75,6 @@ jobs:
           sudo docker ps -a
           sudo docker rm -f $(docker ps -qa)
           sudo docker pull jakeheon/moyeota
-          sudo docker run -p 80:8080 jakeheon/moyeota
+          sudo docker run -p 80:8080 jakeheon/moyeota --name moyeota-server
           sudo docker container prune
           sudo docker image prune -f
