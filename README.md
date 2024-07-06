@@ -9,11 +9,7 @@
 </div>
 
 ## 🎬구동 영상
-<img src="https://github.com/TeamFighting/Moyeota-Web/assets/108210492/d670fd11-a9b9-439f-ad58-209bb120e5eb"> <br>
-**빠른 매칭**
-<br><br>
-<img src="https://github.com/TeamFighting/Moyeota-Web/assets/108210492/a5b90907-de37-454c-bbb8-a9aed8cce514"> <br>
-**택시팟 매칭 신청**
+<img src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/3ecd6072-9ab5-460f-9af9-852bcc61dc81.gif"/>
 <br>
 
 <div>
@@ -39,17 +35,18 @@
   - spring-boot 2.7.7
 
  ## 📜API Docs
- 👉🏻[Moyeota Swagger](http://moyeota.shop/swagger-ui/)
+ 👉🏻[Moyeota Swagger]([https://moyeota.shop/swagger-ui/](https://moyeota.shop/swagger-ui/))
 
  ## 🛒Access App Store
  🍎App Store -> 링크 <br>
  🏪Play Store -> 링크<br>
 
  ## ⚙️System Architecture
-이미지 추가
+<img width="600" alt="image" src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/9de6af87-fba8-4165-a625-1ac27bf1c945">
 
 ## 🔍ERD
 <img width="937" alt="image" src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/7c630552-d325-4606-8fc6-445dd94e6364">
+<br>
 전체 ERD
 <details>
   <summary>Entity</summary>
