@@ -35,7 +35,7 @@
   - spring-boot 2.7.7
 
  ## 📜API Docs
- 👉🏻[Moyeota Swagger]([https://moyeota.site/swagger-ui/](https://moyeota.site/swagger-ui/))
+ 👉🏻[Moyeota Swagger](https://moyeota.site/swagger-ui/)
 
  ## 🛒Access App Store
  🍎App Store -> 링크 <br>
