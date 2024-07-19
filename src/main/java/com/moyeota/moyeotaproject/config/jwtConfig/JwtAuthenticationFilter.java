@@ -8,6 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -39,8 +41,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             } else if (token == null) {
                 throw new ApiException(ErrorCode.UNKNOWN_ERROR);
             }
-        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
-            throw new ApiException(ErrorCode.WRONG_TYPE_TOKEN);
         } catch (ExpiredJwtException e) {
             throw new ApiException(ErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {

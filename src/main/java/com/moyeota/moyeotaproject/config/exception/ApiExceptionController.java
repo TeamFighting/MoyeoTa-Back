@@ -35,8 +35,8 @@ public class ApiExceptionController {
 
 	@ExceptionHandler(ExpiredJwtException.class)
 	public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException exception) {
-		ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), 400, 400);
-		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+		ErrorResponse errorResponse = new ErrorResponse("JWT 토큰이 만료되었습니다. RefreshToken으로 재로그인해주세요", 401, 401);
+		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
