@@ -50,8 +50,8 @@ public class ImageService {
 	private String region;
 
 	@Transactional
-	public String getResizedImageUrl(String accessToken, String imageUrl) {
-		Users users = usersRepository.findById(jwtTokenProvider.extractSubjectFromJwt(accessToken)).orElseThrow(()
+	public String getResizedImageUrl(String imageUrl) {
+		Users users = usersRepository.findByProfileImage(imageUrl).orElseThrow(()
 			-> new ApiException(ErrorCode.INVALID_USER));
 
 		Resource imageResource = resourceLoader.getResource(imageUrl);
