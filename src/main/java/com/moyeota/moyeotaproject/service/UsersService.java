@@ -1,24 +1,23 @@
 package com.moyeota.moyeotaproject.service;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.Random;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.search.BodyTerm;
 
-import com.moyeota.moyeotaproject.config.exception.ApiException;
-import com.moyeota.moyeotaproject.config.exception.ErrorCode;
-import com.moyeota.moyeotaproject.dto.UsersDto.*;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.account.AccountRepository;
@@ -28,11 +27,13 @@ import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedis;
 import com.moyeota.moyeotaproject.domain.schoolEmailRedis.SchoolEmailRedisRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
+import com.moyeota.moyeotaproject.dto.UsersDto.AccountDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.SchoolDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.UserDto;
+import com.moyeota.moyeotaproject.dto.UsersDto.UsersResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor

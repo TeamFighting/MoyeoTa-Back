@@ -26,6 +26,7 @@ public enum ErrorCode {
 	UNSUPPORTED_TOKEN(401, "변조된 토큰입니다.", 1004),
 	ACCESS_DENIED(401, "권한이 없습니다.", 1005),
 	NO_INFO(401, "토큰에 해당하는 정보가 없습니다.", 1006),
+	FILE_RESIZING_ERROR(500, "파일 리사이징에 실패했습니다."),
 
 	NO_EMAIL_ERROR(422, "소셜 로그인으로부터 이메일을 받아올 수 없습니다", 1007),
 	MAIL_SEND_ERROR(400, "학교 인증 메일 전송에 실패하였습니다."),
