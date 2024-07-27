@@ -51,9 +51,6 @@ public class ImageService {
 
 	@Transactional
 	public String getResizedImageUrl(String imageUrl) {
-		Users users = usersRepository.findByProfileImage(imageUrl).orElseThrow(()
-			-> new ApiException(ErrorCode.INVALID_USER));
-
 		Resource imageResource = resourceLoader.getResource(imageUrl);
 
 		if (!imageResource.exists()) {
@@ -63,7 +60,7 @@ public class ImageService {
 		try (InputStream inputStream = imageResource.getInputStream()) {
 			BufferedImage originImage = ImageIO.read(inputStream);
 
-			String fileName = users.getId() + "_" + Instant.now().toEpochMilli() + "_" + sanitizeFileName(
+			String fileName = Instant.now().toEpochMilli() + "_" + sanitizeFileName(
 				Objects.requireNonNull(imageUrl));
 			String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
 			String fileFormatName = "JPEG";
@@ -75,9 +72,6 @@ public class ImageService {
 			metadata.setContentLength(resizedFile.getSize());
 
 			amazonS3Client.putObject(bucket, fileName, resizedFile.getInputStream(), metadata);
-			log.info("users ={}", users.getProfileImage());
-			users.updateProfileImage(fileUrl);
-			log.info("users ={}", users.getProfileImage());
 			return fileUrl;
 		} catch(IOException e) {
 			throw new ApiException(ErrorCode.FILE_RESIZING_ERROR);
