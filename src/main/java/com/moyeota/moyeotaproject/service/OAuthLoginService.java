@@ -88,7 +88,8 @@ public class OAuthLoginService {
 		if (oAuthInfoResponse.getProfileImage().equals(KAKAO_DEFAULT_IMAGE)) {
 			return imageService.defaultProfileImage();
 		}
-		return oAuthInfoResponse.getProfileImage();
+
+		return imageService.getResizedImageUrl(oAuthInfoResponse.getProfileImage());
 	}
 
 	private OAuth createOAuthFromOAuthInfo(Users user, OAuthInfoResponse oAuthInfoResponse) {
