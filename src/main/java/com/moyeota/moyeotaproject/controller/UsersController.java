@@ -62,11 +62,11 @@ public class UsersController {
 	private final SchoolService schoolService;
 	private final ImageService imageService;
 
-	@ApiOperation(value = "프로필 이미지 사이즈 조정", notes = "프로필 이미지 사이즈를 86 * 86으로 조정")
-	@GetMapping("/image-resizing")
-	public ResponseDto<String> getImage(@RequestParam("imageUrl") String imageUrl) {
-		return ResponseUtil.SUCCESS("이미지 사이즈 조정에 성공하였습니다.", imageService.getResizedImageUrl(imageUrl));
-	}
+	// @ApiOperation(value = "프로필 이미지 사이즈 조정", notes = "프로필 이미지 사이즈를 86 * 86으로 조정")
+	// @GetMapping("/image-resizing")
+	// public ResponseDto<String> getImage(@RequestParam("imageUrl") String imageUrl) {
+	// 	return ResponseUtil.SUCCESS("이미지 사이즈 조정에 성공하였습니다.", imageService.getResizedImageUrl(imageUrl));
+	// }
 
 	@ApiOperation(value = "사용자 정보 조회", notes = "사용자 정보 API")
 	@GetMapping
