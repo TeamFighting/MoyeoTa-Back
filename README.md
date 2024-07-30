@@ -42,7 +42,7 @@
  🏪Play Store -> 링크<br>
 
  ## ⚙️System Architecture
-<img width="600" alt="image" src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/9de6af87-fba8-4165-a625-1ac27bf1c945">
+![image](https://github.com/user-attachments/assets/fa03c76c-3016-48f2-95f2-58a66758c5ec)
 
 ## 🔍ERD
 <img width="937" alt="image" src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/7c630552-d325-4606-8fc6-445dd94e6364">
