@@ -41,10 +41,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 throw new ApiException(ErrorCode.UNKNOWN_ERROR);
             }
         } catch (ExpiredJwtException e) {
+            log.info("error = {}", e);
             throw new ApiException(ErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
+            log.info("error = {}", e);
             throw new ApiException(ErrorCode.UNSUPPORTED_TOKEN);
         } catch (Exception e) {
+            log.info("error = {}", e);
             throw new ApiException(ErrorCode.UNKNOWN_ERROR);
         }
         chain.doFilter(request, response);

@@ -23,6 +23,7 @@ public enum ErrorCode {
 	UNKNOWN_ERROR(401, "토큰이 존재하지 않습니다.", 1001),
 	WRONG_TYPE_TOKEN(401, "변조된 토큰입니다.", 1002),
 	EXPIRED_TOKEN(401, "만료된 토큰입니다.", 1003),
+	EXPIRED_REFRES_TOKEN(401, "만료된 Refresh Token입니다. 로그인부터 다시 진행해주세요.", 10000),
 	UNSUPPORTED_TOKEN(401, "변조된 토큰입니다.", 1004),
 	ACCESS_DENIED(401, "권한이 없습니다.", 1005),
 	NO_INFO(401, "토큰에 해당하는 정보가 없습니다.", 1006),

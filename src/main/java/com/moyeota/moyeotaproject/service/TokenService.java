@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.moyeota.moyeotaproject.config.exception.ApiException;
@@ -13,18 +14,20 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TokenService {
 
-	private final JwtTokenProvider jwtTokenProvider;
-	private final JwtTokenGenerator jwtTokenGenerator;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenGenerator jwtTokenGenerator;
 
-	public TokenInfoDto generateRefreshToken(RefreshTokenRequest request) {
-		String refreshToken = request.getRefreshToken();
-		if (jwtTokenProvider.validateToken(refreshToken)) {
-			Long usersId = jwtTokenProvider.extractSubjectFromJwt(refreshToken);
-			return jwtTokenGenerator.generate(usersId);
-		} else {
-			throw new ApiException(ErrorCode.EXPIRED_TOKEN);
-		}
-	}
+    public TokenInfoDto generateRefreshToken(RefreshTokenRequest request) {
+        String refreshToken = request.getRefreshToken();
+        if (jwtTokenProvider.validateToken(refreshToken)) {
+            Long usersId = jwtTokenProvider.extractSubjectFromJwt("Bearer " + refreshToken);
+            log.info("userId = {}", usersId);
+            return jwtTokenGenerator.generate(usersId);
+        } else {
+            throw new ApiException(ErrorCode.EXPIRED_REFRES_TOKEN);
+        }
+    }
 }
