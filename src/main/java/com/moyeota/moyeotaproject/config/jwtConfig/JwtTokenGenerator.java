@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenGenerator {
 
 	private static final String BEARER_TYPE = "Bearer";
-	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 3;
+	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 10;
 	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 21;  // 21일
 
 	private final JwtTokenProvider jwtTokenProvider;

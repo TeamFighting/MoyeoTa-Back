@@ -9,7 +9,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -19,7 +18,6 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 
@@ -31,8 +29,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws
-		RuntimeException, ServletException, IOException {
-		String token = resolveToken((HttpServletRequest)request);
+		RuntimeException,
+		ServletException,
+		IOException {
+		String token = resolveToken((HttpServletRequest) request);
 		try {
 			if (token != null && jwtTokenProvider.validateToken(token)) {
 				Authentication authentication = jwtTokenProvider.getAuthentication(token);
@@ -41,16 +41,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 				throw new ApiException(ErrorCode.UNKNOWN_ERROR);
 			}
 		} catch (ExpiredJwtException e) {
+			log.info("error = {}", e);
 			throw new ApiException(ErrorCode.EXPIRED_TOKEN);
 		} catch (UnsupportedJwtException e) {
+			log.info("error = {}", e);
 			throw new ApiException(ErrorCode.UNSUPPORTED_TOKEN);
 		} catch (Exception e) {
+			log.info("error = {}", e);
 			throw new ApiException(ErrorCode.UNKNOWN_ERROR);
 		}
 		chain.doFilter(request, response);
 	}
 
-    //HTTP 요청에서 JWT를 추출
 	private String resolveToken(HttpServletRequest request) {
 		String bearerToken = request.getHeader("Authorization");
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
@@ -59,4 +61,3 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		return null;
 	}
 }
-

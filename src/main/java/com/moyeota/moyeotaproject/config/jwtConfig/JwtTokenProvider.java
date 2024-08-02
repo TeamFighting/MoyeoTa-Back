@@ -5,17 +5,13 @@ import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 
-import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 
 import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
@@ -40,18 +36,11 @@ public class JwtTokenProvider {
 	}
 
 	public String generateToken(String subject, Date expiredAt) {
-		Claims claims = Jwts.claims().setSubject(subject);
 		return Jwts.builder()
-			.setClaims(claims)
+			.setSubject(subject)
 			.setExpiration(expiredAt)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
-
-		// return Jwts.builder()
-		// 	.setSubject(subject)
-		// 	.setExpiration(expiredAt)
-		// 	.signWith(key, SignatureAlgorithm.HS256)
-		// 	.compact();
 	}
 
 	private Claims parseClaims(String accessToken) {
@@ -75,8 +64,6 @@ public class JwtTokenProvider {
 	public Long extractSubjectFromJwt(String accessToken) {
 		try {
 			String token = getToken(accessToken);
-
-			System.out.println("여기서 에러발생-------------------");
 			Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
 			String subject = claims.getSubject();
@@ -90,6 +77,7 @@ public class JwtTokenProvider {
 	}
 
 	public boolean validateToken(String token) {
+		log.info("token = {}", token);
 		Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 		return true;
 	}
