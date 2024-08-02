@@ -1,5 +1,8 @@
 package com.moyeota.moyeotaproject.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,5 +55,15 @@ public class OAuthController {
 	@PostMapping("/naver")
 	public ResponseDto<TokenInfoDto> loginNaver(@RequestBody NaverLoginParams params) {
 		return ResponseUtil.SUCCESS("네이버 로그인 성공하였습니다. ", oAuthLoginService.login(params));
+	}
+
+	// refreshToken을 쿠키에 추가하는 메서드
+	private void addRefreshTokenToCookie(HttpServletResponse response, String refreshToken) {
+		Cookie cookie = new Cookie("refreshToken", refreshToken);
+		cookie.setHttpOnly(true); // 클라이언트 측에서 접근 불가
+		cookie.setSecure(true); // HTTPS에서만 전송
+		cookie.setPath("/"); // 쿠키가 적용될 경로
+		cookie.setMaxAge(60 * 60 * 24); // 쿠키 유효 기간 (예: 1일)
+		response.addCookie(cookie);
 	}
 }
