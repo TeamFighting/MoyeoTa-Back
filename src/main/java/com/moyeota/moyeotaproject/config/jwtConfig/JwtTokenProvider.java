@@ -83,10 +83,9 @@ public class JwtTokenProvider {
 	}
 
 	public String getToken(String token) {
-		if (token.length() < 7) {
-			throw new ApiException(ErrorCode.INVALID_TOKEN);
+		if(token.contains("BEARER")){
+			token = token.substring(7).trim();
 		}
-		token = token.substring(7).trim();
-		return token;
+		return token.trim();
 	}
 }
