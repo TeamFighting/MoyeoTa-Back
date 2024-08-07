@@ -78,15 +78,15 @@ public class JwtTokenProvider {
 
 	public boolean validateToken(String token) {
 		log.info("token = {}", token);
-		token = getToken(token);
 		Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 		return true;
 	}
 
 	public String getToken(String token) {
-		if(token.contains("BEARER")){
-			token = token.substring(7).trim();
+		if (token.length() < 7) {
+			throw new ApiException(ErrorCode.INVALID_TOKEN);
 		}
-		return token.trim();
+		token = token.substring(7).trim();
+		return token;
 	}
 }
