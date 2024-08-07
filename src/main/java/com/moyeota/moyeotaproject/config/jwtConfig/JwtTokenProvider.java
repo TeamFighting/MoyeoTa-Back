@@ -64,8 +64,9 @@ public class JwtTokenProvider {
 	public Long extractSubjectFromJwt(String accessToken) {
 		try {
 			String token = getToken(accessToken);
+			log.info("token = {}", token);
 			Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-
+			log.info("claims = {}", claims);
 			String subject = claims.getSubject();
 			log.info("AccessToken으로 알아낸 UserId = {}", subject);
 			return Long.parseLong(subject);
@@ -86,7 +87,9 @@ public class JwtTokenProvider {
 		if (token.length() < 7) {
 			throw new ApiException(ErrorCode.INVALID_TOKEN);
 		}
+		log.info("token = {}", token);
 		token = token.substring(7).trim();
+		log.info("tokenTrim = {}", token);
 		return token;
 	}
 }

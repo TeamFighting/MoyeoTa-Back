@@ -22,12 +22,8 @@ public class TokenService {
 
     public TokenInfoDto generateRefreshToken(RefreshTokenRequest request) {
         String refreshToken = request.getRefreshToken();
-        if (jwtTokenProvider.validateToken(refreshToken)) {
-            Long usersId = jwtTokenProvider.extractSubjectFromJwt("Bearer " + refreshToken);
-            log.info("userId = {}", usersId);
-            return jwtTokenGenerator.generate(usersId);
-        } else {
-            throw new ApiException(ErrorCode.EXPIRED_REFRES_TOKEN);
-        }
+        Long usersId = jwtTokenProvider.extractSubjectFromJwt(refreshToken);
+        log.info("userId = {}", usersId);
+        return jwtTokenGenerator.generate(usersId);
     }
 }
