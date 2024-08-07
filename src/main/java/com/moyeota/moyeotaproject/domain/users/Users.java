@@ -52,17 +52,17 @@ public class Users extends BaseTimeEntity {
 	private String school;
 	private Boolean isAuthenticated;
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<OAuth> oAuths = new ArrayList<>();
 
 	@Getter
-	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Posts> posts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Review> reviews = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<ParticipationDetails> participationDetails = new ArrayList<>();
 
 	//    @OneToMany(mappedBy = "user", orphanRemoval = true)
