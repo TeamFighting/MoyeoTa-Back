@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } else if (token == null) {
-                throw new ApiException(ErqrorCode.UNKNOWN_ERROR);
+                throw new ApiException(ErrorCode.UNKNOWN_ERROR);
             }
         } catch (ExpiredJwtException e) {
             log.info("error = {}", e);
