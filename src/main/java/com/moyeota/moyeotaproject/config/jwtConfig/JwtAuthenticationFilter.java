@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } else if (token == null) {
-                throw new ApiException(ErrorCode.UNKNOWN_ERROR);
+                throw new ApiException(ErqrorCode.UNKNOWN_ERROR);
             }
         } catch (ExpiredJwtException e) {
             log.info("error = {}", e);
@@ -60,7 +60,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
+        } else {
+            return bearerToken;
         }
-        return null;
     }
 }
