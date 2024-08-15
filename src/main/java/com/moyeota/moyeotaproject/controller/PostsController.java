@@ -23,15 +23,15 @@ import com.moyeota.moyeotaproject.config.exception.ApiException;
 import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
+import com.moyeota.moyeotaproject.domain.posts.Category;
+import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
+import com.moyeota.moyeotaproject.domain.posts.SameGender;
+import com.moyeota.moyeotaproject.domain.posts.Vehicle;
 import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsUpdateRequestDto;
-import com.moyeota.moyeotaproject.domain.posts.Category;
-import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
-import com.moyeota.moyeotaproject.domain.posts.SameGender;
-import com.moyeota.moyeotaproject.domain.posts.Vehicle;
 import com.moyeota.moyeotaproject.service.ChatRoomService;
 import com.moyeota.moyeotaproject.service.PostsService;
 import com.moyeota.moyeotaproject.service.UsersService;
@@ -186,6 +186,5 @@ public class PostsController {
 	public ResponseDto<List<MembersLocationResponseDto>> findMembersLocation(@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
 		return ResponseUtil.SUCCESS("파티원 내린 지점 조회에 성공하였습니다.", postsService.findMembersLocation(postId));
 	}
-
 
 }
