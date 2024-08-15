@@ -9,7 +9,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.moyeota.moyeotaproject.domain.account.Account;
 import com.moyeota.moyeotaproject.domain.account.AccountRepository;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoomRepository;
@@ -25,7 +24,6 @@ import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetail;
 import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
-import com.moyeota.moyeotaproject.dto.accountdto.AccountDto;
 import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
@@ -60,16 +58,6 @@ public class PostsService {
 		for (int i = 0; i < participationDetailsList.size(); i++) {
 			Users user = participationDetailsList.get(i).getUser();
 			boolean isPotOwner = false;
-			List<Account> accounts = accountRepository.findAllByUser(user);
-			List<AccountDto> accountDtos = new ArrayList<>();
-			for (int j = 0; j < accounts.size(); j++) {
-				Account account = accounts.get(j);
-				AccountDto accountDto = AccountDto.builder()
-					.bankName(account.getBankName())
-					.accountNumber(account.getAccountNumber())
-					.build();
-				accountDtos.add(accountDto);
-			}
 			if (participationDetailsList.get(i).getPost().getUser().getId() == user.getId()) {
 				isPotOwner = true;
 			}
@@ -82,7 +70,6 @@ public class PostsService {
 						.nickname(user.getName())
 						.isPotOwner(isPotOwner)
 						.payment(participationDetailsList.get(i).isPayment())
-						.accounts(accountDtos)
 						.build());
 			} else {
 				postsMemberDtoList
@@ -91,7 +78,6 @@ public class PostsService {
 						.nickname(user.getNickName())
 						.isPotOwner(isPotOwner)
 						.payment(participationDetailsList.get(i).isPayment())
-						.accounts(accountDtos)
 						.build());
 			}
 		}
