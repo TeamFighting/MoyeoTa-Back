@@ -13,7 +13,7 @@ import com.moyeota.moyeotaproject.domain.users.Users;
 
 public interface PostsRepository extends JpaRepository<Posts, Long> {
 
-	Slice<Posts> findByUser(Users user, Pageable pageable);
+	List<Posts> findByUser(Users user);
 
 	@Query("select p from Posts p where p.category = :category and p.status = :status")
 	Slice<Posts> findByCategory(@Param("category") Category category, @Param("status") PostsStatus status,
