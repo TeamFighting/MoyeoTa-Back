@@ -3,6 +3,7 @@ package com.moyeota.moyeotaproject.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -147,12 +148,12 @@ public class PostsService {
 		post.postsComplete();
 	}
 
-	public Slice<PostsGetResponseDto> findByIdDesc(Long userId, Pageable pageable) {
+	public List<PostsGetResponseDto> findByIdDesc(Long userId) {
 		Users user = usersRepository.findById(userId).orElseThrow(()
 			-> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
-		Slice<Posts> postsSlice = postsRepository.findByUser(user, pageable);
-		Slice<PostsGetResponseDto> postsResponseDtoList = postsSlice.map(
-			p -> new PostsGetResponseDto(p, p.getUser()));
+		List<Posts> postsList = postsRepository.findByUser(user);
+		List<PostsGetResponseDto> postsResponseDtoList = postsList.stream().map(
+			p -> new PostsGetResponseDto(p, p.getUser())).collect(Collectors.toList());
 		return postsResponseDtoList;
 	}
 
