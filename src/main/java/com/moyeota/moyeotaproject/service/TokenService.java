@@ -1,16 +1,14 @@
 package com.moyeota.moyeotaproject.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import com.moyeota.moyeotaproject.config.exception.ApiException;
-import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenGenerator;
 import com.moyeota.moyeotaproject.config.jwtConfig.JwtTokenProvider;
 import com.moyeota.moyeotaproject.dto.UsersDto.RefreshTokenRequest;
 import com.moyeota.moyeotaproject.dto.UsersDto.TokenInfoDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
