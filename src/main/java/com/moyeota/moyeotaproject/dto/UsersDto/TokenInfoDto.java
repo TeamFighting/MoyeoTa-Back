@@ -12,9 +12,10 @@ public class TokenInfoDto {
 	private final String refreshToken;
 	private final String grantType;
 	private final Long expiresIn;
+	private final String signType;
 
 	public static TokenInfoDto of(Long userId, String accessToken, String refreshToken, String grantType,
-		Long expiresIn) {
-		return new TokenInfoDto(userId, accessToken, refreshToken, grantType, expiresIn);
+		Long expiresIn, String signType) {
+		return new TokenInfoDto(userId, accessToken, refreshToken, grantType, expiresIn, signType);
 	}
 }
