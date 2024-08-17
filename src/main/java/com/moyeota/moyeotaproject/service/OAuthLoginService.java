@@ -39,9 +39,10 @@ public class OAuthLoginService {
 		// authorizeToken을 이용해서 소셜 리소스 서버에서 정보를 가져옴.
 		OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
 		// 새로 생성 or 기존 사용자 userId 가져오기
+		String signType = getSignType(oAuthInfoResponse);
 		Long userId = findOrCreateUserAndOAuth(oAuthInfoResponse);
 		Users user = getUserById(userId);
-		return jwtTokenGenerator.generate(user.getId());
+		return jwtTokenGenerator.generate(user.getId(), signType);
 	}
 
 	private Long findOrCreateUserAndOAuth(OAuthInfoResponse oAuthInfoResponse) {
@@ -108,6 +109,22 @@ public class OAuthLoginService {
 	private Users getUserById(Long userId) {
 		return usersRepository.findById(userId)
 			.orElseThrow(() -> new ApiException(ErrorCode.INVALID_USER));
+	}
+
+	public String getSignType(OAuthInfoResponse oAuthInfoResponse) {
+		String oAuthProvider = oAuthInfoResponse.getOAuthProvider().name();
+		String userEmail = oAuthInfoResponse.getEmail();
+		if (userEmail.isEmpty()) {
+			throw new ApiException(ErrorCode.NO_EMAIL_ERROR);
+		}
+
+		// OAuth 데이터베이스에서 소셜 provider와 Email로 해당 사용자 정보 찾음
+		Optional<OAuth> oAuthEntity = oAuthRepository.findByEmailAndName(userEmail, oAuthProvider);
+		if (oAuthEntity.isPresent()) {
+			return "sign-in";
+		} else {
+			return "sign-up";
+		}
 	}
 
 }

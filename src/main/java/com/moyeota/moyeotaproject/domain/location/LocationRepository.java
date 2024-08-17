@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.moyeota.moyeotaproject.dto.locationdto.LocationDto;
+
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
-	@Query("select l from Location l where l.userId = :userId")
-	List<Location> findAllByUserId(@Param("userId") String postId);
+	@Query("select l.position from Location l where l.userId = :userId and l.postId = :postId order by l.id desc")
+	List<LocationDto> findAllByUserAndPost(@Param("userId") Long userId, @Param("postId") Long postId);
 
 	Optional<Location> findTopByUserIdAndPostIdOrderByIdDesc(String userId, String postId);
 

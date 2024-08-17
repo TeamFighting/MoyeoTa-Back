@@ -5,16 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @ApiModel(value = "경로 조회 응답")
-public class LocationGetResponseDto {
+@Builder
+@Getter
+public class LocationDto {
 
 	@ApiModelProperty(value = "위치")
 	private String position;
-
-	@Builder
-	public LocationGetResponseDto(String position) {
-		this.position = position;
-	}
 
 }
