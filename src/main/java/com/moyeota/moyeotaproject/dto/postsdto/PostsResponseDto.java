@@ -16,7 +16,7 @@ import lombok.Getter;
 
 @Getter
 @ApiModel(value = "모집글 조회 응답")
-public class PostsGetResponseDto {
+public class PostsResponseDto {
 
 	@ApiModelProperty(value = "모집글 인덱스")
 	private Long postId;
@@ -66,7 +66,7 @@ public class PostsGetResponseDto {
 	private String roomId;
 
 	@Builder
-	public PostsGetResponseDto(Posts posts, Users users) {
+	public PostsResponseDto(Posts posts, Users users) {
 		this.postId = posts.getId();
 		this.title = posts.getTitle();
 		this.category = posts.getCategory();

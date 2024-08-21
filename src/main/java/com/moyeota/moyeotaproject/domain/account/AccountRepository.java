@@ -15,7 +15,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 	@Query("select a from Account a where a.user = :user")
 	Optional<Account> findByUser(@Param("user")Users user);
 
-	@Query("select a.bankName, a.accountNumber from Account a where a.user = :user")
+	@Query("select new com.moyeota.moyeotaproject.dto.UsersDto.AccountDto(a.bankName, a.accountNumber) from Account a where a.user = :user")
 	List<AccountDto> findAccountsByUser(@Param("user") Users user);
 
 	List<Account> findAllByUser(Users users);

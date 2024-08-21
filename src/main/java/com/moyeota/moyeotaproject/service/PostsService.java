@@ -21,12 +21,14 @@ import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
+import com.moyeota.moyeotaproject.domain.posts.SameGender;
+import com.moyeota.moyeotaproject.domain.posts.Vehicle;
 import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetail;
 import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsUpdateRequestDto;
@@ -86,24 +88,24 @@ public class PostsService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<PostsGetResponseDto> findAllDesc() {
+	public List<PostsResponseDto> findAllDesc() {
 		List<Posts> postsList = postsRepository.findAllByStatus(PostsStatus.RECRUITING);
-		List<PostsGetResponseDto> responseDtoList = new ArrayList<>();
+		List<PostsResponseDto> responseDtoList = new ArrayList<>();
 		for (int i = 0; i < postsList.size(); i++) {
 			Posts post = postsList.get(i);
-			PostsGetResponseDto postsResponseDto = new PostsGetResponseDto(post, post.getUser());
+			PostsResponseDto postsResponseDto = new PostsResponseDto(post, post.getUser());
 			responseDtoList.add(postsResponseDto);
 		}
 		return responseDtoList;
 	}
 
 	@Transactional(readOnly = true)
-	public PostsGetResponseDto findById(Long postId) {
+	public PostsResponseDto findById(Long postId) {
 		updateView(postId);
 		Posts posts = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
 
-		PostsGetResponseDto responseDto = PostsGetResponseDto.builder()
+		PostsResponseDto responseDto = PostsResponseDto.builder()
 			.posts(posts)
 			.users(posts.getUser())
 			.build();
@@ -116,6 +118,13 @@ public class PostsService {
 		if (chatRoom.isEmpty()) {
 			throw new IllegalArgumentException("해당 채팅방이 없습니다. id=" + roomId);
 		}
+
+		if (requestDto.getVehicle() == null) {
+			requestDto.setVehicle(Vehicle.일반);
+		} else if (requestDto.getSameGenderStatus() == null) {
+			requestDto.setSameGenderStatus(SameGender.NO);
+		}
+
 		Posts post = requestDto.toEntity(user, chatRoom.get());
 		Long postId = postsRepository.save(post).getId();
 		participationDetailsService.join(accessToken, postId);
@@ -148,12 +157,12 @@ public class PostsService {
 		post.postsComplete();
 	}
 
-	public List<PostsGetResponseDto> findByIdDesc(Long userId) {
+	public List<PostsResponseDto> findByIdDesc(Long userId) {
 		Users user = usersRepository.findById(userId).orElseThrow(()
 			-> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 		List<Posts> postsList = postsRepository.findByUser(user);
-		List<PostsGetResponseDto> postsResponseDtoList = postsList.stream().map(
-			p -> new PostsGetResponseDto(p, p.getUser())).collect(Collectors.toList());
+		List<PostsResponseDto> postsResponseDtoList = postsList.stream().map(
+			p -> new PostsResponseDto(p, p.getUser())).collect(Collectors.toList());
 		return postsResponseDtoList;
 	}
 
@@ -163,10 +172,10 @@ public class PostsService {
 		post.minusUser();
 	}
 
-	public Slice<PostsGetResponseDto> findAllByCategory(Category category, Pageable pageable) {
+	public Slice<PostsResponseDto> findAllByCategory(Category category, Pageable pageable) {
 		Slice<Posts> postsSlice = postsRepository.findByCategory(category, PostsStatus.RECRUITING, pageable);
-		Slice<PostsGetResponseDto> postsResponseDtoList = postsSlice.map(
-			p -> new PostsGetResponseDto(p, p.getUser()));
+		Slice<PostsResponseDto> postsResponseDtoList = postsSlice.map(
+			p -> new PostsResponseDto(p, p.getUser()));
 		return postsResponseDtoList;
 	}
 

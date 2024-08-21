@@ -2,20 +2,17 @@ package com.moyeota.moyeotaproject.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.moyeota.moyeotaproject.dto.participationdetailsdto.DistancePriceDto;
 import com.moyeota.moyeotaproject.dto.participationdetailsdto.ParticipationDetailsResponseDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsRepository;
-import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsStatus;
 import com.moyeota.moyeotaproject.domain.posts.Posts;
 import com.moyeota.moyeotaproject.domain.posts.PostsRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
@@ -70,13 +67,13 @@ public class ParticipationDetailsService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<PostsGetResponseDto> findAllDesc(String accessToken) {
+	public List<PostsResponseDto> findAllDesc(String accessToken) {
 		Users user = usersService.getUserByToken(accessToken);
 		List<ParticipationDetails> participationList = participationDetailsRepository.findMyParticipationDetails(user);
-		List<PostsGetResponseDto> responseDtoList = new ArrayList<>();
+		List<PostsResponseDto> responseDtoList = new ArrayList<>();
 		for (int i = 0; i < participationList.size(); i++) {
 			Posts post = participationList.get(i).getPost();
-			PostsGetResponseDto responseDto = PostsGetResponseDto.builder()
+			PostsResponseDto responseDto = PostsResponseDto.builder()
 				.posts(post)
 				.users(post.getUser())
 				.build();
@@ -86,15 +83,15 @@ public class ParticipationDetailsService {
 		return responseDtoList;
 	}
 
-	public List<PostsGetResponseDto> findMyParticipationDetailsDesc(String accessToken) {
+	public List<PostsResponseDto> findMyParticipationDetailsDesc(String accessToken) {
 		Users user = usersService.getUserByToken(accessToken);
 		List<ParticipationDetails> participationList = participationDetailsRepository.findMyParticipationDetails(user);
 		System.out.println(participationList.size());
-		List<PostsGetResponseDto> list = new ArrayList<>();
+		List<PostsResponseDto> list = new ArrayList<>();
 		for (int i = 0; i < participationList.size(); i++) {
 			Posts post = participationList.get(i).getPost();
 			if (post.getDepartureTime().isAfter(LocalDateTime.now())) {
-				PostsGetResponseDto responseDto = PostsGetResponseDto.builder()
+				PostsResponseDto responseDto = PostsResponseDto.builder()
 					.posts(post)
 					.users(post.getUser())
 					.build();

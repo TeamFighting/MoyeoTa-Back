@@ -17,8 +17,7 @@ import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.dto.participationdetailsdto.DistancePriceDto;
-import com.moyeota.moyeotaproject.dto.participationdetailsdto.ParticipationDetailsResponseDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsGetResponseDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsResponseDto;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsStatus;
 import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
@@ -51,7 +50,7 @@ public class ParticipationDetailsController {
 	@PostMapping("/join/posts/{postId}")
 	public ResponseDto<Long> join(HttpServletRequest request,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
-		PostsGetResponseDto responseDto = postsService.findById(postId);
+		PostsResponseDto responseDto = postsService.findById(postId);
 		if (responseDto.getNumberOfParticipants() == responseDto.getNumberOfRecruitment()) {
 			throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
 		} else if (responseDto.getStatus() == PostsStatus.COMPLETE) {
@@ -78,14 +77,14 @@ public class ParticipationDetailsController {
 
 	@ApiOperation(value = "이용 기록 조회", notes = "특정 회원의 이용기록 조회 API")
 	@GetMapping("/all")
-	public ResponseDto<List<PostsGetResponseDto>> findAllDesc(HttpServletRequest request) {
+	public ResponseDto<List<PostsResponseDto>> findAllDesc(HttpServletRequest request) {
 		return ResponseUtil.SUCCESS("이용기록 조회에 성공하였습니다.",
 			participationDetailsService.findAllDesc(request.getHeader("Authorization")));
 	}
 
 	@ApiOperation(value = "내가 신청한 팟 목록 조회", notes = "특정 회원이 참가 신청한 모집글을 전체 조회하는 API")
 	@GetMapping("/")
-	public ResponseDto<List<PostsGetResponseDto>> findMyParticipationDetailsDesc(HttpServletRequest request) {
+	public ResponseDto<List<PostsResponseDto>> findMyParticipationDetailsDesc(HttpServletRequest request) {
 		return ResponseUtil.SUCCESS("모집글 조회에 성공하였습니다.",
 			participationDetailsService.findMyParticipationDetailsDesc(request.getHeader("Authorization")));
 	}

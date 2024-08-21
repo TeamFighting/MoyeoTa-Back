@@ -1,29 +1,19 @@
 package com.moyeota.moyeotaproject.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.util.IOUtils;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.dto.UsersDto.AccountDto;
@@ -61,12 +51,6 @@ public class UsersController {
 	private final TokenService tokenService;
 	private final SchoolService schoolService;
 	private final ImageService imageService;
-
-	// @ApiOperation(value = "프로필 이미지 사이즈 조정", notes = "프로필 이미지 사이즈를 86 * 86으로 조정")
-	// @GetMapping("/image-resizing")
-	// public ResponseDto<String> getImage(@RequestParam("imageUrl") String imageUrl) {
-	// 	return ResponseUtil.SUCCESS("이미지 사이즈 조정에 성공하였습니다.", imageService.getResizedImageUrl(imageUrl));
-	// }
 
 	@ApiOperation(value = "사용자 정보 조회", notes = "사용자 정보 API")
 	@GetMapping

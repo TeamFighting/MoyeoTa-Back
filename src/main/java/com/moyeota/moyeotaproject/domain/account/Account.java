@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.moyeota.moyeotaproject.domain.users.Users;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Table(name = "account")
 @NoArgsConstructor
 public class Account {
 
