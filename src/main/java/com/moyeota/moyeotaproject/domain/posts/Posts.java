@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
@@ -27,6 +29,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@DynamicUpdate
 @Getter
 @NoArgsConstructor
 @Entity

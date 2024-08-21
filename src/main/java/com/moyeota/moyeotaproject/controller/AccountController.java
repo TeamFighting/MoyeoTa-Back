@@ -37,6 +37,8 @@ public class AccountController {
 	@ApiOperation(value = "계좌 조회", notes = "특정 회원의 전체 계좌 조회 API(jwt토큰 필요)")
 	@GetMapping("")
 	public ResponseDto<List<AccountDto>> getAccount(HttpServletRequest request) {
+		System.out.println("11111111111111");
+		System.out.println(request.getHeader("Authorization"));
 		return ResponseUtil.SUCCESS("계좌 조회에 성공하였습니다.", accountService.findAllByUser(request.getHeader("Authorization")));
 	}
 
