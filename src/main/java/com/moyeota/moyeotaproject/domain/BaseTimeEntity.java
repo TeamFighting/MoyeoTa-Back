@@ -1,10 +1,9 @@
 package com.moyeota.moyeotaproject.domain;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,4 +23,19 @@ public abstract class BaseTimeEntity {
 	@LastModifiedDate
 	private LocalDateTime modifiedDate;
 
+	@PrePersist
+	public void prePersist() {
+		LocalDateTime nowInKorea = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+		if (this.createdDate == null) {
+			this.createdDate = nowInKorea;
+		}
+		if (this.modifiedDate == null) {
+			this.modifiedDate = nowInKorea;
+		}
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		this.modifiedDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+	}
 }
