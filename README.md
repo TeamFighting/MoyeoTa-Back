@@ -1,12 +1,18 @@
-<div align=center>
-	<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Moyeota!&fontSize=90" />	
+# 🚖 MoyeoTa-Server
+> ### 모여타와 함께 저렴하게 택시를 타고 새로운 친구도 만나보세요! <br>
+
+<img height = '350' width = '830' src="https://github.com/TeamFighting/Moyeota-Web/assets/108210492/5cb7b142-a345-41a9-9ef2-a57b8b13ff76">
+
 <br>
-<img src="https://github.com/TeamFighting/Moyeota-Web/assets/108210492/5cb7b142-a345-41a9-9ef2-a57b8b13ff76">
-<h1>모여타 - 실시간 택시 메이트 매칭 서비스</h1> <br> <br>
-<img width="260" height="280" alt="image" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/83d4a2b9-7836-4316-83f4-88f63a42fb30">
-<img width="130" height="280" alt="image" src="https://github.com/rhrudska987/Automatic__bitcoin_trading_system/assets/59828706/a34d60df-bb3d-4c4c-8363-543f559b1b77">
-<img width="260" height="280" alt="image" src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/0daa59e6-d58b-4cb6-8e76-9b4195b8f66b">
+<br>
+
+## About
+<div style="display: flex; justify-content: center; align-items: center;">
+<img height='375' alt='온보딩2' src='https://postfiles.pstatic.net/MjAyMzA5MDdfMTMw/MDAxNjk0MDY3MzI4NTA2.CGumwpZx1s8KG2mdOuiVigdIDokfdOZ2QO9H21boOyAg.me2qJmd1WZGMubbfd2GPBYod3wW3F35dUmHriJNMWfMg.PNG.hyorish03/%EC%98%A8%EB%B3%B4%EB%94%A91.png?type=w966'/> 
+<img height='375' alt='온보딩1' src='https://postfiles.pstatic.net/MjAyMzA5MDdfMTg0/MDAxNjk0MDY3MzI4NTA0.-ztrpWOMkLi3mlzlbBOeC4NmaJZSMWLTo6cwlDExYq0g.Q7Ghu1okVS8NCb22YuUSldJwEdM1eWjzukzI3yCaw8Eg.PNG.hyorish03/%EC%98%A8%EB%B3%B4%EB%94%A92.png?type=w966'/>
 </div>
+<br>
+
 
 ## 🎬구동 영상
 <img src="https://github.com/TeamFighting/MoyeoTa-Back/assets/59828706/3ecd6072-9ab5-460f-9af9-852bcc61dc81.gif"/>
