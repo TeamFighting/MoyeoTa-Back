@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.dto.postsdto;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import com.moyeota.moyeotaproject.domain.posts.Category;
 import com.moyeota.moyeotaproject.domain.posts.Posts;

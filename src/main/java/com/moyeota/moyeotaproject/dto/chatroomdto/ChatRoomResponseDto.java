@@ -1,6 +1,7 @@
 package com.moyeota.moyeotaproject.dto.chatroomdto;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;

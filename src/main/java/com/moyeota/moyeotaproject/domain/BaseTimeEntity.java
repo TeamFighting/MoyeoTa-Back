@@ -2,7 +2,10 @@ package com.moyeota.moyeotaproject.domain;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 
 import org.springframework.data.annotation.CreatedDate;
