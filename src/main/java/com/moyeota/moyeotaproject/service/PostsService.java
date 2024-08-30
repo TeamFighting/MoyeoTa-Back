@@ -90,7 +90,7 @@ public class PostsService {
 
 	@Transactional(readOnly = true)
 	public List<PostsResponseDto> findAllDesc() {
-		List<Posts> postsList = postsRepository.findAllByStatusAndDepartureTimeAfter(PostsStatus.RECRUITING, LocalDateTime.now());
+		List<Posts> postsList = postsRepository.findAllByStatusAndDepartureTimeAfterOOrderByCreatedDateDesc(PostsStatus.RECRUITING, LocalDateTime.now());
 		return postsList.stream().map(post -> new PostsResponseDto(post, post.getUser())).collect(Collectors.toList());
 	}
 
