@@ -23,7 +23,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 	@Query("select p from Posts p where p.status = :status order by p.createdDate desc")
 	List<Posts> findAllByStatus(@Param("status") PostsStatus recruiting);
 
-	List<Posts> findAllByStatusAndDepartureTimeAfterOOrderByCreatedDateDesc(PostsStatus status, LocalDateTime departureTime);
+	List<Posts> findAllByStatusAndDepartureTimeAfterOrderByCreatedDateDesc(PostsStatus status, LocalDateTime departureTime);
 
 	@Modifying
 	@Query("update Posts p set p.view = p.view + 1 where p.id = :id")
