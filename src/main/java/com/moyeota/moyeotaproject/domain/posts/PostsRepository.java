@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.domain.posts;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 
 	@Query("select p from Posts p where p.status = :status order by p.createdDate desc")
 	List<Posts> findAllByStatus(@Param("status") PostsStatus recruiting);
+
+	List<Posts> findAllByStatusAndDepartureTimeAfter(PostsStatus status, LocalDateTime departureTime);
 
 	@Modifying
 	@Query("update Posts p set p.view = p.view + 1 where p.id = :id")
