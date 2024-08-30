@@ -1,5 +1,6 @@
 package com.moyeota.moyeotaproject.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -89,14 +90,8 @@ public class PostsService {
 
 	@Transactional(readOnly = true)
 	public List<PostsResponseDto> findAllDesc() {
-		List<Posts> postsList = postsRepository.findAllByStatus(PostsStatus.RECRUITING);
-		List<PostsResponseDto> responseDtoList = new ArrayList<>();
-		for (int i = 0; i < postsList.size(); i++) {
-			Posts post = postsList.get(i);
-			PostsResponseDto postsResponseDto = new PostsResponseDto(post, post.getUser());
-			responseDtoList.add(postsResponseDto);
-		}
-		return responseDtoList;
+		List<Posts> postsList = postsRepository.findAllByStatusAndDepartureTimeAfter(PostsStatus.RECRUITING, LocalDateTime.now());
+		return postsList.stream().map(post -> new PostsResponseDto(post, post.getUser())).collect(Collectors.toList());
 	}
 
 	@Transactional(readOnly = true)
