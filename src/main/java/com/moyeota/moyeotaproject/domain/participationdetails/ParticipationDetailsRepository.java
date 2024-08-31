@@ -20,8 +20,6 @@ public interface ParticipationDetailsRepository extends JpaRepository<Participat
 	@Query("select p from ParticipationDetails p where p.post.id = :postId and p.status = 'JOIN' order by p.createdDate")
 	List<ParticipationDetails> findParticipationDetailsByPostsId(@Param("postId") Long postId);
 
-	@Query("select p from ParticipationDetails p where p.post = :post and p.user = :user and p.status = 'JOIN'")
-	Optional<ParticipationDetails> findParticipationDetailsByUserAndPost(@Param("user") Users user,
-		@Param("post") Posts post);
+	Optional<ParticipationDetails> findParticipationDetailsByUserAndPost(Users user, Posts post);
 
 }

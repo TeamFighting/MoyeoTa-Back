@@ -8,6 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.moyeota.moyeotaproject.config.exception.ApiException;
+import com.moyeota.moyeotaproject.config.exception.ErrorCode;
+import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsStatus;
+import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.dto.participationdetailsdto.DistancePriceDto;
 import com.moyeota.moyeotaproject.dto.participationdetailsdto.ParticipationDetailsResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsResponseDto;
@@ -30,11 +34,24 @@ public class ParticipationDetailsService {
 	private final UsersRepository usersRepository;
 	private final PostsRepository postsRepository;
 	private final ParticipationDetailsRepository participationDetailsRepository;
+	private final PostsService postsService;
 
 	public Long join(String accessToken, Long postId) {
 		Users user = usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
+
+		if (post.getNumberOfParticipants() == post.getNumberOfRecruitment()) {
+			throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
+		} else if (post.getStatus() == PostsStatus.COMPLETE) {
+			throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
+		}
+
+		ParticipationDetails participationDetails = checkParticipation(accessToken, postId);
+		if (participationDetails != null && participationDetails.getStatus() == ParticipationDetailsStatus.JOIN) {
+			throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_JOIN);
+		}
+
 		post.addUser();
 		chatRoomService.addUser(post.getChatRoom().getId(), user.getId());
 
@@ -42,10 +59,7 @@ public class ParticipationDetailsService {
 			post.postsComplete();
 		}
 
-		ParticipationDetails participationDetails = ParticipationDetails.builder()
-			.user(user)
-			.post(post)
-			.build();
+		participationDetails = ParticipationDetails.builder().user(user).post(post).build();
 		return participationDetailsRepository.save(participationDetails).getId();
 	}
 
@@ -110,6 +124,7 @@ public class ParticipationDetailsService {
 			participationDetailsRepository.findParticipationDetailsByUserAndPost(user, post)
 				.orElseThrow(() -> new IllegalArgumentException("해당 참가내역이 없습니다."));
 
+		postsService.cancelParticipation(post.getId());
 		chatRoomService.deleteUser(post.getChatRoom().getId(), user.getId());
 		participationDetailsRepository.delete(participationDetails);
 		return true;
