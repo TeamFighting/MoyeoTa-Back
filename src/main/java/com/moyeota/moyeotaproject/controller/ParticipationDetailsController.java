@@ -50,18 +50,6 @@ public class ParticipationDetailsController {
 	@PostMapping("/join/posts/{postId}")
 	public ResponseDto<Long> join(HttpServletRequest request,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
-		PostsResponseDto responseDto = postsService.findById(postId);
-		if (responseDto.getNumberOfParticipants() == responseDto.getNumberOfRecruitment()) {
-			throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
-		} else if (responseDto.getStatus() == PostsStatus.COMPLETE) {
-			throw new ApiException(ErrorCode.POSTS_ALREADY_FINISH);
-		}
-
-		ParticipationDetails participationDetails = participationDetailsService.checkParticipation(
-			request.getHeader("Authorization"), postId);
-		if (participationDetails != null && participationDetails.getStatus() == ParticipationDetailsStatus.JOIN) {
-			throw new ApiException(ErrorCode.PARTICIPATION_DETAILS_ALREADY_JOIN);
-		}
 		Long participationDetailsId = participationDetailsService.join(request.getHeader("Authorization"), postId);
 		return ResponseUtil.SUCCESS("참가 신청이 완료되었습니다.", participationDetailsId);
 	}
@@ -70,7 +58,6 @@ public class ParticipationDetailsController {
 	@PostMapping("/cancellation/posts/{postId}") //유저 인증 먼저 하기
 	public ResponseDto<Long> cancel(HttpServletRequest request,
 		@ApiParam(value = "참가내역 인덱스 번호") @PathVariable("postId") Long postId) {
-		postsService.cancelParticipation(postId);
 		participationDetailsService.cancelParticipation(postId, request.getHeader("Authorization"));
 		return ResponseUtil.SUCCESS("참가 취소가 완료되었습니다.", postId);
 	}

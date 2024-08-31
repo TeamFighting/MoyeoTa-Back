@@ -90,7 +90,8 @@ public class PostsService {
 
 	@Transactional(readOnly = true)
 	public List<PostsResponseDto> findAllDesc() {
-		List<Posts> postsList = postsRepository.findAllByStatusAndDepartureTimeAfterOrderByCreatedDateDesc(PostsStatus.RECRUITING, LocalDateTime.now());
+		List<Posts> postsList = postsRepository.findAllByStatusAndDepartureTimeAfterOrderByCreatedDateDesc(
+			PostsStatus.RECRUITING, LocalDateTime.now());
 		return postsList.stream().map(post -> new PostsResponseDto(post, post.getUser())).collect(Collectors.toList());
 	}
 
@@ -168,9 +169,8 @@ public class PostsService {
 	}
 
 	public Slice<PostsResponseDto> findAllByCategory(Category category, Pageable pageable) {
-		Slice<Posts> postsSlice = postsRepository.findByCategory(category, PostsStatus.RECRUITING, pageable);
-		Slice<PostsResponseDto> postsResponseDtoList = postsSlice.map(
-			p -> new PostsResponseDto(p, p.getUser()));
+		Slice<Posts> postSlice = postsRepository.findAllByCategoryAndStatus(category, PostsStatus.RECRUITING, pageable);
+		Slice<PostsResponseDto> postsResponseDtoList = postSlice.map(p -> new PostsResponseDto(p, p.getUser()));
 		return postsResponseDtoList;
 	}
 

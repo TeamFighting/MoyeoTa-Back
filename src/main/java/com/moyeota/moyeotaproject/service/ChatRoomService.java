@@ -71,6 +71,7 @@ public class ChatRoomService {
 			() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(
 			() -> new IllegalArgumentException("해당 채팅방이 없습니다. id=" + chatRoomId));
+
 		increaseUser(chatRoomId);
 		ChatRoomAndUsers chatRoomAndUsers = ChatRoomAndUsers.builder().user(user).chatRoom(chatRoom).build();
 		return chatRoomAndUsersRepository.save(chatRoomAndUsers).getId();
@@ -82,12 +83,11 @@ public class ChatRoomService {
 			() -> new IllegalArgumentException("해당 유저가 없습니다. id=" + userId));
 		ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(
 			() -> new IllegalArgumentException("해당 채팅방이 없습니다. id=" + chatRoomId));
-		Optional<ChatRoomAndUsers> chatRoomAndUsers = chatRoomAndUsersRepository.findByChatRoomAndUser(chatRoom, user);
-		if (chatRoomAndUsers.isEmpty()) {
-			throw new IllegalArgumentException("이미 참가 취소되었습니다.");
-		}
+		ChatRoomAndUsers chatRoomAndUsers = chatRoomAndUsersRepository.findByChatRoomAndUser(chatRoom, user).orElseThrow(
+			() -> new IllegalArgumentException("참가 내역이 없습니다."));
+
 		decreaseUser(chatRoomId);
-		chatRoomAndUsersRepository.delete(chatRoomAndUsers.get());
+		chatRoomAndUsersRepository.delete(chatRoomAndUsers);
 	}
 
 	//채팅방 인원 + 1
