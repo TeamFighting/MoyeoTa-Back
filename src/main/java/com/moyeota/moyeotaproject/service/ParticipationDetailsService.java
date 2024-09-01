@@ -34,7 +34,6 @@ public class ParticipationDetailsService {
 	private final UsersRepository usersRepository;
 	private final PostsRepository postsRepository;
 	private final ParticipationDetailsRepository participationDetailsRepository;
-	private final PostsService postsService;
 
 	public Long join(String accessToken, Long postId) {
 		Users user = usersService.getUserByToken(accessToken);
@@ -116,7 +115,7 @@ public class ParticipationDetailsService {
 
 	}
 
-	public boolean cancelParticipation(Long postId, String accessToken) {
+	public boolean cancelParticipation(Long postId, String accessToken, PostsService postsService) {
 		Users user = usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));

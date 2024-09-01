@@ -29,8 +29,8 @@ import com.moyeota.moyeotaproject.domain.totaldetail.TotalDetailRepository;
 import com.moyeota.moyeotaproject.domain.users.Users;
 import com.moyeota.moyeotaproject.domain.users.UsersRepository;
 import com.moyeota.moyeotaproject.dto.postsdto.MembersLocationResponseDto;
-import com.moyeota.moyeotaproject.dto.postsdto.PostsResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsMemberDto;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsResponseDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsSaveRequestDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsUpdateRequestDto;
 
