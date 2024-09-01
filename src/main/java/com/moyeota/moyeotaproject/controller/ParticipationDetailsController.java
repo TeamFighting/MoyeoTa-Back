@@ -12,15 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moyeota.moyeotaproject.config.exception.ApiException;
-import com.moyeota.moyeotaproject.config.exception.ErrorCode;
 import com.moyeota.moyeotaproject.config.response.ResponseDto;
 import com.moyeota.moyeotaproject.config.response.ResponseUtil;
 import com.moyeota.moyeotaproject.dto.participationdetailsdto.DistancePriceDto;
 import com.moyeota.moyeotaproject.dto.postsdto.PostsResponseDto;
-import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
-import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetailsStatus;
-import com.moyeota.moyeotaproject.domain.posts.PostsStatus;
 import com.moyeota.moyeotaproject.service.ParticipationDetailsService;
 import com.moyeota.moyeotaproject.service.PostsService;
 
