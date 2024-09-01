@@ -53,7 +53,7 @@ public class ParticipationDetailsController {
 	@PostMapping("/cancellation/posts/{postId}") //유저 인증 먼저 하기
 	public ResponseDto<Long> cancel(HttpServletRequest request,
 		@ApiParam(value = "참가내역 인덱스 번호") @PathVariable("postId") Long postId) {
-		participationDetailsService.cancelParticipation(postId, request.getHeader("Authorization"));
+		participationDetailsService.cancelParticipation(postId, request.getHeader("Authorization"), postsService);
 		return ResponseUtil.SUCCESS("참가 취소가 완료되었습니다.", postId);
 	}
 
