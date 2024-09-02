@@ -35,7 +35,7 @@ public class ParticipationDetailsService {
 	private final PostsRepository postsRepository;
 	private final ParticipationDetailsRepository participationDetailsRepository;
 
-	public Long join(String accessToken, Long postId) {
+	public Object join(String accessToken, Long postId) {
 		Users user = usersService.getUserByToken(accessToken);
 		Posts post = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
@@ -56,6 +56,9 @@ public class ParticipationDetailsService {
 
 		if (post.getNumberOfParticipants() == post.getNumberOfRecruitment()) {
 			post.postsComplete();
+			participationDetails = ParticipationDetails.builder().user(user).post(post).build();
+			participationDetailsRepository.save(participationDetails).getId();
+			return "complete";
 		}
 
 		participationDetails = ParticipationDetails.builder().user(user).post(post).build();
