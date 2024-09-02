@@ -131,12 +131,7 @@ public class PostsService {
 		usersService.getUserByToken(accessToken);
 		Posts posts = postsRepository.findById(postId).orElseThrow(()
 			-> new IllegalArgumentException("해당 모집글이 없습니다. id=" + postId));
-
-		posts.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getCategory(),
-			requestDto.getDeparture(), requestDto.getDestination(), requestDto.getDepartureTime(),
-			requestDto.getSameGenderStatus(), requestDto.getVehicle(), requestDto.getNumberOfRecruitment(),
-			requestDto.getFare(), requestDto.getDuration(), requestDto.getDistance(), requestDto.getLatitude(),
-			requestDto.getLongitude());
+		posts.update(requestDto);
 		return postId;
 	}
 
@@ -188,8 +183,10 @@ public class PostsService {
 			if (userId == post.getUser().getId()) {
 				isOwner = true;
 			}
+
 			Optional<Location> location = locationRepository.findTopByUserIdAndPostIdOrderByIdDesc(
 				String.valueOf(userId), String.valueOf(postId));
+
 			MembersLocationResponseDto membersLocationResponseDto = MembersLocationResponseDto.builder()
 				.isOwner(isOwner)
 				.position(location.get().getPosition())
