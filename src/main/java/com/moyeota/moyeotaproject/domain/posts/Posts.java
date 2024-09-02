@@ -24,6 +24,7 @@ import com.moyeota.moyeotaproject.domain.BaseTimeEntity;
 import com.moyeota.moyeotaproject.domain.chatroom.ChatRoom;
 import com.moyeota.moyeotaproject.domain.participationdetails.ParticipationDetails;
 import com.moyeota.moyeotaproject.domain.users.Users;
+import com.moyeota.moyeotaproject.dto.postsdto.PostsUpdateRequestDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -145,23 +146,21 @@ public class Posts extends BaseTimeEntity {
 		this.status = PostsStatus.RECRUITING;
 	}
 
-	public void update(String title, String content, Category category, String departure, String destination,
-		LocalDateTime departureTime, SameGender sameGenderStatus, Vehicle vehicle,
-		int numberOfRecruitment, int fare, int duration, double distance, String latitude, String longitude) {
-		this.title = title;
-		this.content = content;
-		this.category = category;
-		this.departure = departure;
-		this.destination = destination;
-		this.departureTime = departureTime;
-		this.sameGenderStatus = sameGenderStatus;
-		this.vehicle = vehicle;
-		this.numberOfRecruitment = numberOfRecruitment;
-		this.fare = fare;
-		this.duration = duration;
-		this.distance = distance;
-		this.latitude = latitude;
-		this.longitude = longitude;
+	public void update(PostsUpdateRequestDto requestDto) {
+		this.title = requestDto.getTitle();
+		this.content = requestDto.getContent();
+		this.category = requestDto.getCategory();
+		this.departure = requestDto.getDeparture();
+		this.destination = requestDto.getDestination();
+		this.departureTime = requestDto.getDepartureTime();
+		this.sameGenderStatus = requestDto.getSameGenderStatus();
+		this.vehicle = requestDto.getVehicle();
+		this.numberOfRecruitment = requestDto.getNumberOfRecruitment();
+		this.fare = requestDto.getFare();
+		this.duration = requestDto.getDuration();
+		this.distance = requestDto.getDistance();
+		this.latitude = requestDto.getLatitude();
+		this.longitude = requestDto.getLongitude();
 	}
 
 	public void postsComplete() {

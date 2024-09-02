@@ -70,53 +70,16 @@ public class PostsController {
 
 	@ApiOperation(value = "모집글 수정", notes = "특정 회원이 모집글을 수정하는 API(jwt토큰 필요)")
 	@PutMapping("/{postId}")
-	public ResponseDto update(HttpServletRequest request,
+	public ResponseDto<Long> update(HttpServletRequest request,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable Long postId,
 		@RequestBody PostsUpdateRequestDto requestDto) {
-		PostsResponseDto post = postsService.findById(postId);
-		if (requestDto.getTitle() == null) {
-			requestDto.setTitle(post.getTitle());
-		} else if (requestDto.getTitle().equals("")) {
-			throw new ApiException(ErrorCode.POSTS_EMPTY_TITLE);
-		} else if (requestDto.getContent() == null) {
-			requestDto.setContent(post.getContent());
-		} else if (requestDto.getCategory() == null) {
-			requestDto.setCategory(post.getCategory());
-		} else if (requestDto.getDeparture() == null) {
-			requestDto.setDeparture(post.getDeparture());
-		} else if (requestDto.getDeparture().equals("")) {
-			throw new ApiException(ErrorCode.POSTS_EMPTY_DEPARTURE);
-		} else if (requestDto.getDestination() == null) {
-			requestDto.setDestination(post.getDestination());
-		} else if (requestDto.getDestination().equals("")) {
-			throw new ApiException(ErrorCode.POSTS_EMPTY_DESTINATION);
-		} else if (requestDto.getDepartureTime() == null) {
-			requestDto.setDepartureTime(post.getDepartureTime());
-		} else if (requestDto.getSameGenderStatus() == null) {
-			requestDto.setSameGenderStatus(post.getSameGenderStatus());
-		} else if (requestDto.getFare() == 0) {
-			requestDto.setFare(post.getFare());
-		} else if (requestDto.getDuration() == 0) {
-			requestDto.setDuration(post.getDuration());
-		} else if (requestDto.getDistance() == 0) {
-			requestDto.setDistance(post.getDistance());
-		} else if (requestDto.getNumberOfRecruitment() == 0) {
-			requestDto.setNumberOfRecruitment(post.getNumberOfRecruitment());
-		} else if (requestDto.getVehicle() == null) {
-			requestDto.setVehicle(post.getVehicle());
-		} else if (requestDto.getLatitude() == null) {
-			requestDto.setLatitude(post.getLatitude());
-		} else if (requestDto.getLongitude() == null) {
-			requestDto.setLongitude(post.getLongitude());
-		}
-
 		return ResponseUtil.SUCCESS("모집글 수정에 성공하였습니다.",
 			postsService.update(request.getHeader("Authorization"), postId, requestDto));
 	}
 
 	@ApiOperation(value = "모집글 삭제", notes = "특정 회원이 모집글을 삭제하는 API(jwt토큰 필요)")
 	@DeleteMapping("/{postId}")
-	public ResponseDto delete(HttpServletRequest request,
+	public ResponseDto<Long> delete(HttpServletRequest request,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable Long postId) {
 		postsService.delete(request.getHeader("Authorization"), postId);
 		return ResponseUtil.SUCCESS("모집글 삭제에 성공하였습니다.", postId);
@@ -124,7 +87,7 @@ public class PostsController {
 
 	@ApiOperation(value = "모집글 마감", notes = "특정 회원이 모집글을 마감하는 API(jwt토큰 필요)")
 	@PostMapping("/{postId}/complete")
-	public ResponseDto complete(HttpServletRequest request,
+	public ResponseDto<Long> complete(HttpServletRequest request,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable Long postId) {
 		usersService.getUserByToken(request.getHeader("Authorization"));
 		if (postsService.findById(postId).getStatus() == PostsStatus.COMPLETE) {
