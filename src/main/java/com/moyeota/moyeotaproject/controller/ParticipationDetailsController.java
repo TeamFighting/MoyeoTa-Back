@@ -43,9 +43,9 @@ public class ParticipationDetailsController {
 
 	@ApiOperation(value = "참가 신청", notes = "특정 회원이 특정 모집글에 참가 신청 API(jwt토큰 필요)")
 	@PostMapping("/join/posts/{postId}")
-	public ResponseDto<Long> join(HttpServletRequest request,
+	public ResponseDto<Object> join(HttpServletRequest request,
 		@ApiParam(value = "모집글 인덱스 번호") @PathVariable("postId") Long postId) {
-		Long participationDetailsId = participationDetailsService.join(request.getHeader("Authorization"), postId);
+		Object participationDetailsId = participationDetailsService.join(request.getHeader("Authorization"), postId);
 		return ResponseUtil.SUCCESS("참가 신청이 완료되었습니다.", participationDetailsId);
 	}
 
